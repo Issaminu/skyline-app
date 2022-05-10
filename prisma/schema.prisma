@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model users {
   id            Int       @id @default(autoincrement())
   name          String    @db.VarChar(255)
   email         String    @unique @db.VarChar(255)
@@ -21,7 +21,7 @@ model User {
 
 }
 
-model Building {
+model buildings {
   id            Int       @id @default(autoincrement())
   name          String    @db.VarChar(255)
   description   String?   @db.VarChar(1000)
@@ -39,7 +39,7 @@ model Building {
 
 }
 
-model House {
+model houses {
   id                    Int       @id @default(autoincrement())
   name                  String    @db.VarChar(255)
   description           String?   @db.VarChar(1000)
@@ -66,7 +66,7 @@ model House {
 
 }
 
-model Sale {
+model sales {
   id             Int       @id @default(autoincrement())
   houseId        Int
   houseName      String    @db.VarChar(255)
@@ -82,7 +82,7 @@ model Sale {
 
 }
 
-model Payement {
+model payements {
   id          Int       @id @default(autoincrement())
   type        String
   userID      Int
@@ -96,7 +96,7 @@ model Payement {
   update_time DateTime? @db.Date
 }
 
-model Expense {
+model expenses {
   id          Int       @id @default(autoincrement())
   reason      String    @db.VarChar(255)
   comment     String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
