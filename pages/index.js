@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       {user ? (<>
-        <Link><a href="/api/auth/logout">Logout</a></Link> </>) : <Link><a href="/api/auth/login">Login</a></Link>}
+        <Link href="/api/auth/logout"><a>Logout</a></Link> </>) : <Link href="/api/auth/login"><a>Login</a></Link>}
     </div>
   )
 }
