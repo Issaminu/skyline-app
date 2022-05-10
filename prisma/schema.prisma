@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  name          String    @db.VarChar(255)
+  email         String    @unique @db.VarChar(255)
+  image         String
+  password      String    @db.VarChar(255)
+  type          String    @db.VarChar(255)
+  houseId       Int[] //POSSIBLE TO BE EMTPY
+  accountStatus String    @db.VarChar(255)
+  create_time   DateTime? @db.Date
+  update_time   DateTime? @db.Date
+
+}
+
+model Building {
+  id            Int       @id @default(autoincrement())
+  name          String    @db.VarChar(255)
+  description   String?   @db.VarChar(1000)
+  location      String
+  thumbnail     String
+  floors        Int
+  images        String[] //POSSIBLE TO BE EMTPY
+  houseQuantity Int
+  houseIDs      Int[] //THIS IS A 2 DIMENSIONAL ARRAY, WITH EACH ARRAY IN THE FIRST DIMENSION, REPRESENTING A FLOOR AND CONTAINING houseIDs FOR THE HOUSES IN THAT SPECIFIC FLOOT
+  Surface       Float
+  userIDs       Int[] //POSSIBLE TO BE EMTPY
+  comment       String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
+  create_time   DateTime? @db.Date
+  update_time   DateTime? @db.Date
+
+}
+
+model House {
+  id                    Int       @id @default(autoincrement())
+  name                  String    @db.VarChar(255)
+  description           String?   @db.VarChar(1000)
+  buildingId            Int
+  thumbnail             String
+  images                String[] //POSSIBLE TO BE EMTPY
+  bedrooms              Int?
+  bathrooms             Int?
+  saloon                Int?
+  kitchen               Int?
+  userIDs               Int[] //POSSIBLE TO BE EMTPY
+  location              String //GET THIS FROM BUILDING LOCATION
+  size                  Float
+  percentangeOfBuilding Int
+  status                String    @db.VarChar(255)
+  // buyOrRent          String?
+  priceBuy              Float
+  // pricePerMeter         Float
+  // priceRent          Float?
+  comment               String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
+  expenseIDs            Int[] //POSSIBLE TO BE EMTPY
+  create_time           DateTime? @db.Date
+  update_time           DateTime? @db.Date
+
+}
+
+model Sale {
+  id             Int       @id @default(autoincrement())
+  houseId        Int
+  houseName      String    @db.VarChar(255)
+  buildingId     String    @db.VarChar(255)
+  buildingName   String    @db.VarChar(255)
+  comment        String?   @db.VarChar(65535) //THE "65535" length is equivalent to the length of the data type "TEXT"
+  userIDs        Int[]
+  buyMonths      Int //POSSIBLE TO BE "1", MEANING THE FULL PAYEMENT IS PROVIDED INSTANTLY
+  remainingPrice Float?
+  payementIDs    Int[]
+  create_time    DateTime? @db.Date
+  update_time    DateTime? @db.Date
+
+}
+
+model Payement {
+  id          Int       @id @default(autoincrement())
+  type        String
+  userID      Int
+  comment     String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
+  amount      Float
+  month       Int
+  status      String?   @db.VarChar(255)
+  houseId     Int
+  buildingId  String    @db.VarChar(255)
+  create_time DateTime? @db.Date
+  update_time DateTime? @db.Date
+}
+
+model Expense {
+  id          Int       @id @default(autoincrement())
+  reason      String    @db.VarChar(255)
+  comment     String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
+  amount      Float
+  date        DateTime?
+  status      String?   @db.VarChar(255)
+  buildingId  Int? //THIS FIELD IS NULLABLE BECAUSE IT COULD BE A EXPENSE FOR THE HOUSE, OR FOR THE WHOLE BUILDING
+  houseId     Int? //THIS FIELD IS NULLABLE BECAUSE IT COULD BE A GENERAL EXPENSE FOR THE BUILDING, OR FOR A SPECIFIC HOUSE
+  create_time DateTime? @db.Date
+  update_time DateTime? @db.Date
+}
