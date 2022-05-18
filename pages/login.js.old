@@ -1,0 +1,114 @@
+import { Input, useInput, Grid, Card, Button } from "@nextui-org/react";
+import HttpsIcon from '@mui/icons-material/Https';
+import PersonIcon from '@mui/icons-material/Person';
+import React, { useState } from 'react'
+// import { Card } from '@nextui-org/react';
+// import user from "./api/user";
+import { PrismaClient } from "@prisma/client";
+// import { signIn, useSession } from 'next-auth/react'
+// import loginRoute from "./api/loginAPI";
+// import { ironSession } from "next-iron-session";
+import Link from "next/link";
+const APPLICATION_SECRET = process.env.APPLICATION_SECRET;
+
+// const session = ironSession({
+//     cookieName: "skyline-AuthSessionCookie",
+//     password: APPLICATION_SECRET,
+//     // if your localhost is served on http:// then disable the secure flag
+//     cookieOptions: {
+//         // secure: process.env.NODE_ENV === "production",
+//     },
+// });
+const Login = (req) => {
+    const emailIcon = <PersonIcon />
+    const passwordIcon = <HttpsIcon />
+    // const [session, loading] = useSession();
+    // const user = session.user;
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+
+    async function signIn(e) {
+        e.preventDefault()
+        let res = ({
+            email: email.target.value,
+            password: password.target.value,
+        })
+        let data = new Object();
+        data.email = email.target.value;
+        data.password = password.target.value;
+        // this.props.history.push({
+        //     pathname: '/api/loginAPI',
+        //     state: data
+        // })
+        // console.log(data.email);
+        data = JSON.stringify(data);
+        // console.log(data);
+        const ress = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: data,
+        }).then(response => { console.log(response.user) });
+        console.log('Here is the Ress JSON:');
+        // ress = JSON.stringify(ress);
+        await console.log(ress);
+        // const user = await req.session.get("user");
+        // console.log(user);
+
+
+    }
+
+    // if (res.email == 'iamwynix@gmail.com' && res.password == "chainsberg1!") {
+    //     console.log('Success!');
+    // }
+    // else {
+    //     console.log("FAIL");
+    // }
+
+    return (<>
+        {/* <Image href=""></Image> */}
+        {/* <div style={{
+            width: 'fill', height: '100%',
+            backgroundImage: `url("/LoginBackgroundImage2.jpg")`, backgroundRepeat: 'no-repeat', objectFit: 'fill',
+        }}> */}
+        <Card css={{
+            width: "20rem", display: "flex", justifyContent: 'center',
+            // backgroundImage: "/public/LoginBackgroundImage.webp",
+        }}>
+
+            <form method="POST" action="/login">
+                {/* <p>A basic card.</p> */}
+                <Input
+                    labelLeft={emailIcon}
+                    type="email"
+                    name="email"
+                    label="Email"
+                    placeholder="email address"
+                    css={{ mb: "1rem" }}
+                    onChange={setEmail}
+                /><br></br>
+                <Input
+                    labelLeft={passwordIcon}
+                    type="password"
+                    name="password"
+                    label="Password"
+                    placeholder="password"
+                    css={{ mb: "1rem" }}
+                    onChange={setPassword}
+
+                />
+                <Button onClick={signIn}>Log in</Button>
+                {/* <Card.Image
+                    src="/LoginBackgroundImage2.jpg"
+                    height="100%"
+                    width="100%"
+                    alt="Card image background"
+                /> */}
+                <Link href="/dashboard"><a>DASHBOARD HERE</a></Link>
+            </form>
+        </Card>
+        {/* </div> */}
+    </>)
+}
+export default Login;
+
+

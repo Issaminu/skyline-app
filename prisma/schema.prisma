@@ -3,39 +3,61 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model users {
+  id             Int       @id @default(autoincrement())
+  name           String    @db.VarChar(255)
+  email          String    @unique @db.VarChar(255)
+  image          String    @db.VarChar(255)
+  phone          String?   @db.VarChar(255)
+  // password       String    @db.VarChar(255)
+  type           String    @db.VarChar(255)
+  // houseId        String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
+  accountStatus  String    @db.VarChar(255)
+  email_Verified Boolean
+  create_time    DateTime? @db.DateTime()
+  update_time    DateTime? @db.DateTime()
+}
+
+model tenants {
   id            Int       @id @default(autoincrement())
   name          String    @db.VarChar(255)
-  email         String    @unique @db.VarChar(255)
-  image         String
-  password      String    @db.VarChar(255)
-  type          String    @db.VarChar(255)
-  houseId       Int[] //POSSIBLE TO BE EMTPY
+  email         String?   @db.VarChar(255)
+  phone         String?   @db.VarChar(255)
+  image         String?   @db.VarChar(255)
+  familySize    Int?
+  isMarried     Boolean?
+  profession    String?   @db.VarChar(255)
+  buildingId    String?   @db.VarChar(255)
+  houseId       String?   @db.VarChar(255)
+  cin           String?   @db.VarChar(255)
+  cinRecto      String?   @db.VarChar(255)
+  cinVerso      String?   @db.VarChar(255)
   accountStatus String    @db.VarChar(255)
-  create_time   DateTime? @db.Date
-  update_time   DateTime? @db.Date
-
+  notes         String?   @db.VarChar(65535)
+  create_time   DateTime? @db.DateTime()
+  update_time   DateTime? @db.DateTime()
 }
 
 model buildings {
-  id            Int       @id @default(autoincrement())
-  name          String    @db.VarChar(255)
-  description   String?   @db.VarChar(1000)
-  location      String
-  thumbnail     String
-  floors        Int
-  images        String[] //POSSIBLE TO BE EMTPY
-  houseQuantity Int
-  houseIDs      Int[] //THIS IS A 2 DIMENSIONAL ARRAY, WITH EACH ARRAY IN THE FIRST DIMENSION, REPRESENTING A FLOOR AND CONTAINING houseIDs FOR THE HOUSES IN THAT SPECIFIC FLOOT
-  Surface       Float
-  userIDs       Int[] //POSSIBLE TO BE EMTPY
-  comment       String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
-  create_time   DateTime? @db.Date
-  update_time   DateTime? @db.Date
+  id              Int       @id @default(autoincrement())
+  name            String    @unique @db.VarChar(255)
+  location        String    @db.VarChar(255)
+  thumbnail       String    @db.VarChar(255)
+  floors          Int
+  images          String?   @db.VarChar(255) //POSSIBLE TO BE MULTIPLE PHOTOS
+  houseQuantity   Int
+  populationTotal Int?
+  houseIDs        String?   @db.VarChar(255) //THIS STRING IS A 2 DIMENSIONAL ARRAY, WITH EACH ARRAY IN THE FIRST DIMENSION, REPRESENTING A FLOOR AND CONTAINING houseIDs FOR THE HOUSES IN THAT SPECIFIC FLOOT
+  surface         Float
+  userIDs         String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
+  notes           String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
+  create_time     DateTime? @db.DateTime()
+  update_time     DateTime? @db.DateTime()
 
 }
 
@@ -44,14 +66,14 @@ model houses {
   name                  String    @db.VarChar(255)
   description           String?   @db.VarChar(1000)
   buildingId            Int
-  thumbnail             String
-  images                String[] //POSSIBLE TO BE EMTPY
+  thumbnail             String    @db.VarChar(255)
+  images                String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
   bedrooms              Int?
   bathrooms             Int?
   saloon                Int?
   kitchen               Int?
-  userIDs               Int[] //POSSIBLE TO BE EMTPY
-  location              String //GET THIS FROM BUILDING LOCATION
+  userIDs               String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
+  location              String    @db.VarChar(255) //GET THIS FROM BUILDING LOCATION
   size                  Float
   percentangeOfBuilding Int
   status                String    @db.VarChar(255)
@@ -60,9 +82,9 @@ model houses {
   // pricePerMeter         Float
   // priceRent          Float?
   comment               String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
-  expenseIDs            Int[] //POSSIBLE TO BE EMTPY
-  create_time           DateTime? @db.Date
-  update_time           DateTime? @db.Date
+  expenseIDs            String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
+  create_time           DateTime? @db.DateTime()
+  update_time           DateTime? @db.DateTime()
 
 }
 
@@ -73,18 +95,18 @@ model sales {
   buildingId     String    @db.VarChar(255)
   buildingName   String    @db.VarChar(255)
   comment        String?   @db.VarChar(65535) //THE "65535" length is equivalent to the length of the data type "TEXT"
-  userIDs        Int[]
+  userIDs        String
   buyMonths      Int //POSSIBLE TO BE "1", MEANING THE FULL PAYEMENT IS PROVIDED INSTANTLY
   remainingPrice Float?
-  payementIDs    Int[]
-  create_time    DateTime? @db.Date
-  update_time    DateTime? @db.Date
+  payementIDs    String?   @db.VarChar(255)
+  create_time    DateTime? @db.DateTime()
+  update_time    DateTime? @db.DateTime()
 
 }
 
 model payements {
   id          Int       @id @default(autoincrement())
-  type        String
+  type        String    @db.VarChar(255)
   userID      Int
   comment     String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
   amount      Float
@@ -92,8 +114,8 @@ model payements {
   status      String?   @db.VarChar(255)
   houseId     Int
   buildingId  String    @db.VarChar(255)
-  create_time DateTime? @db.Date
-  update_time DateTime? @db.Date
+  create_time DateTime? @db.DateTime()
+  update_time DateTime? @db.DateTime()
 }
 
 model expenses {
@@ -105,6 +127,53 @@ model expenses {
   status      String?   @db.VarChar(255)
   buildingId  Int? //THIS FIELD IS NULLABLE BECAUSE IT COULD BE A EXPENSE FOR THE HOUSE, OR FOR THE WHOLE BUILDING
   houseId     Int? //THIS FIELD IS NULLABLE BECAUSE IT COULD BE A GENERAL EXPENSE FOR THE BUILDING, OR FOR A SPECIFIC HOUSE
-  create_time DateTime? @db.Date
-  update_time DateTime? @db.Date
+  create_time DateTime? @db.DateTime()
+  update_time DateTime? @db.DateTime()
 }
+
+//BELLOW ARE THE MODELS NEEDED BY NextAuth.js
+
+// model Account {
+//   id                String  @id @default(cuid())
+//   userId            String
+//   type              String
+//   provider          String
+//   providerAccountId String
+//   refresh_token     String? @db.Text
+//   access_token      String? @db.Text
+//   expires_at        Int?
+//   token_type        String?
+//   scope             String?
+//   id_token          String? @db.Text
+//   session_state     String?
+
+//   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+//   @@unique([provider, providerAccountId])
+// }
+
+// model Session {
+//   id           String   @id @default(cuid())
+//   sessionToken String   @unique
+//   userId       String
+//   expires      DateTime
+//   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+// }
+
+// model User {
+//   id            String    @id @default(cuid())
+//   name          String?
+//   email         String?   @unique
+//   emailVerified DateTime?
+//   image         String?
+//   accounts      Account[]
+//   sessions      Session[]
+// }
+
+// model VerificationToken {
+//   identifier String
+//   token      String   @unique
+//   expires    DateTime
+
+//   @@unique([identifier, token])
+// }
