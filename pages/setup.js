@@ -14,7 +14,7 @@ import Link from "next/link";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 import PersonIcon from '@mui/icons-material/Person';
-import useSWR from "swr";
+// import useSWR from "swr";
 const setup = (props) => {
     const { user } = useUser();
     // console.log(user);

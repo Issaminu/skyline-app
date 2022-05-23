@@ -33,6 +33,23 @@ const AuthWrapper = ({ children }) => { //WE USE THE AUTH WRAPPER TO WAIT TILL T
             else if (user.accountStatus != "TEMP" && router.pathname == '/setup') {
                 router.push('/'); //HERE IS WHERE FULLY SETUP USERS WHO TRY TO GO TO SETUP AGAIN GET REDIRECTED TO ROOT DIRECTORY
             }
+            if (router.pathname == '/buildings/[id]') {
+                let reqBuildingId = parseInt(router.asPath.split("/").slice(2).join("/"));
+                // console.log(user.buildingIDs);
+                let isThisBuildingYoursChecker = false;
+                user.buildingIDs.map(buildingId => {
+                    if (buildingId == reqBuildingId) {
+                        isThisBuildingYoursChecker = true;
+                        return <>{children}</>
+                    }
+                })
+                if (!isThisBuildingYoursChecker) router.push('/');
+
+            }
+
+
+            // console.log(buildingId)
+            // console.log(router.asPath);
             return <>{children}</>;  //HERE, FULLY AUTHED USERS GOTO ANYWHERE EXCEPT /setup, AND NOT FULLY AUTHED USERS LOAD THE /setup page
         }
     } else (router.push('/api/auth/login'))

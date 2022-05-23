@@ -3,13 +3,13 @@ import { useUser } from '@auth0/nextjs-auth0';
 import Link from 'next/link';
 import { useRouter } from 'next/router'
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../components/prismaClient'
 import { Navbar } from '../components/Navbar/Navbar';
 export const getServerSideProps = withPageAuthRequired({
     //returnTo: '/foo',
     async getServerSideProps(ctx) {
         const session = getSession(ctx.req, ctx.res);
-        const prisma = await new PrismaClient()
+        // const prisma = await new PrismaClient()
         let DBuser = new Object();
         // DBuser.accountStatus = "test";
         DBuser = await prisma.users.findUnique({
@@ -27,6 +27,16 @@ export const getServerSideProps = withPageAuthRequired({
                 accountStatus: true
             },
         })
+        const buildings = await prisma.buildings.findMany({
+            where: {
+                teamid: session.user.id
+            },
+            select: {
+                id: true,
+            }
+        });
+        const buildingIDs = [];
+        buildings.map(building => { buildingIDs.push(building.id) });
         // DBuser.nickname = session.user.nickname;
         // if ('accountStatus' in DBuser) {
         //     session.user.accountStatus = DBuser.accountStatus;
@@ -36,8 +46,8 @@ export const getServerSideProps = withPageAuthRequired({
             session.user.name = DBuser.name;
             session.user.image = DBuser.image;
             session.user.type = DBuser.type;
-            // session.user.houseId = DBuser.houseId;
             session.user.accountStatus = DBuser.accountStatus;
+            session.user.buildingIDs = buildingIDs;
             if (DBuser.id != null) {
                 // console.log('Hello old guy');
 

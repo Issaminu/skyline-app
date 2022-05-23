@@ -1,12 +1,18 @@
-import { createTheme, NextUIProvider, Text } from "@nextui-org/react"
-// import { SessionProvider } from "next-auth/react";
+import { createTheme, NextUIProvider, globalCss } from "@nextui-org/react"
 import AuthWrapper from "../components/AuthWrapper";
-// import { NextUIProvider } from '@nextui-org/react';
-import { UserProvider } from '@auth0/nextjs-auth0';
-
+import { UserProvider, useUser } from '@auth0/nextjs-auth0';
+import { QueryClientProvider, QueryClient } from "react-query";
+import { ReactQueryDevtools } from 'react-query/devtools'
 import '../styles/globals.css';
 import Navbar from "../components/Navbar/Navbar";
+// const globalStyles = globalCss({
+//   ".nextui-backdrop .nextui-backdrop-layer-blur": {
+//     backdropFilter: "blur(90px)"
+//   }
+// });
+const queryClient = new QueryClient();
 function MyApp({ Component, pageProps }) {
+
   const theme = createTheme({
     type: "light", // it could be "light" or "dark"
     theme: {
@@ -20,19 +26,17 @@ function MyApp({ Component, pageProps }) {
     }
   })
   return (
-    // 2. Use at the root of your app
-    // <SessionProvider session={pageProps.session}>
     <UserProvider>
       <NextUIProvider theme={theme}>
         <AuthWrapper>
           <Navbar />
-          <Component {...pageProps} />
+          <QueryClientProvider client={queryClient}>
+            <Component {...pageProps} />
+            <ReactQueryDevtools />
+          </QueryClientProvider>
         </AuthWrapper>
       </NextUIProvider>
     </UserProvider>
-
-    /* // </SessionProvider> */
-
   );
 }
 

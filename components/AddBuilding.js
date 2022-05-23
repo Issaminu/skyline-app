@@ -1,147 +1,128 @@
-import React, { useState } from 'react'
+// import React from 'react'
 
-import PropTypes from 'prop-types';
-// import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-// import DialogContent from '@mui/material/DialogContent';
-// import DialogActions from '@mui/material/DialogActions';
-import IconButton from '@mui/material/IconButton';
+import { useUser } from "@auth0/nextjs-auth0";
+import { Button, Text, css, Modal, Input, Textarea, Row, } from "@nextui-org/react"
+import { useRouter } from "next/router";
+import Loading from "../components/Loading"
+import { useEffect, useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
 import AddIcon from '@mui/icons-material/Add';
-
-import CloseIcon from '@mui/icons-material/Close';
-// import Typography from '@mui/material/Typography';
-import { Card, Grid, Text, Divider, Button, Row, Input, Textarea } from '@nextui-org/react';
-import { useRouter } from 'next/router';
-
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-    '& .MuiDialogContent-root': {
-        padding: theme.spacing(2),
-    },
-    '& .MuiDialogActions-root': {
-        padding: theme.spacing(1),
-    },
-}));
-
-const BootstrapDialogTitle = (props) => {
-    const { children, onClose, ...other } = props;
-
-    return (
-        <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
-            {children}
-            {onClose ? (
-                <IconButton
-                    aria-label="close"
-                    onClick={onClose}
-                    sx={{
-                        position: 'absolute',
-                        right: 8,
-                        top: 8,
-                        color: (theme) => theme.palette.grey[500],
-                    }}
-                >
-                    <CloseIcon />
-                </IconButton>
-            ) : null}
-        </DialogTitle>
-    );
-};
-
-BootstrapDialogTitle.propTypes = {
-    children: PropTypes.node,
-    onClose: PropTypes.func.isRequired,
-};
-
-export default function CustomizedDialogs() {
-    const [open, setOpen] = React.useState(false);
+import axios from 'axios'
+const AddBuilding = () => {
+    const [visible, setVisible] = useState(false);
+    // const [editVisible, setEditVisible] = useState(false);
+    // const editHandler = () => setEditVisible(true);
+    const [open, setOpen] = useState(false);
     const router = useRouter();
     const [name, setName] = useState();
     const [location, setLocation] = useState();
     const [floors, setFloors] = useState();
     const [surface, setSurface] = useState();
     const [houses, setHouses] = useState();
-    const [notes, setNotes] = useState();
+    const [notes, setNotes] = useState("");
+    const [rent, setRent] = useState();
+    const [appartementSize, setAppartementSize] = useState();
 
+    const queryClient = useQueryClient();
+
+    const { user } = useUser();
+    const [newBuilding, setNewBuilding] = useState("");
+    // const postTodo=
+    const addMyBuilding = useMutation(async (DataToSend) => {
+        // console.log("add my building neeo")
+        setNewBuilding(await axios.post('/api/addBuildingAPI', DataToSend));
+        // console.log(newBuilding.data.building.id)
+    }, {
+        onSuccess: async () => {
+            queryClient.invalidateQueries('getBuildings');
+
+        }
+    })
+    const handler = () => setVisible(true);
+    const closeHandler = () => {
+        setVisible(false);
+        // console.log("closed");
+    };
 
     const addBuilding = async (e) => {
         e.preventDefault();
+        // const varNotes = "";
+
         let DataToSend = {
             name: name.target.value,
             location: location.target.value,
             floors: parseInt(floors.target.value),
-            surface: parseInt(surface.target.value),
+            surface: parseFloat(surface.target.value),
             houses: parseInt(houses.target.value),
-            notes: notes.target.value,
+            notes: "TEMP", //THIS NEEDS TO GET REMOVED
+            rent: parseFloat(rent.target.value),
+            appartementSize: parseFloat(appartementSize.target.value),
+            teamid: user.id,
         };
-        // console.log("here's DataToSend:");
-        // console.log(DataToSend);
-        let ress = await fetch('/api/addBuildingAPI', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(DataToSend),
-        })
-            .then(function (response) {
-                return response.json();
-            })
-        if (ress) {
-            console.log("Building added successfully");
-            handleClose();
-        } else {
-            console.log("loading or error");
-        }
+        // console.log(DataToSend)
+        addMyBuilding.mutate(DataToSend);
+        // console.log("heres addMyBuilding:")
+        // console.log(addMyBuilding)
+        closeHandler();
+        // console.log(user);
     }
+    useEffect(() => {
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
+        if (addMyBuilding.status == "success") {
+            user.buildingIDs.push(newBuilding.data.building.id)
+            // console.log("im success here")
+        };
+    }, [newBuilding, addMyBuilding.status])
+    if (addMyBuilding.status == "loading") {
+        // console.log("im loading here")
+        return <><Loading /></>
+    }
+    return (<>
+        <Modal
+            closeButton
+            aria-labelledby="modal-title"
+            open={visible}
+            onClose={closeHandler}
+            width="35rem"
+        >
+            <Modal.Header>
+                <h3 b="true" style={{ margin: 0 }}>Ajout Immeuble</h3>
+            </Modal.Header>
+            <form onSubmit={addBuilding}>
 
-    return (
-        <main>
-            {/* <Button variant="outlined" onClick={handleClickOpen}>
-                Open dialog
-            </Button> */}
-            <Button color="primary" shadow auto onClick={handleClickOpen}><AddIcon style={{ marginRight: '0.5rem' }} />Ajout Immeuble</Button>
+                <Modal.Body>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem" }}>
+                        <Input bordered type="text" label="Nom d'immeuble" name="buildingName" onChange={setName} required={true} />
+                        <Input bordered type="text" label="Location" name="buildingLocation" onChange={setLocation} required={true} />
+                        <Input bordered type="number" min="1" step="0.001" label="Surface globale (en m²)" labelRight="m²" name="buildingSurface" onChange={setSurface} required={true} />
 
-            <BootstrapDialog onClose={handleClose} aria-labelledby="" open={open} style={{}}>
-
-                <Card css={{ mw: "100%" }}>
-                    {/* <form> */}
-                    <Card.Header css={{}}>
-                        <h3 style={{ margin: 0 }}>Ajout Immeuble</h3>
-
-                    </Card.Header>
-                    <Divider />
-                    <Card.Body css={{ marginBottom: '0.5rem' }}>
-
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem" }}>
-                            <Input clearable bordered type="text" label="Nom d'immeuble" name="buildingName" onChange={setName} required />
-                            <Input clearable bordered type="text" label="Location" name="buildingLocation" onChange={setLocation} required />
-                            <div style={{ display: 'flex', gap: '1rem' }}>
-                                <Input bordered type="number" label="Nombre d'étages" name="buildingFloors" onChange={setFloors} required />
-                                <Input bordered type="number" label="Nombre d'appartements" name="buildingHouses" onChange={setHouses} required />
-                            </div>
-
-                            <Input clearable bordered type="text" label="Surface globale" name="buildingSurface" onChange={setSurface} required />
-                            <Textarea bordered minRows={2} maxRows={5} label="Commentaire (optionnel)" onChange={setNotes} name="buildingNotes" />
+                        <div style={{ display: 'flex', gap: '3rem' }}>
+                            <Input bordered type="number" min="1" step="1" label="Nombre d'étages" name="buildingFloors" onChange={setFloors} required={true} />
+                            <Input bordered type="number" min="1" step="1" label="Nombre d'appartements par étage" name="buildingHouses" onChange={setHouses} required={true} />
                         </div>
+                        <Input bordered type="number" step="0.001" min="1" label="Prix de location" name="buildingRent" labelRight="DH" onChange={setRent} required={true} />
+                        <Input bordered type="number" step="0.001" min="1" label="Dimensions d'un appartement (en m²)" name="buildingAppartementSize" labelRight="m²" onChange={setAppartementSize} required={true} />
 
-                    </Card.Body>
-                    {/* <Divider /> */}
-                    <Card.Footer>
-                        <Row style={{ justifyContent: 'space-between' }}>
-                            <Button size="md" onClick={handleClose} flat color="bruh">
-                                Annuler
-                            </Button>
-                            <Button size="md" onClick={addBuilding}>Enregistrer</Button>
-                        </Row>
-                    </Card.Footer>
-                    {/* </form> */}
-                </Card>
-            </BootstrapDialog>
-        </main>
-    );
+                        {/* <Textarea bordered minRows={2} maxRows={5} label="Commentaire (optionnel)" onChange={setNotes} name="buildingNotes" /> */}
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Row style={{ justifyContent: 'space-between' }}>
+                        <Button size="md" onClick={closeHandler} light color="bruh">
+                            Annuler
+                        </Button>
+                        <Button size="md" shadow type="submit">Enregistrer</Button>
+                    </Row>
+
+
+                </Modal.Footer>
+            </form>
+
+        </Modal>
+        <Button color="primary" css={{ marginTop: "1rem" }} shadow auto onClick={handler}><AddIcon style={{ marginRight: '0.5rem' }} />Ajout Immeuble</Button>
+
+    </>
+    )
 }
+
+export default AddBuilding

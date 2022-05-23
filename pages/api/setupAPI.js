@@ -1,17 +1,19 @@
 // import React from 'react'
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
+import prisma from '../../components/prismaClient'
+
 const setupAPI = async (req, res) => {
 
     const data = req.body;
     // console.log('hey heeres data:')
     // console.log(JSON.serialize(data))
-    const email = data.email;
-    const prisma = await new PrismaClient();
+    // const email = data.email;
+    // const prisma = await new PrismaClient();
     let currentdate = new Date();
     currentdate = currentdate.toISOString();
     const DBuser = await prisma.users.update({ //upsert() is Prisma's create if not exist
         where: {
-            email: email,
+            email: data.email,
             // id: data.id,
         },
         data: {

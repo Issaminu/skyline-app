@@ -1,30 +1,32 @@
 // import React from 'react'
 
 import { Breadcrumbs } from "@mui/material"
-import { Button, Image } from "@nextui-org/react"
+import { Grid, Button, Image, css } from "@nextui-org/react"
 import Link from "next/link"
 import AddIcon from '@mui/icons-material/Add';
 import AddBuilding from '../../components/AddBuilding'
+import Building from "../../components/Building";
+import { useUser } from "@auth0/nextjs-auth0";
+import { useEffect, useState } from "react";
+import ListBuildings from "../../components/ListBuildings";
+import { useQueryClient } from 'react-query'
+
 const buildings = () => {
-    const AjoutImmeuble = () => {
-        return <AddBuilding />
-    }
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const queryClient = useQueryClient();
+    queryClient.removeQueries(["getOneBuilding"]);
+    // console.log("hey")
     return (
         <>
             <main style={{}} >
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <h1>Immeubles</h1>
-                    <div style={{ display: "flex", alignItems: 'center' }}>
-
-                        {/* <Button color="primary" shadow auto onClick={AjoutImmeuble}><AddIcon style={{ marginRight: '0.5rem' }} />Ajout Immeuble</Button> */}
-                        <AddBuilding />
-                    </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginLeft: "4rem", marginRight: "4rem" }}>
+                    <h1 style={{ marginBottom: 0, }}>Immeubles</h1>
+                    <AddBuilding css={{}} />
                 </div>
-                <Image src="/default.jpg" width="400px" height="400px"></Image>
-
+                <ListBuildings />
             </main>
 
-            <h1>This is Buildings</h1>
+
         </>
     )
 }

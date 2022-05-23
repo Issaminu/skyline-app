@@ -1,8 +1,8 @@
-// import React from 'react'
+import React from 'react'
 // import { Navbar, Container } from 'react-bootstrap';
 import './Navbar.module.css'
 import Image from "next/image"
-import { css, Card, Button, Spacer } from "@nextui-org/react";
+import { css, Card, Button, globalCss, Spacer } from "@nextui-org/react";
 import AuthenticationButton from '../authentification-button';
 import { useRouter } from 'next/router';
 // import NextLink from 'next/link';
@@ -16,7 +16,7 @@ import { useUser } from '@auth0/nextjs-auth0';
 const Navbar = () => {
     const router = useRouter();
     const { user } = useUser();
-    const name = "   " + user.name
+
     const StyleNotActive = {
         paddingLeft: '2rem', paddingRight: '2rem', marginBottom: '0', fontWeight: 400, fontSize: 16, cursor: 'pointer'
     }
@@ -27,8 +27,13 @@ const Navbar = () => {
         if (router.pathname.split('/').slice(0, 2).join('/') == path) return StyleActive;
         else return StyleNotActive;
     }
+    // globalStyles();
+
+    if (router.pathname == "/setup") return null;
     return (<>
-        <Card blur css={{ zIndex: '1', top: '0', position: 'fixed', bgBlur: "#ffffff", paddingTop: '0px !important', paddingBottom: '0px', borderBottomLeftRadius: '1.5rem', borderBottomRightRadius: '1.5rem', borderTopLeftRadius: 0, borderTopRightRadius: 0, borderColor: 'white' }}>
+        <Card css={{
+            bgBlur: '#ffffff', zIndex: '1000', top: '0', position: 'fixed', paddingTop: '0px !important', paddingBottom: '0px', borderBottomLeftRadius: '1.5rem', borderBottomRightRadius: '1.5rem', borderTopLeftRadius: 0, borderTopRightRadius: 0, borderColor: 'white'
+        }}>
             <div style={{ marginLeft: "1rem", display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
 
@@ -77,13 +82,23 @@ const Navbar = () => {
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Button light css={{ padding: '0.5rem 0.3rem' }} color="stuff">
+                        <Link href="/users" passHref>
+                            {/* <Button light css={{}} color="stuff"> */}
                             <User
                                 src={user.image}
+                                name={user.name}
                                 size="sm"
+                                css={{
+                                    cursor: 'pointer',
+                                    "& .nextui-user-info": {
+                                        ml: "0.5rem"
+                                    }
+                                }}
                             />
-                            <p style={{ fontWeight: 500, fontSize: '0.9rem' }}>{user.name}</p>
-                        </Button>
+                            {/* </Button> */}
+                        </Link>
+
+                        {/* <p style={{ fontWeight: 500, fontSize: '0.9rem' }}>{user.name}</p> */}
 
                         <Spacer y={0.5} />
                     </div>
