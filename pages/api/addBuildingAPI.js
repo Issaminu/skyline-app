@@ -11,7 +11,7 @@ const addBuildingAPI = async (req, res) => {
     currentdate = currentdate.toISOString();
     // const prisma = await new PrismaClient();
     // const sourceBuildingUrl = parseInt(req.headers.referer.split("/").slice(4)[0]);
-    const percentageOfBuilding = parseFloat(((parseFloat(req.body.appartementSize) * 100) / parseFloat(req.body.surface)).toFixed(2))
+    // const percentageOfBuilding = parseFloat(((parseFloat(req.body.appartementSize) * 100) / parseFloat(req.body.surface)).toFixed(2))
 
     const building = await prisma.buildings.upsert({ //upsert() is Prisma's create if not exist
         where: {
@@ -27,6 +27,8 @@ const addBuildingAPI = async (req, res) => {
             houseQuantity: parseInt(req.body.houses), //THIS IS PER FLOOR
             houseIDs: "TEMP",
             userIDs: "TEMP",
+            rent: parseFloat(req.body.rent),
+            houseSize: parseFloat(req.body.appartementSize),
             populationTotal: 0,
             notes: req.body.notes,
             teamid: req.body.teamid,
@@ -45,6 +47,8 @@ const addBuildingAPI = async (req, res) => {
                     houseId: building.id + "." + j + "-" + i,
                     name: j + "-" + i,
                     buildingId: building.id,
+                    buildingName: req.body.name,
+                    buildingSurface: req.body.surface,
                     description: "TEMP",
                     floor: j,
                     houseNumber: i,
@@ -53,7 +57,8 @@ const addBuildingAPI = async (req, res) => {
                     status: "empty",
                     comment: "TEMP",
                     priceRent: parseFloat(req.body.rent),
-                    percentageOfBuilding: percentageOfBuilding,
+
+                    // percentageOfBuilding: percentageOfBuilding,
                     teamid: req.body.teamid,
                     create_time: currentdate,
                     update_time: currentdate,

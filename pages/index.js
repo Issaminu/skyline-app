@@ -56,7 +56,7 @@ export const getServerSideProps = withPageAuthRequired({
                 // console.log("HELLO NEW GUY");
             }
             prisma.$disconnect();
-            console.log('bye');
+            // console.log('bye');
             // return res;
         } else console.log('user not found');
         prisma.$disconnect();
@@ -67,7 +67,7 @@ export const getServerSideProps = withPageAuthRequired({
                 DBuser: DBuser
             },
             redirect: {
-                destination: '/dashboard',
+                destination: '/buildings',
                 permanent: false,
             },
 

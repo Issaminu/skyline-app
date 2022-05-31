@@ -30,11 +30,11 @@ model tenants {
   phone         String?   @db.VarChar(255)
   image         String?   @db.VarChar(255)
   familySize    Int?
-  isMarried     Boolean?
-  profession    String?   @db.VarChar(255)
+  // isMarried     Boolean?
+  job           String?   @db.VarChar(255)
   buildingId    String?   @db.VarChar(255)
-  houseId       String?   @db.VarChar(255)
-  cin           String?   @db.VarChar(255)
+  houseIDs      String?   @db.VarChar(255)
+  cin           String    @unique @db.VarChar(255)
   cinRecto      String?   @db.VarChar(255)
   cinVerso      String?   @db.VarChar(255)
   accountStatus String    @db.VarChar(255)
@@ -52,6 +52,8 @@ model buildings {
   floors          Int
   images          String?   @db.VarChar(255) //POSSIBLE TO BE MULTIPLE PHOTOS
   houseQuantity   Int
+  rent            Float
+  houseSize       Float
   populationTotal Int?
   houseIDs        String?   @db.VarChar(255) //THIS STRING IS A 2 DIMENSIONAL ARRAY, WITH EACH ARRAY IN THE FIRST DIMENSION, REPRESENTING A FLOOR AND CONTAINING houseIDs FOR THE HOUSES IN THAT SPECIFIC FLOOT
   surface         Float
@@ -64,33 +66,35 @@ model buildings {
 }
 
 model houses {
-  id                   Int       @id @default(autoincrement())
-  name                 String    @db.VarChar(255)
-  description          String?   @db.VarChar(1000)
-  buildingId           Int
-  houseId              String    @unique @db.VarChar(255)
+  id              Int       @id @default(autoincrement())
+  name            String    @db.VarChar(255)
+  description     String?   @db.VarChar(1000)
+  buildingId      Int
+  buildingName    String    @db.VarChar(255)
+  buildingSurface Float
+  houseId         String    @unique @db.VarChar(255)
   // thumbnail             String    @db.VarChar(255)
   // images                String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
   // bedrooms              Int?
   // bathrooms             Int?
   // saloon                Int?
   // kitchen               Int?
-  userIDs              String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
-  location             String    @db.VarChar(255) //GET THIS FROM BUILDING LOCATION
-  size                 Float
-  floor                Int
-  houseNumber          Int
-  percentageOfBuilding Float
-  status               String    @db.VarChar(255)
+  userIDs         String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
+  location        String    @db.VarChar(255) //GET THIS FROM BUILDING LOCATION
+  size            Float
+  floor           Int
+  houseNumber     Int
+  // percentageOfBuilding Float
+  status          String    @db.VarChar(255)
   // buyOrRent          String?
   // priceBuy              Float
   // pricePerMeter         Float
-  priceRent            Float?
-  comment              String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
-  expenseIDs           String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
-  teamid               Int
-  create_time          DateTime? @db.DateTime(0)
-  update_time          DateTime? @db.DateTime(0)
+  priceRent       Float?
+  comment         String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
+  expenseIDs      String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
+  teamid          Int
+  create_time     DateTime? @db.DateTime(0)
+  update_time     DateTime? @db.DateTime(0)
 
 }
 

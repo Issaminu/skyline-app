@@ -8,7 +8,7 @@ const dashboard = () => {
     // ress = JSON.stringify(ress);
     // console.log(ress);
     const { user } = useUser();
-
+    console.log('u in dashboard now')
     return (
         <main style={{}}>
             {/* <Navbar /> */}

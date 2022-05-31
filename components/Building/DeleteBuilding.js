@@ -7,6 +7,7 @@ import { Router } from "react-router-dom";
 import { useUser } from "@auth0/nextjs-auth0";
 import { useState } from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
+import toast from 'react-hot-toast';
 
 const DeleteBuilding = () => {
     const { user } = useUser();
@@ -15,6 +16,8 @@ const DeleteBuilding = () => {
         // console.log(user.user.buildingIDs)
         await axios.get('/api/delBuildingAPI');
         user.buildingIDs.pop(router.asPath.split("/").slice(2).join("/"))
+        toast.success("Action réalisée avec succès");
+
         router.push('/buildings');
     })
     const [visible, setVisible] = useState(false);
@@ -36,7 +39,9 @@ const DeleteBuilding = () => {
                 auto
                 // size="xs"
                 css={{
-                    // width: 'auto',
+                    width: '1rem',
+                    minWidth: '2rem',
+                    marginLeft: '0.5rem'
                     // backgroundColor: "#FCD7E5",
                     // color: "#F21361",
                     // "&:active": {

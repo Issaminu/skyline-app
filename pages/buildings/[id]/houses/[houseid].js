@@ -4,11 +4,11 @@ import Loading from '../../../../components/Loading'
 import { useRouter } from "next/router";
 import { Image, css, Spacer, Modal, Button, Text, Card, Textarea, Grid, Col, Row, Popover, Table, Tooltip } from "@nextui-org/react";
 // import { BsPencilSquare } from 'react-icons/*';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ModifyBuilding from "../../../../components/ModifyBuilding"
-import DeleteBuilding from "../../../../components/DeleteBuilding";
-import { useState } from "react";
-import BorderColorIcon from '@mui/icons-material/BorderColor';
+// import DeleteIcon from '@mui/icons-material/Delete';
+// import ModifyBuilding from "../../../../components/ModifyBuilding"
+// import DeleteBuilding from "../../../../components/DeleteBuilding";
+// import { useState } from "react";
+// import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 // import { Modal } from "bootstrap";
 const houseInfo = (req, res) => {
@@ -17,67 +17,12 @@ const houseInfo = (req, res) => {
         const house = await JSON.parse((await axios.get('/api/getOneHouseAPI')).data.house);
         return house;
     })
-    const [visible, setVisible] = useState(false);
-    const [editVisible, setEditVisible] = useState(false);
-    const handler = () => setVisible(true);
-    const editHandler = () => setEditVisible(true);
 
-    const closeHandler = () => {
-        setVisible(false);
-        // console.log("closed");
-    };
-    const closeEditHandler = () => {
-        setEditVisible(false);
-        // console.log("closed");
-    };
     if (getHouse.status == "loading") return <main><Loading /></main>
     // console.log(getBuilding.data)
     return (
 
         <main>
-            <Modal
-                closeButton
-                aria-labelledby="modal-title"
-                open={editVisible}
-                onClose={closeEditHandler}
-            >
-                <Modal.Header>
-                    <Text>Warning!</Text>
-                </Modal.Header>
-                <Modal.Body>
-
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button auto flat onClick={closeEditHandler}>
-                        Close
-                    </Button>
-                    <Button auto onClick={closeEditHandler}>
-                        Sign in
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-            <Modal
-                closeButton
-                aria-labelledby="modal-title"
-                open={visible}
-                onClose={closeHandler}
-            >
-                <Modal.Header>
-                    <Text>Warning!</Text>
-                </Modal.Header>
-                <Modal.Body>
-
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button auto flat color="error" onClick={closeHandler}>
-                        Close
-                    </Button>
-                    <Button auto onClick={closeHandler}>
-                        Sign in
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-
             <div style={{ display: "flex", flexDirection: "row", marginTop: "4rem", marginRight: "2rem", marginBottom: "2rem" }}>
 
                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }} >
@@ -85,7 +30,7 @@ const houseInfo = (req, res) => {
 
                         <Spacer />
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <h2 style={{ fontSize: 80, display: "inline-flex" }} title={getHouse.data.name}>{getHouse.data.name}</h2>
+                            <h2 style={{ fontSize: 80, display: "inline-flex" }} title={getHouse.data.name}>{getHouse.data.buildingName} {getHouse.data.name}</h2>
                             <h3 style={{ display: "inline-flex", marginTop: '-1rem' }} title={getHouse.data.location}>{getHouse.data.location}</h3>
 
                         </div>
@@ -135,21 +80,25 @@ const houseInfo = (req, res) => {
                                                 <Table.Cell>Etage:</Table.Cell>
                                                 <Table.Cell css={{ textAlign: 'right' }}>{getHouse.data.name.split("-")[0]}</Table.Cell>
                                             </Table.Row>
-                                            <Table.Row key="1">
+                                            <Table.Row key="2">
+                                                <Table.Cell>Appartement N°:</Table.Cell>
+                                                <Table.Cell css={{ textAlign: 'right' }}>{getHouse.data.name.split("-")[1]}</Table.Cell>
+                                            </Table.Row>
+                                            <Table.Row key="3">
                                                 <Table.Cell>Prix:</Table.Cell>
                                                 <Table.Cell css={{ textAlign: 'right' }}><b>{getHouse.data.priceRent}</b>DH /mois</Table.Cell>
                                             </Table.Row>
-                                            <Table.Row key="2">
-                                                <Table.Cell>Size:</Table.Cell>
+                                            <Table.Row key="4">
+                                                <Table.Cell>Surface:</Table.Cell>
                                                 <Table.Cell css={{ textAlign: 'right' }}>{getHouse.data.size} m²</Table.Cell>
                                             </Table.Row>
-                                            <Table.Row key="3">
-                                                <Table.Cell>Pourcenatge:</Table.Cell>
-                                                <Table.Cell css={{ textAlign: 'right' }}>{getHouse.data.percentangeOfBuilding}%</Table.Cell>
+                                            <Table.Row key="5">
+                                                <Table.Cell>% d'immeuble:</Table.Cell>
+                                                <Table.Cell css={{ textAlign: 'right' }}>{(getHouse.data.size * 100 / getHouse.data.buildingSurface).toFixed(2)}%</Table.Cell>
                                             </Table.Row>
-                                            <Table.Row key="4">
+                                            <Table.Row key="6">
                                                 <Table.Cell>Status:</Table.Cell>
-                                                <Table.Cell css={{ textAlign: 'right' }}>{getHouse.data.status}  </Table.Cell>
+                                                <Table.Cell css={{ textAlign: 'right' }}>{getHouse.data.status == "empty" ? <b>Vide</b> : <b>Plein</b>}  </Table.Cell>
                                             </Table.Row>
                                             {/* <Table.Row key="5">
                                                 <Table.Cell>Commentaire:</Table.Cell>

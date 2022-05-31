@@ -34,16 +34,17 @@ const AuthWrapper = ({ children }) => { //WE USE THE AUTH WRAPPER TO WAIT TILL T
                 router.push('/'); //HERE IS WHERE FULLY SETUP USERS WHO TRY TO GO TO SETUP AGAIN GET REDIRECTED TO ROOT DIRECTORY
             }
             if (router.pathname == '/buildings/[id]') {
-                let reqBuildingId = parseInt(router.asPath.split("/").slice(2).join("/"));
-                // console.log(user.buildingIDs);
-                let isThisBuildingYoursChecker = false;
-                user.buildingIDs.map(buildingId => {
-                    if (buildingId == reqBuildingId) {
-                        isThisBuildingYoursChecker = true;
-                        return <>{children}</>
-                    }
-                })
-                if (!isThisBuildingYoursChecker) router.push('/');
+                // let reqBuildingId = parseInt(router.asPath.split("/").slice(2).join("/"));
+                // // console.log(user.buildingIDs);
+                // let isThisBuildingYoursChecker = false;
+                // user.buildingIDs.map(buildingId => {
+                //     if (buildingId == reqBuildingId) {
+                //         isThisBuildingYoursChecker = true;
+                //         return <>{children}</>
+                //     }
+                // })
+                // if (!isThisBuildingYoursChecker) router.push('/');
+                return <>{children}</>
 
             }
 

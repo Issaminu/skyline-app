@@ -5,11 +5,8 @@ import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools'
 import '../styles/globals.css';
 import Navbar from "../components/Navbar/Navbar";
-// const globalStyles = globalCss({
-//   ".nextui-backdrop .nextui-backdrop-layer-blur": {
-//     backdropFilter: "blur(90px)"
-//   }
-// });
+import toast, { Toaster } from 'react-hot-toast';
+
 const queryClient = new QueryClient();
 function MyApp({ Component, pageProps }) {
 
@@ -31,6 +28,7 @@ function MyApp({ Component, pageProps }) {
         <AuthWrapper>
           <Navbar />
           <QueryClientProvider client={queryClient}>
+            <Toaster />
             <Component {...pageProps} />
             <ReactQueryDevtools />
           </QueryClientProvider>

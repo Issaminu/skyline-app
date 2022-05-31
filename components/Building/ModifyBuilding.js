@@ -8,6 +8,7 @@ import { useMutation, useQueryClient } from "react-query";
 import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import toast from 'react-hot-toast';
 
 
 const ModBuilding = (getBuilding) => {
@@ -23,7 +24,8 @@ const ModBuilding = (getBuilding) => {
     const [surface, setSurface] = useState(getBuilding.getBuilding.surface);
     const [houses, setHouses] = useState(getBuilding.getBuilding.houseQuantity);
     const [notes, setNotes] = useState(getBuilding.getBuilding.notes);
-
+    const [rent, setRent] = useState(getBuilding.getBuilding.rent)
+    const [houseSize, setHouseSize] = useState(getBuilding.getBuilding.houseSize)
     const queryClient = useQueryClient();
     const { user } = useUser();
     const [modBuilding, setModBuilding] = useState("");
@@ -56,6 +58,8 @@ const ModBuilding = (getBuilding) => {
             floors: parseInt(floors),
             surface: parseFloat(surface),
             houses: parseInt(houses),
+            rent: parseFloat(rent),
+            size: parseFloat(houseSize),
             notes: notes,
             teamid: user.id,
         };
@@ -70,6 +74,7 @@ const ModBuilding = (getBuilding) => {
             // user.buildingIDs.push(modBuilding.data.building.id)
             // console.log("hmmmmm")
             closeHandler();
+            toast.success("Action réalisée avec succès");
 
         };
     }, [modBuilding, modMyBuilding.status])
@@ -83,7 +88,7 @@ const ModBuilding = (getBuilding) => {
             width="35rem"
         >
             <Modal.Header>
-                <h3 style={{ margin: 0 }}>Ajout Immeuble</h3>
+                <h3 style={{ margin: 0 }}>Modifier Immeuble</h3>
             </Modal.Header>
             <form onSubmit={modBuildingSend}>
 
@@ -91,13 +96,16 @@ const ModBuilding = (getBuilding) => {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem" }}>
                         <Input initialValue={getBuilding.getBuilding.name} bordered type="text" label="Nom d'immeuble" name="buildingName" onChange={(e) => { setName(e.target.value) }} required={true} />
                         <Input initialValue={getBuilding.getBuilding.location} bordered type="text" label="Location" name="buildingLocation" onChange={(e) => { setLocation(e.target.value) }} required={true} />
+                        <Input initialValue={getBuilding.getBuilding.surface} bordered type="number" step="0.001" label="Surface globale (en m²)" labelRight="m²" name="buildingSurface" onChange={(e) => { setSurface(e.target.value) }} required={true} />
+
                         <div style={{ display: 'flex', gap: '3rem' }}>
                             <Input disabled initialValue={getBuilding.getBuilding.floors} bordered type="number" label="Nombre d'étages" name="buildingFloors" onChange={(e) => { setFloors(e.target.value) }} required={true} />
                             <Input disabled initialValue={getBuilding.getBuilding.houseQuantity} bordered type="number" label="Nombre d'appartements par étage" name="buildingHouses" onChange={(e) => { setHouses(e.target.value) }} required={true} />
                         </div>
+                        <Input bordered initialValue={getBuilding.getBuilding.rent} type="number" step="0.001" min="1" label="Prix de location" name="buildingRent" labelRight="DH" onChange={(e) => { setRent(e.target.value) }} required={true} />
+                        <Input bordered initialValue={getBuilding.getBuilding.houseSize} type="number" step="0.001" min="1" label="Dimensions d'un appartement (en m²)" name="buildingAppartementSize" labelRight="m²" onChange={(e) => { setHouseSize(e.target.value) }} required={true} />
 
-                        <Input initialValue={getBuilding.getBuilding.surface} bordered type="number" step="0.001" label="Surface globale (en m²)" name="buildingSurface" onChange={(e) => { setSurface(e.target.value) }} required={true} />
-                        <Textarea initialValue={getBuilding.getBuilding.notes} bordered minRows={2} maxRows={5} label="Commentaire (optionnel)" onChange={(e) => { setNotes(e.target.value) }} name="buildingNotes" />
+                        {/* <Textarea initialValue={getBuilding.getBuilding.notes} bordered minRows={2} maxRows={5} label="Commentaire (optionnel)" onChange={(e) => { setNotes(e.target.value) }} name="buildingNotes" /> */}
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
@@ -118,10 +126,14 @@ const ModBuilding = (getBuilding) => {
             <Button
                 // fullWidth
                 light
+                css={{
+                    minWidth: '2rem',
+                    width: "1rem"
+                }}
                 // width="inherit"
                 color="success"
                 // size="xs"
-                icon={<BorderColorIcon style={{ width: "1rem" }} />}
+                icon={<BorderColorIcon style={{ width: "1.14rem" }} />}
                 auto
                 onClick={handler}
             />

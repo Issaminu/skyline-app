@@ -3,17 +3,20 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import { Button, Text, css, Modal, Input, Textarea, Row, } from "@nextui-org/react"
 import { useRouter } from "next/router";
-import Loading from "../components/Loading"
+import Loading from "../Loading"
 import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios'
+import toast from 'react-hot-toast';
+
+
 const AddBuilding = () => {
     const [visible, setVisible] = useState(false);
     // const [editVisible, setEditVisible] = useState(false);
     // const editHandler = () => setEditVisible(true);
-    const [open, setOpen] = useState(false);
-    const router = useRouter();
+    // const [open, setOpen] = useState(false);
+    // const router = useRouter();
     const [name, setName] = useState();
     const [location, setLocation] = useState();
     const [floors, setFloors] = useState();
@@ -70,6 +73,8 @@ const AddBuilding = () => {
 
         if (addMyBuilding.status == "success") {
             user.buildingIDs.push(newBuilding.data.building.id)
+            toast.success("Action réalisée avec succès");
+
             // console.log("im success here")
         };
     }, [newBuilding, addMyBuilding.status])
@@ -86,7 +91,7 @@ const AddBuilding = () => {
             width="35rem"
         >
             <Modal.Header>
-                <h3 b="true" style={{ margin: 0 }}>Ajout Immeuble</h3>
+                <h3 b="true" style={{ margin: 0, }}>Ajout Immeuble</h3>
             </Modal.Header>
             <form onSubmit={addBuilding}>
 
@@ -119,7 +124,7 @@ const AddBuilding = () => {
             </form>
 
         </Modal>
-        <Button color="primary" css={{ marginTop: "1rem" }} shadow auto onClick={handler}><AddIcon style={{ marginRight: '0.5rem' }} />Ajout Immeuble</Button>
+        <Button css={{ marginTop: "1rem", }} shadow auto onClick={handler}><AddIcon style={{ marginRight: '0.5rem' }} />Ajout Immeuble</Button>
 
     </>
     )

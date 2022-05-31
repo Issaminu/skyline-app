@@ -3,7 +3,7 @@
 import { Grid, Button, Image, css } from "@nextui-org/react"
 // import { useEffect, useState } from "react";
 import Building from "./Building";
-import Loading from './Loading'
+import Loading from '../Loading'
 import { useQuery } from "react-query";
 import axios from "axios";
 import { useUser } from "@auth0/nextjs-auth0";
@@ -16,7 +16,6 @@ const ListBuildings = () => {
     // user.user.buildingIDs = [];
     const getBuildingsList = useQuery('getBuildings', async () => {
         const buildings = await JSON.parse((await axios.get('/api/getBuildingsListAPI')).data.buildings);
-
         return buildings;
     })
     // const queryClient = new QueryClient();

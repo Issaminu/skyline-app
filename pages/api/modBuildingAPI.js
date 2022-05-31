@@ -18,11 +18,13 @@ const modBuildingAPI = async (req, res) => {
         data: {
             name: req.body.name,
             location: req.body.location,
-            thumbnail: "/defaultBuilding.jpg",
+            // thumbnail: "/defaultBuilding.jpg",
             images: "TEMP",
             // floors: req.body.floors,
             surface: req.body.surface,
             // houseQuantity: req.body.houses,
+            rent: parseFloat(req.body.rent),
+            houseSize: parseFloat(req.body.size),
             houseIDs: "TEMP",
             userIDs: "TEMP",
             populationTotal: 0,
@@ -32,6 +34,19 @@ const modBuildingAPI = async (req, res) => {
             update_time: currentdate,
         },
     });
+    const houses = await prisma.houses.updateMany({
+        where: {
+            buildingId: req.body.id,
+        },
+        data: {
+            location: req.body.location,
+            buildingName: req.body.name,
+            size: parseFloat(req.body.size),
+            buildingSurface: req.body.surface,
+            priceRent: parseFloat(req.body.rent),
+        }
+
+    })
     if (building) {
         // session.user.buildingIDs.push(building.id);
         // session.save();

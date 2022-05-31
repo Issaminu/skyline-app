@@ -1,15 +1,15 @@
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import Loading from '../../../components/Loading'
 import { useRouter } from "next/router";
 import { Image, css, Spacer, Modal, Button, Text, Card, Textarea, Grid, Col, Row, Popover, Table, Tooltip } from "@nextui-org/react";
 // import { BsPencilSquare } from 'react-icons/*';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ModifyBuilding from "../../../components/ModifyBuilding"
-import DeleteBuilding from "../../../components/DeleteBuilding";
+import ModifyBuilding from "../../../components/Building/ModifyBuilding"
+import DeleteBuilding from "../../../components/Building/DeleteBuilding";
 import { useState } from "react";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import ListHouses from "../../../components/ListHouses";
+import ListHouses from "../../../components/House/ListHouses";
 // import { useQueryClient } from 'react-query'
 
 // import { Modal } from "bootstrap";
@@ -22,6 +22,8 @@ const buildingInfo = (req, res) => {
         return building;
     })
 
+    const queryClient = useQueryClient();
+    queryClient.removeQueries(["getOneHouse"]);
     // queryClient.removeQueries(['getOneBuilding'], { exact: true });
     // console.log(getHouses)
 
@@ -78,11 +80,11 @@ const buildingInfo = (req, res) => {
                                             <Table.Column css={{ width: '13rem' }}>Fiche d'information</Table.Column>
                                             <Table.Column css={{ paddingRight: "0rem !important", display: 'flex', flexDirection: 'row' }}>
                                                 {/* <Button.Group light color="success" size="sm" css={{ marginTop: 0, marginBottom: 0 }}> */}
-                                                <div style={{ width: "3rem" }}>
+                                                <div style={{ width: "2rem", marginLeft: "2rem" }}>
                                                     <ModifyBuilding getBuilding={getBuilding.data} />
 
                                                 </div>
-                                                <div style={{ width: "3rem", marginRight: "2rem" }}>
+                                                <div style={{ width: "3rem", marginRight: "0rem" }}>
                                                     <DeleteBuilding />
                                                 </div>
 
@@ -97,7 +99,7 @@ const buildingInfo = (req, res) => {
                                                 <Table.Cell css={{ textAlign: 'right' }}>{getBuilding.data.name}</Table.Cell>
                                             </Table.Row> */}
                                             <Table.Row key="1">
-                                                <Table.Cell>Floors:</Table.Cell>
+                                                <Table.Cell>N. Etages:</Table.Cell>
                                                 <Table.Cell css={{ textAlign: 'right' }}>{getBuilding.data.floors}</Table.Cell>
                                             </Table.Row>
                                             <Table.Row key="2">
@@ -111,6 +113,14 @@ const buildingInfo = (req, res) => {
                                             <Table.Row key="4">
                                                 <Table.Cell>Surface globale:</Table.Cell>
                                                 <Table.Cell css={{ textAlign: 'right' }}>{getBuilding.data.surface} m² </Table.Cell>
+                                            </Table.Row>
+                                            <Table.Row key="5">
+                                                <Table.Cell>Taille d'appartements:</Table.Cell>
+                                                <Table.Cell css={{ textAlign: 'right' }}>{getBuilding.data.houseSize} m² </Table.Cell>
+                                            </Table.Row>
+                                            <Table.Row key="6">
+                                                <Table.Cell>Prix de location:</Table.Cell>
+                                                <Table.Cell css={{ textAlign: 'right' }}>{getBuilding.data.rent} DH </Table.Cell>
                                             </Table.Row>
                                             {/* <Table.Row key="5">
                                                 <Table.Cell>Commentaire:</Table.Cell>

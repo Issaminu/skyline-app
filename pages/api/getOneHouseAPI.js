@@ -20,15 +20,22 @@ const getOneHouseAPI = async (req, res) => {
         },
     });
     if (house) {
+        // console.log("hhhheeeee")
+        // res.redirect(200, '/dashboard')
 
         res.json({ house: JSON.stringify(house) });
         await prisma.$disconnect();
         return res;
-
-        res.json({ house: null });
-
-        await prisma.$disconnect();
-        return res;
     }
+    // res.json({ house: null });
+    console.log("wtf man")
+    // redirect('/', 200);
+    // res.location('/')
+    // res.setHeader('Location', '/');
+    // res.json({ house: null });
+    res.redirect(307, '/dashboard')
+    // window.location.href = "/"
+    await prisma.$disconnect();
+    // return res;
 }
 export default getOneHouseAPI;
