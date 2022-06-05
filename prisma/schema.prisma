@@ -9,66 +9,48 @@ datasource db {
 }
 
 model users {
-  id             Int       @id @default(autoincrement())
-  name           String    @db.VarChar(255)
-  email          String    @unique @db.VarChar(255)
-  image          String    @db.VarChar(255)
-  phone          String?   @db.VarChar(255)
+  id                Int       @id @default(autoincrement())
+  name              String    @db.VarChar(255)
+  email             String    @unique @db.VarChar(255)
+  image             String    @db.VarChar(255)
+  phone             String?   @db.VarChar(255)
   // password       String    @db.VarChar(255)
-  type           String    @db.VarChar(255)
+  // type           String    @db.VarChar(255)
   // houseId        String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
-  accountStatus  String    @db.VarChar(255)
-  email_Verified Boolean
-  create_time    DateTime? @db.DateTime(0)
-  update_time    DateTime? @db.DateTime(0)
-}
-
-model tenants {
-  id            Int       @id @default(autoincrement())
-  name          String    @db.VarChar(255)
-  email         String?   @db.VarChar(255)
-  phone         String?   @db.VarChar(255)
-  image         String?   @db.VarChar(255)
-  familySize    Int?
-  // isMarried     Boolean?
-  job           String?   @db.VarChar(255)
-  buildingId    String?   @db.VarChar(255)
-  houseIDs      String?   @db.VarChar(255)
-  cin           String    @unique @db.VarChar(255)
-  cinRecto      String?   @db.VarChar(255)
-  cinVerso      String?   @db.VarChar(255)
-  accountStatus String    @db.VarChar(255)
-  notes         String?   @db.VarChar(65535)
-  teamid        Int
-  create_time   DateTime? @db.DateTime(0)
-  update_time   DateTime? @db.DateTime(0)
+  accountStatus     String    @db.VarChar(255)
+  notificationCount Int       @default(0)
+  email_Verified    Boolean
+  create_time       DateTime? @db.DateTime(0)
+  update_time       DateTime? @db.DateTime(0)
 }
 
 model buildings {
-  id              Int       @id @default(autoincrement())
-  name            String    @unique @db.VarChar(255)
-  location        String    @db.VarChar(255)
-  thumbnail       String    @db.VarChar(255)
-  floors          Int
-  images          String?   @db.VarChar(255) //POSSIBLE TO BE MULTIPLE PHOTOS
-  houseQuantity   Int
-  rent            Float
-  houseSize       Float
-  populationTotal Int?
-  houseIDs        String?   @db.VarChar(255) //THIS STRING IS A 2 DIMENSIONAL ARRAY, WITH EACH ARRAY IN THE FIRST DIMENSION, REPRESENTING A FLOOR AND CONTAINING houseIDs FOR THE HOUSES IN THAT SPECIFIC FLOOT
-  surface         Float
-  userIDs         String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
-  notes           String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
-  teamid          Int
-  create_time     DateTime? @db.DateTime(0)
-  update_time     DateTime? @db.DateTime(0)
+  id            Int       @id @default(autoincrement())
+  name          String    @db.VarChar(255)
+  location      String    @db.VarChar(255)
+  city          String    @db.VarChar(255)
+  thumbnail     String    @db.VarChar(255)
+  // images          String?   @db.VarChar(255) //POSSIBLE TO BE MULTIPLE PHOTOS
+  houseQuantity Int
+  treasury      Float     @default(0)
+  // rent          Float
+  // populationTotal Int?
+  houseIDs      String?   @db.VarChar(255)
+  surface       Float
+  creatorId     Int
+  adminIDs      String?   @db.VarChar(255)
+  residentIDs   String?   @db.VarChar(255) //THIS WILL CONTAINS ALL RESIDENTS OF THE BUILDING, INCLUDING THE CREATOR AND ADMINS
+  // notes           String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
+  //teamid        Int
+  create_time   DateTime? @db.DateTime(0)
+  update_time   DateTime? @db.DateTime(0)
 
 }
 
 model houses {
   id              Int       @id @default(autoincrement())
   name            String    @db.VarChar(255)
-  description     String?   @db.VarChar(1000)
+  // description     String?   @db.VarChar(1000)
   buildingId      Int
   buildingName    String    @db.VarChar(255)
   buildingSurface Float
@@ -81,51 +63,51 @@ model houses {
   // kitchen               Int?
   userIDs         String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
   location        String    @db.VarChar(255) //GET THIS FROM BUILDING LOCATION
+  creatorId       Int
+  adminIDs        String?   @db.VarChar(255)
   size            Float
-  floor           Int
-  houseNumber     Int
+  // floor           Int
+  // houseNumber     Int
   // percentageOfBuilding Float
   status          String    @db.VarChar(255)
   // buyOrRent          String?
   // priceBuy              Float
   // pricePerMeter         Float
-  priceRent       Float?
-  comment         String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
-  expenseIDs      String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
-  teamid          Int
+  // priceRent       Float?
+  // comment         String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
+  // expenseIDs      String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
+  //teamid          Int
   create_time     DateTime? @db.DateTime(0)
   update_time     DateTime? @db.DateTime(0)
 
 }
 
-model rents {
-  id           Int       @id @default(autoincrement())
-  houseId      Int
-  houseName    String    @unique @db.VarChar(255)
-  buildingId   String    @db.VarChar(255)
-  buildingName String    @db.VarChar(255)
-  comment      String?   @db.VarChar(65535) //THE "65535" length is equivalent to the length of the data type "TEXT"
-  userIDs      String
-  // buyMonths      Int //POSSIBLE TO BE "1", MEANING THE FULL PAYEMENT IS PROVIDED INSTANTLY
-  // remainingPrice Float?
-  payementIDs  String?   @db.VarChar(255)
-  teamid       Int
-  create_time  DateTime? @db.DateTime(0)
-  update_time  DateTime? @db.DateTime(0)
-
+model invitations {
+  id            Int       @id @default(autoincrement())
+  buildingId    Int
+  senderId      Int
+  receiverId    Int
+  receiverEmail String    @db.VarChar(255)
+  status        String    @db.VarChar(255)
+  isAccepted    Boolean? //POSSIBLE TO BE REMOVED
+  isValidated   Boolean? //POSSIBLE TO BE REMOVED
+  isAdmin       Boolean? //POSSIBLE TO BE REMOVED
+  //teamid      Int
+  create_time   DateTime? @db.DateTime(0)
+  update_time   DateTime? @db.DateTime(0)
 }
 
 model payements {
   id          Int       @id @default(autoincrement())
   type        String    @db.VarChar(255)
   userID      Int
-  comment     String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
+  // comment     String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
   amount      Float
   // month       Int
-  status      String?   @db.VarChar(255)
+  status      String?   @db.VarChar(255) //POSSIBLE TO BE REMOVED
   houseId     Int
-  buildingId  String    @db.VarChar(255)
-  teamid      Int
+  buildingId  Int
+  //teamid      Int
   create_time DateTime? @db.DateTime(0)
   update_time DateTime? @db.DateTime(0)
 }
@@ -133,13 +115,12 @@ model payements {
 model expenses {
   id          Int       @id @default(autoincrement())
   reason      String    @db.VarChar(255)
-  comment     String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
+  // comment     String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
   amount      Float
   date        DateTime?
   status      String?   @db.VarChar(255)
-  buildingId  Int? //THIS FIELD IS NULLABLE BECAUSE IT COULD BE A EXPENSE FOR THE HOUSE, OR FOR THE WHOLE BUILDING
-  houseId     Int? //THIS FIELD IS NULLABLE BECAUSE IT COULD BE A GENERAL EXPENSE FOR THE BUILDING, OR FOR A SPECIFIC HOUSE
-  teamid      Int
+  buildingId  Int
+  //teamid      Int
   create_time DateTime? @db.DateTime(0)
   update_time DateTime? @db.DateTime(0)
 }

@@ -59,10 +59,10 @@ const setup = (props) => {
             // console.log(ress);
             user.name = ress.body.user.name;
             user.phone = ress.body.user.phone;
-            user.type = ress.body.user.type;
+            // user.type = ress.body.user.type;
             user.accountStatus = ress.body.user.accountStatus;
 
-            router.push('/dashboard');
+            router.push('/');
         }
         // const { data, error } = useSWR('setupAPI', fetcher);
         // console.log('here is resp:')
@@ -139,6 +139,7 @@ export const getServerSideProps = withPageAuthRequired({
         const prisma = await new PrismaClient();
         let currentdate = new Date();
         currentdate = currentdate.toISOString();
+        // console.log(session.user)
         const DBuser = await prisma.users.upsert({ //upsert() is Prisma's create if not exist
             where: {
                 email: session.user.email,
@@ -146,10 +147,10 @@ export const getServerSideProps = withPageAuthRequired({
             create: {
                 email: session.user.email,
                 name: 'TEMP',
-                image: 'TEMP',
-                type: 'TEMP',
+                image: '/default.jpg',
+                // type: 'TEMP',
                 accountStatus: 'TEMP',
-                email_Verified: false,
+                email_Verified: session.user.email_verified,
                 create_time: currentdate,
                 update_time: currentdate,
             },
@@ -161,11 +162,11 @@ export const getServerSideProps = withPageAuthRequired({
             // console.log(session.user);
             session.user.name = DBuser.name;
             session.user.image = DBuser.image;
-            session.user.type = DBuser.type;
+            // session.user.type = DBuser.type;
             session.user.accountStatus = DBuser.accountStatus;
             // session.user.email_Verified = DBuser.email_Verified;
             prisma.$disconnect();
-            console.log('bye!');
+            // console.log('bye!');
             return {
                 props: {
                     user: session.user

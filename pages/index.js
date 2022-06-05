@@ -22,21 +22,37 @@ export const getServerSideProps = withPageAuthRequired({
                 // password: true,
                 name: true,
                 image: true,
-                type: true,
+                // type: true,
                 // houseId: true,
-                accountStatus: true
+                accountStatus: true,
+                phone: true,
+                notificationCount: true,
             },
         })
         const buildings = await prisma.buildings.findMany({
             where: {
-                teamid: session.user.id
+                residentIDs: {
+                    contains: String(session.user.id)
+                }
             },
             select: {
                 id: true,
+                adminIDs: true,
+                creatorId: true,
             }
         });
-        const buildingIDs = [];
-        buildings.map(building => { buildingIDs.push(building.id) });
+        let creatorOfBuildingIDs = [];
+        let adminOfBuildingIDs = [];
+        let residentOfBuildingIDs = [];
+        buildings.map(building => {
+            residentOfBuildingIDs.push(building.id);
+            if (building.creatorId == session.user.id) {
+                creatorOfBuildingIDs.push(building.id);
+            }
+            if (building.adminIDs.includes(session.user.id)) {
+                adminOfBuildingIDs.push(building.id);
+            }
+        });
         // DBuser.nickname = session.user.nickname;
         // if ('accountStatus' in DBuser) {
         //     session.user.accountStatus = DBuser.accountStatus;
@@ -47,7 +63,12 @@ export const getServerSideProps = withPageAuthRequired({
             session.user.image = DBuser.image;
             session.user.type = DBuser.type;
             session.user.accountStatus = DBuser.accountStatus;
-            session.user.buildingIDs = buildingIDs;
+            session.user.residentOfBuildingIDs = residentOfBuildingIDs;
+            session.user.creatorOfBuildingIDs = creatorOfBuildingIDs;
+            session.user.adminOfBuildingIDs = adminOfBuildingIDs;
+            session.user.phone = DBuser.phone;
+            session.user.notificationCount = DBuser.notificationCount;
+
             if (DBuser.id != null) {
                 // console.log('Hello old guy');
 

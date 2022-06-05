@@ -12,7 +12,9 @@ const getBuildingsListAPI = async (req, res) => {
     // const prisma = await new PrismaClient();
     const buildings = await prisma.buildings.findMany({
         where: {
-            teamid: session.user.id
+            residentIDs: {
+                contains: String(session.user.id)
+            }
         },
     });
     // console.log(buildings);

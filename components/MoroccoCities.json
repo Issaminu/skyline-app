@@ -1,0 +1,148 @@
+{
+    "cityOptions": [
+        {
+            "value": "Casablanca",
+            "label": "Casablanca"
+        },
+        {
+            "value": "Rabat",
+            "label": "Rabat"
+        },
+        {
+            "value": "Marrakech",
+            "label": "Marrakech"
+        },
+        {
+            "value": "Agadir",
+            "label": "Agadir"
+        },
+        {
+            "value": "Fès",
+            "label": "Fès"
+        },
+        {
+            "value": "Salé",
+            "label": "Salé"
+        },
+        {
+            "value": "Kénitra",
+            "label": "Kénitra"
+        },
+        {
+            "value": "Meknès",
+            "label": "Meknès"
+        },
+        {
+            "value": "Oujda",
+            "label": "Oujda"
+        },
+        {
+            "value": "Temara",
+            "label": "Temara"
+        },
+        {
+            "value": "El Jadida",
+            "label": "El Jadida"
+        },
+        {
+            "value": "Mohammedia",
+            "label": "Mohammedia"
+        },
+        {
+            "value": "Tétouan",
+            "label": "Tétouan"
+        },
+        {
+            "value": "Nador",
+            "label": "Nador"
+        },
+        {
+            "value": "Safi",
+            "label": "Safi"
+        },
+        {
+            "value": "Béni Mellal",
+            "label": "Béni Mellal"
+        },
+        {
+            "value": "Fquih Ben Salah",
+            "label": "Fquih Ben Salah"
+        },
+        {
+            "value": "Khouribga",
+            "label": "Khouribga"
+        },
+        {
+            "value": "Laayoune",
+            "label": "Laayoune"
+        },
+        {
+            "value": "Bouznika",
+            "label": "Bouznika"
+        },
+        {
+            "value": "Settat",
+            "label": "Settat"
+        },
+        {
+            "value": "Ajdir",
+            "label": "Ajdir"
+        },
+        {
+            "value": "Al Hoceima",
+            "label": "Al Hoceima"
+        },
+        {
+            "value": "Asilah",
+            "label": "Asilah"
+        },
+        {
+            "value": "Azilal",
+            "label": "Azilal"
+        },
+        {
+            "value": "Azrou",
+            "label": "Azrou"
+        },
+        {
+            "value": "Ifrane",
+            "label": "Ifrane"
+        },
+        {
+            "value": "Tazaa",
+            "label": "Tazaa"
+        },
+        {
+            "value": "Bejaad",
+            "label": "Bejaad"
+        },
+        {
+            "value": "Ben Guerir",
+            "label": "Ben Guerir"
+        },
+        {
+            "value": "Berrechid",
+            "label": "Berkane"
+        },
+        {
+            "value": "Boujdour",
+            "label": "Boujdour"
+        },
+        {
+            "value": "Boulmane",
+            "label": "Boulmane"
+        },
+        {
+            "value": "Chefchaouen",
+            "label": "Chefchaouen"
+        },
+        {
+            "value": "Chichaoua",
+            "label": "Chichaoua"
+        },
+        {
+            "value": "Dakhla",
+            "label": "Dakhla"
+        }
+    ]
+}

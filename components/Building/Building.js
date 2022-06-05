@@ -37,14 +37,14 @@ const Building = (building) => {
                         <Row>
                             <Col>
                                 <Text color="#F2F2F2" size={25} b css={{ whiteSpace: 'nowrap' }} title={thisBuilding.name}>
-                                    {thisBuilding.name.slice(0, 16) + (thisBuilding.name.length > 16 ? "..." : "")}
+                                    {thisBuilding.name.slice(0, 23) + (thisBuilding.name.length > 23 ? "..." : "")}
                                 </Text>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
                                 <Text color="#F2F2F2" size={12} css={{ whiteSpace: 'nowrap' }} title={thisBuilding.location}>
-                                    {thisBuilding.location.slice(0, 35) + (thisBuilding.location.length > 35 ? "..." : "")}
+                                    {thisBuilding.location.slice(0, 39) + (thisBuilding.location.length > 39 ? "..." : "")}, {thisBuilding.city.slice(0, 11) + (thisBuilding.city.length > 11 ? "..." : "")}
                                 </Text>
                             </Col>
                         </Row>

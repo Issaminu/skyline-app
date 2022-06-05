@@ -13,60 +13,61 @@ const addBuildingAPI = async (req, res) => {
     // const sourceBuildingUrl = parseInt(req.headers.referer.split("/").slice(4)[0]);
     // const percentageOfBuilding = parseFloat(((parseFloat(req.body.appartementSize) * 100) / parseFloat(req.body.surface)).toFixed(2))
 
-    const building = await prisma.buildings.upsert({ //upsert() is Prisma's create if not exist
-        where: {
-            name: req.body.name,
-        },
-        create: {
+    const building = await prisma.buildings.create({
+        data: {
             name: req.body.name,
             location: req.body.location,
+            city: req.body.city,
             thumbnail: "/defaultBuilding.jpg",
-            images: "TEMP",
-            floors: parseInt(req.body.floors),
+            // images: "TEMP",
+            // floors: parseInt(req.body.floors),
             surface: parseFloat(req.body.surface),
-            houseQuantity: parseInt(req.body.houses), //THIS IS PER FLOOR
-            houseIDs: "TEMP",
-            userIDs: "TEMP",
-            rent: parseFloat(req.body.rent),
-            houseSize: parseFloat(req.body.appartementSize),
-            populationTotal: 0,
-            notes: req.body.notes,
-            teamid: req.body.teamid,
+            houseQuantity: parseInt(req.body.houses),
+            creatorId: parseInt(session.user.id),
+            adminIDs: String(session.user.id),
+            residentIDs: String(session.user.id),
+            treasury: 0,
+            houseIDs: null,
+            // userIDs: "TEMP",
+            // rent: parseFloat(req.body.rent),
+            // houseSize: parseFloat(req.body.appartementSize),
+            // populationTotal: 0,
+            // notes: req.body.notes,
+            // teamid: req.body.teamid,
             create_time: currentdate,
             update_time: currentdate,
         },
-        update: {}
     });
-    for (let j = 1; j < (parseInt(req.body.floors) + 1); j++) {
-        for (let i = 1; i < (parseInt(req.body.houses) + 1); i++) {
-            const houses = await prisma.houses.upsert({
-                where: {
-                    houseId: building.id + "." + j + "-" + i,
-                },
-                create: {
-                    houseId: building.id + "." + j + "-" + i,
-                    name: j + "-" + i,
-                    buildingId: building.id,
-                    buildingName: req.body.name,
-                    buildingSurface: req.body.surface,
-                    description: "TEMP",
-                    floor: j,
-                    houseNumber: i,
-                    location: req.body.location,
-                    size: parseFloat(req.body.appartementSize),
-                    status: "empty",
-                    comment: "TEMP",
-                    priceRent: parseFloat(req.body.rent),
+    // for (let j = 1; j < (parseInt(req.body.floors) + 1); j++) {
+    //     for (let i = 1; i < (parseInt(req.body.houses) + 1); i++) {
+    //         const houses = await prisma.houses.upsert({
+    //             where: {
+    //                 houseId: building.id + "." + j + "-" + i,
+    //             },
+    //             create: {
+    //                 houseId: building.id + "." + j + "-" + i,
+    //                 name: j + "-" + i,
+    //                 buildingId: building.id,
+    //                 buildingName: req.body.name,
+    //                 buildingSurface: req.body.surface,
+    //                 description: "TEMP",
+    //                 floor: j,
+    //                 houseNumber: i,
+    //                 location: req.body.location,
+    //                 size: parseFloat(req.body.appartementSize),
+    //                 status: "empty",
+    //                 comment: "TEMP",
+    //                 priceRent: parseFloat(req.body.rent),
 
-                    // percentageOfBuilding: percentageOfBuilding,
-                    teamid: req.body.teamid,
-                    create_time: currentdate,
-                    update_time: currentdate,
-                },
-                update: {}
-            })
-        }
-    }
+    //                 // percentageOfBuilding: percentageOfBuilding,
+    //                 teamid: req.body.teamid,
+    //                 create_time: currentdate,
+    //                 update_time: currentdate,
+    //             },
+    //             update: {}
+    //         })
+    //     }
+    // }
 
     if (building) {
         // session.user.buildingIDs.push(building.id);

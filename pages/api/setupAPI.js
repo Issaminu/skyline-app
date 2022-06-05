@@ -20,7 +20,7 @@ const setupAPI = async (req, res) => {
             name: data.name,
             phone: data.phone,
             image: data.image,
-            type: 'manager',
+            // type: 'manager',
             accountStatus: 'active',
             update_time: currentdate
         }

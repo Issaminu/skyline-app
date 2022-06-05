@@ -23,11 +23,29 @@ const Navbar = () => {
     const StyleActive = {
         paddingLeft: '2rem', paddingRight: '2rem', marginBottom: '0', color: '#489CFC', fontWeight: 600, fontSize: 16, cursor: 'pointer',
     }
+    const StyleNotActiveInvitation = {
+        paddingLeft: '2rem', marginBottom: '0', color: 'white', fontWeight: 400, fontSize: 16, cursor: 'pointer'
+    }
+    const StyleActiveInvitation = {
+        paddingLeft: '2rem', marginBottom: '0', color: '#489CFC', fontWeight: 600, fontSize: 16, cursor: 'pointer',
+    }
     const isActiveRoute = (path) => {
-        if (router.pathname.split('/').slice(0, 2).join('/') == path) return StyleActive;
-        else return StyleNotActive;
+        if (router.pathname.split('/').slice(0, 2).join('/') == path) {
+            // if (path = "/invitations") {
+            //     return StyleActiveInvitation;
+            // }
+            return StyleActive;
+        }
+        else {
+            // if (path = "/invitations") {
+            //     return StyleNotActiveInvitation;
+            // }
+            return StyleNotActive;
+        }
     }
     // globalStyles();
+    // console.log(user.notificationCount)
+
 
     if (router.pathname == "/setup") return null;
     return (<>
@@ -56,11 +74,6 @@ const Navbar = () => {
                     <Spacer y={0.5} />
                     <div>
                         <ul style={{ margin: 0, display: 'flex', justifyContent: 'space-evenly', alignContent: 'center', alignItems: 'center' }}>
-                            <li style={{ marginBottom: 0 }}><Link href="/dashboard" style={{ textDecoration: 'none', color: 'inherit' }} passHref>
-                                <Button light css={isActiveRoute('/dashboard')} color="stuff" auto>
-                                    Tableau de bord
-                                </Button></Link>
-                            </li>
                             <li style={{ marginBottom: 0 }}><Link href="/buildings" style={{ textDecoration: 'none', color: 'inherit' }} passHref>
                                 <Button light css={isActiveRoute('/buildings')} color="stuff" auto>
                                     Immeubles
@@ -68,13 +81,58 @@ const Navbar = () => {
                             </li>
                             <li style={{ marginBottom: 0 }}><Link href="/tenants" style={{ textDecoration: 'none', color: 'inherit' }} passHref>
                                 <Button light css={isActiveRoute('/tenants')} color="stuff" auto>
-                                    Locataires
+                                    Payements
                                 </Button></Link>
                             </li>
                             <li style={{ marginBottom: 0 }}><Link href="/fixes" style={{ textDecoration: 'none', color: 'inherit' }} passHref>
                                 <Button light css={isActiveRoute('/fixes')} color="stuff" auto>
                                     Dépenses
                                 </Button></Link>
+                            </li>
+                            <li style={{ marginBottom: 0 }}>
+                                {/* <div style={{ display: 'flex', flexDirection: 'row' }}> */}
+                                <Link href="/invitations" style={{ textDecoration: 'none', color: 'inherit' }} passHref>
+                                    <Button light css={isActiveRoute('/invitations')} color="stuff" auto>
+                                        Invitations
+                                        {user.notificationCount > 0 ?
+                                            <div style={{
+                                                backgroundColor: '#FF0000',
+                                                borderRadius: '2rem',
+                                                width: '1.5rem',
+                                                height: '1rem',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                color: 'white',
+                                                fontWeight: 'bold',
+                                                fontSize: '0.8rem',
+                                                marginLeft: '0.5rem',
+                                                // marginRight: '0.5rem',
+                                                marginTop: '0.6rem',
+                                                marginBottom: '0.5rem',
+                                            }}>
+                                                <span style={{ fontSize: '0.64rem' }}>{user.notificationCount}</span>
+                                            </div>
+                                            : null}
+
+                                    </Button></Link>
+                                {/* <div style={{
+                                        backgroundColor: '#FF0000',
+                                        borderRadius: '50%',
+                                        width: '1.5rem',
+                                        height: '1rem',
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignContent: 'center',
+                                        alignItems: 'center',
+                                        marginLeft: '-1rem',
+                                        marginRight: '1rem',
+                                        marginTop: '0.65rem',
+                                    }}>
+                                        <span style={{ color: 'white', fontWeight: 600, fontSize: '1rem' }}>3</span>
+                                    </div> */}
+
+                                {/* </div> */}
                             </li>
                         </ul>
                     </div>
