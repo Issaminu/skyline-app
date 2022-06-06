@@ -19,7 +19,8 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import Select from 'react-select'
 import cityOptions from '../MoroccoCities.json'
-import AddHouses from '../House/AddHouses'
+import AddHouses from './AddHouses';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 
 // const StartFillingHouses = (propHouseQuantity) => {
 //     let houseQuantity = [];
@@ -56,22 +57,22 @@ const AddBuilding = () => {
   const queryClient = useQueryClient()
 
   const { user } = useUser()
-  const [newBuilding, setNewBuilding] = useState('')
+  // const [newBuilding, setNewBuilding] = useState('')
   const [selectedCityOption, setSelectedCityOption] = useState(null)
   const [startHousesNow, setStartHousesNow] = useState(false)
   const [card1, setCard1] = useState('inherit')
-  const [card2, setCard2] = useState('none')
-  const [submitStatus2, setSubmitStatus2] = useState(true)
-  const [visible2, setVisible2] = useState(false)
-
-  const [appartements, setAppartements] = useState([])
-  let tempAppartementName = ''
-  let tempAppartementSize = ''
-  let tempAppartementObject = null
+  // const [card2, setCard2] = useState('none')
+  // const [submitStatus2, setSubmitStatus2] = useState(true)
+  // const [visible2, setVisible2] = useState(false)
+  const [DataToSend, setDataToSend] = useState({});
+  // const [appartements, setAppartements] = useState([])
+  // let tempAppartementName = ''
+  // let tempAppartementSize = ''
+  // let tempAppartementObject = null
   // console.log(String(name.target.value).replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()))
   // const postTodo=
-  let houseQuantity = []
-  let [myHouses, setMyHouses] = useState(null)
+  // let houseQuantity = []
+  // let [myHouses, setMyHouses] = useState(null)
   // console.log(myHouses);
   // const AddMyHouses = () => {
   //     // if (startHousesNow == true) {
@@ -89,7 +90,7 @@ const AddBuilding = () => {
   const addMyBuilding = useMutation(
     async (DataToSend) => {
       // console.log("add my building neeo")
-      setNewBuilding(await axios.post('/api/addBuildingAPI', DataToSend))
+      await axios.post('/api/addBuildingAPI', DataToSend)
       // console.log(newBuilding.data.building.id)
     },
     {
@@ -105,7 +106,8 @@ const AddBuilding = () => {
     }
   )
   const handler = () => setVisible(true)
-  const handler2 = () => setVisible2(true)
+  const handler2 = () => setVisible2(true);
+  // const [startCreatorHouseNow, setStartCreatorHouseNow] = useState(false)
   const closeHandler = () => {
     setVisible(false)
     // console.log("closed");
@@ -114,13 +116,12 @@ const AddBuilding = () => {
     setVisible2(false)
     // console.log("closed");
   }
-
   const addBuilding = async (e) => {
     e.preventDefault()
     // const varNotes = "";
 
     // console.log(bruh)
-    let DataToSend = {
+    setDataToSend({
       name: name.target.value.replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
         letter.toUpperCase()
       ),
@@ -133,18 +134,17 @@ const AddBuilding = () => {
       // rent: parseFloat(rent.target.value),
       // appartementSize: parseFloat(appartementSize.target.value),
       teamid: user.id,
-    }
+    })
     // for (let i = 0; i < parseInt(houses.target.value); i++) {
     //     houseQuantity.push(i);
     // }
     // console.log('we\'re in AddBuilding right now, here\'s houseQuantity:');
     // console.log(houseQuantity);
     // houses.target.value = null;
-    setCard1('none')
-    setCard2('inherit')
+    // setCard1('none')
+    // setCard2('inherit')
     // StartFillingHouses();
     setStartHousesNow(true)
-    handler2()
     // setCard1(true);
     // addMyBuilding.mutate(DataToSend);
     closeHandler()
@@ -168,13 +168,13 @@ const AddBuilding = () => {
   //     // addMyBuilding.mutate(DataToSend);
   //     closeHandler();
   // }
-  useEffect(() => {
-    if (addMyBuilding.status == 'success') {
-      user.buildingIDs.push(newBuilding.data.building.id)
-      toast.success('Action réalisée avec succès')
-      // console.log("im success here")
-    }
-  }, [newBuilding, addMyBuilding.status])
+  // useEffect(() => {
+  //   if (addMyBuilding.status == 'success') {
+  //     user.buildingIDs.push(newBuilding.data.building.id)
+  //     toast.success('Action réalisée avec succès')
+  //     // console.log("im success here")
+  //   }
+  // }, [newBuilding, addMyBuilding.status])
 
   // if (addMyBuilding.status == "loading") {
   //     // console.log("im loading here")
@@ -239,6 +239,7 @@ const AddBuilding = () => {
     <>
       <div style={{ display: { card1 } }}>
         <Modal
+          animated={false}
           closeButton
           aria-labelledby="modal-title"
           open={visible}
@@ -340,11 +341,11 @@ const AddBuilding = () => {
             </Modal.Body>
             <Modal.Footer>
               <Row style={{ justifyContent: 'space-between' }}>
-                <Button size="md" onClick={closeHandler} light color="bruh">
+                <Button size="md" onClick={closeHandler} light color="bruh" css={{ width: "10rem", minWidth: "10rem" }} >
                   Annuler
                 </Button>
-                <Button disabled={submitStatus} size="md" shadow type="submit">
-                  Continuer
+                <Button disabled={submitStatus} size="md" shadow type="submit" css={{ width: "10rem", minWidth: "10rem" }}>
+                  Continuer <ArrowForwardRoundedIcon style={{ height: "1.2rem", marginLeft: "1rem !important" }} />
                 </Button>
               </Row>
             </Modal.Footer>
@@ -356,9 +357,10 @@ const AddBuilding = () => {
         </Button>
       </div>
       {startHousesNow == false ? null : (
-        <div style={{ position: 'absolute' }}>
+        <div style={{ position: 'absolute !important' }}>
           <AddHouses
             houseQuantity={parseInt(houses.target.value)}
+            DataToSend={DataToSend}
             closeModal={() => setStartHousesNow(false)}
           />
         </div>
