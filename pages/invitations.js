@@ -1,12 +1,16 @@
 // import Image from "next/image"
 
-const invitations = () => {
-    return (
-        <main>
-            <h1>This is Invitations</h1>
+import ListInvitations from "../components/Invitation/ListInvitations"
 
-        </main>
-    )
+const invitations = () => {
+  return (
+    <main>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginLeft: "4rem", marginRight: "4rem" }}>
+        <h1 style={{ marginBottom: 0, color: "#457B9D" }}>Invitations</h1>
+      </div>
+      <ListInvitations />
+    </main>
+  )
 }
 
 export default invitations

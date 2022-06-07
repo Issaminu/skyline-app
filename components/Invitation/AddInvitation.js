@@ -1,5 +1,3 @@
-// import React from 'react'
-
 import { useUser } from "@auth0/nextjs-auth0";
 import { Button, Text, css, Modal, Input, Textarea, Row, Checkbox, } from "@nextui-org/react"
 import { useRouter } from "next/router";
@@ -12,141 +10,143 @@ import toast from 'react-hot-toast';
 import Select from 'react-select';
 import cityOptions from '../MoroccoCities.json';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
-
-
-
+import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 
 const AddInvitation = (props) => {
-    // console.log(cityOptions.cityOptions);
-    const [visible, setVisible] = useState(false);
-    // const [editVisible, setEditVisible] = useState(false);
-    // const editHandler = () => setEditVisible(true);
-    // const [open, setOpen] = useState(false);
-    // const router = useRouter();
-    const [name, setName] = useState();
-    const [location, setLocation] = useState();
-    // const [floors, setFloors] = useState();
-    const [surface, setSurface] = useState();
-    const [houses, setHouses] = useState();
-    // const [notes, setNotes] = useState("");
-    // const [rent, setRent] = useState();
-    const [submitStatus, setSubmitStatus] = useState(true);
-
-    const queryClient = useQueryClient();
-    const { user } = useUser();
-    const [newInvitation, setNewInvitation] = useState("");
-    const [selectedCityOption, setSelectedCityOption] = useState(null);
-    const [receiverEmail, setReceiverEmail] = useState();
-    const [adminSelection, setAdminSelection] = useState(false);
-    // console.log(String(name.target.value).replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase()))
-    // const postTodo=
-    const addMyInvitation = useMutation((DataToSend) => {
-        // console.log("add my invitation neeo")
-        // try {
-        return axios.post('/api/addInvitationAPI', DataToSend);
-        // } catch {
-        //     (error) => { console.log(error) };
-        // }
-
-        // console.log(ress)
-        // setNewInvitation(ress);
-        // console.log(newInvitation.data.invitation.id)
-    }, {
-        onSuccess: async () => {
-            toast.success("Invitation envoyée avec succès.");
-            // console.log("invalidate sussy backa?")
-            // queryClient.invalidateQueries('getInvitations');
-        },
-        onError: async (error) => {
-            toast.error(error.response.data.message, { style: {} });
-            closeHandler();
-        }
-    })
-    const handler = () => setVisible(true);
-    const closeHandler = () => {
-        setVisible(false);
-        // console.log("closed");
-    };
-    const addInvitation = async (e) => {
-        e.preventDefault();
-        // const varNotes = "";
-
-        let DataToSend = {
-            building: props.building,
-            receiverEmail: receiverEmail.target.value,
-        };
-        addMyInvitation.mutate(DataToSend);
-        // console.log("heres addMyInvitation:")
-        // console.log(addMyInvitation)
-        // console.log(user);
+  const [visible, setVisible] = useState(false);
+  const [name, setName] = useState();
+  const [location, setLocation] = useState();
+  const [surface, setSurface] = useState();
+  const [houses, setHouses] = useState();
+  const [submitStatus, setSubmitStatus] = useState(true);
+  const queryClient = useQueryClient();
+  const { user } = useUser();
+  const [newInvitation, setNewInvitation] = useState("");
+  const [selectedCityOption, setSelectedCityOption] = useState(null);
+  const [receiverEmail, setReceiverEmail] = useState();
+  const [adminSelection, setAdminSelection] = useState(false);
+  const [receiverHouses, setReceiverHouses] = useState([]);
+  const addMyInvitation = useMutation((DataToSend) => {
+    return axios.post('/api/addInvitationAPI', DataToSend);
+  }, {
+    onSuccess: async () => {
+      toast.success("Invitation envoyée avec succès.");
+      closeHandler();
+    },
+    onError: async (error) => {
+      toast.error(error.response.data.message, { style: {} });
+      closeHandler();
     }
-    // useEffect(() => {
-    // console.log(addInvitation.status);
+  });
+  const customStyles = {
+    control: (base, state) => ({
+      ...base,
+    }),
+    menu: (base) => ({
+      ...base,
+    }),
+    menuList: (base) => ({
+      ...base,
+      maxHeight: '6rem',
+    }),
+  };
+  const handler = () => setVisible(true);
+  const closeHandler = () => {
+    setVisible(false);
+    setAdminSelection(false);
+  };
+  // console.log(receiverHouses);
 
-    // if (addMyInvitation.status == "success") {
-    //     // user.invitationIDs.push(newInvitation.data.invitation.id)
-    //     toast.success("Action réalisée avec succès");
-    //     // console.log("im success here")
-    // };
-    // }, [newInvitation, addMyInvitation.status]);
-    // useEffect(() => {
-    //     if (adminSelection == true) {
-    //         console.log("it is admin noe")
-    //     }
+  const addInvitation = async (e) => {
+    e.preventDefault();
+    let receiverHouseNames = "";
+    let receiverHouseIDs = "";
+    receiverHouses.map((house, index) => {
+      receiverHouseNames = receiverHouseNames + house.name + ", ";
+      receiverHouseIDs = receiverHouseIDs + house.id + ", ";
+    });
+    let DataToSend = {
+      building: props.building,
+      receiverEmail: receiverEmail.target.value,
+      isAdmin: adminSelection,
+      receiverHouseIDs: receiverHouseIDs,
+      receiverHouseNames: receiverHouseNames,
+    };
+    addMyInvitation.mutate(DataToSend);
+    setAdminSelection(false);
+  }
+  // console.log(receiverHouses?.[0] != null);
+  useEffect(() => {
+    if (receiverEmail?.target.value && receiverEmail?.target.value.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) && receiverHouses?.[0] != null) {
+      setSubmitStatus(false);
+    }
+    if ((receiverEmail?.target.value.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) == null || !(!!receiverEmail?.target.value) || (receiverHouses?.[0] == null)) {
+      setSubmitStatus(true);
+    }
+  }, [receiverEmail?.target.value, receiverHouses]);
+  return (<>
+    <Modal
+      style={{ zIndex: 1, height: "30rem" }}
+      closeButton
+      aria-labelledby="modal-title"
+      open={visible}
+      onClose={closeHandler}
+      width="35rem"
+    >
+      <Modal.Header>
+        <h3 b="true" style={{ margin: 0, }}>Inviter un utilisateur</h3>
+      </Modal.Header>
+      <form onSubmit={addInvitation}>
+        <Modal.Body style={{ height: '20rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem" }}>
+            <Input bordered type="email" label="Email de l'invité" name="invitationName" onChange={setReceiverEmail} required={true} />
 
-    // }, [adminSelection]);
+            {props.building.adminIDs.includes(user.id) ?
+              <Checkbox isSelected={adminSelection} onChange={setAdminSelection} color="primary" size="sm">
+                Rendez cet utilisateur un administrateur
+              </Checkbox>
 
-    // if (addMyInvitation.status == "loading") {
-    //     // console.log("im loading here")
-    //     return <><Loading /></>
-    // }
-    useEffect(() => {
-        if (receiverEmail?.target.value) {
-            setSubmitStatus(false);
-        }
-        if (!(!!receiverEmail?.target.value)) {
-            setSubmitStatus(true);
-        }
-    }, [receiverEmail?.target.value]);
-    return (<>
-        <Modal
-            style={{ zIndex: 1 }}
-            closeButton
-            aria-labelledby="modal-title"
-            open={visible}
-            onClose={closeHandler}
-            width="35rem"
-        >
-            <Modal.Header>
-                <h3 b="true" style={{ margin: 0, }}>Inviter un utilisateur</h3>
-            </Modal.Header>
-            <form onSubmit={addInvitation}>
-
-                <Modal.Body>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem" }}>
-                        <Input bordered type="email" label="Email de l'invité" name="invitationName" onChange={setReceiverEmail} required={true} />
-                        <Checkbox isSelected={adminSelection} onChange={setAdminSelection} color="primary" size="sm">
-                            Rendez cet utilisateur un administrateur
-                        </Checkbox>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Row style={{ justifyContent: 'space-between' }}>
-                        <Button size="md" onClick={closeHandler} light color="bruh">
-                            Annuler
-                        </Button>
-                        <Button disabled={submitStatus} size="md" shadow type="submit">Enregistrer</Button>
-                    </Row>
-
-
-                </Modal.Footer>
-            </form>
-
-        </Modal>
-        <Button css={{ marginTop: "1rem", }} shadow auto onClick={handler}><AddCircleRoundedIcon style={{ marginRight: '0.5rem' }} />Inviter un résident</Button>
-
-    </>
-    )
+              : <p style={{ marginTop: 0, marginBottom: 0, color: "#F5A524" }}><ErrorOutlineRoundedIcon style={{ height: '0.9rem', paddingTop: '0.07rem' }} /><b>Un administrateur de cet immeuble va vérifier cette invitation.</b></p>}
+            <div>
+              <p
+                style={{
+                  margin: 0,
+                  marginLeft: '0.29rem',
+                  fontSize: '0.875rem',
+                  letterSpacing: '0.01rem',
+                  userSelect: 'none',
+                }}
+              >
+                Appartements occupés par l'invité
+              </p>
+              <Select
+                isMulti
+                onChange={(e) => {
+                  setReceiverHouses(e);
+                }}
+                name="selectTenants"
+                options={props.appartements}
+                styles={customStyles}
+                placeholder=""
+                className="basic-multi-select"
+                classNamePrefix="select"
+              />
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer style={{ marginTop: '0rem' }}>
+          <Row style={{ justifyContent: 'space-between' }}>
+            <Button size="md" onClick={closeHandler} light color="bruh">
+              Annuler
+            </Button>
+            <Button disabled={submitStatus} size="md" shadow type="submit">Inviter</Button>
+          </Row>
+        </Modal.Footer>
+      </form>
+    </Modal>
+    <Button css={{ marginTop: "1rem", }} shadow auto onClick={handler}><AddCircleRoundedIcon style={{ marginRight: '0.5rem' }} />Inviter un utilisateur</Button>
+  </>
+  )
 }
 
-export default AddInvitation
+export default AddInvitation;

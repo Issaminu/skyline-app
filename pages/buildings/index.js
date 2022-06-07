@@ -12,24 +12,24 @@ import ListBuildings from "../../components/Building/ListBuildings";
 import { useQueryClient } from 'react-query'
 
 const buildings = () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const queryClient = useQueryClient();
-    queryClient.removeQueries(["getOneBuilding"]);
-    queryClient.removeQueries(["getHousesList"]);
-    // console.log("hey")
-    return (
-        <>
-            <main>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginLeft: "4rem", marginRight: "4rem" }}>
-                    <h1 style={{ marginBottom: 0, color: "#457B9D" }}>Immeubles</h1>
-                    <AddBuilding />
-                </div>
-                <ListBuildings />
-            </main>
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const queryClient = useQueryClient();
+  queryClient.removeQueries(["getOneBuilding"]);
+  queryClient.removeQueries(["getHousesList"]);
+  // console.log("hey")
+  return (
+    <>
+      <main>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginLeft: "4rem", marginRight: "4rem" }}>
+          <h1 style={{ marginBottom: 0, color: "#457B9D" }}>Immeubles</h1>
+          <AddBuilding />
+        </div>
+        <ListBuildings />
+      </main>
 
 
-        </>
-    )
+    </>
+  )
 }
 
 export default buildings

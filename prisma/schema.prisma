@@ -1,11 +1,13 @@
-generator client {
-  provider = "prisma-client-js"
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  // shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
 
-datasource db {
-  provider          = "mysql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+generator js {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 model users {
@@ -61,10 +63,10 @@ model houses {
   // bathrooms             Int?
   // saloon                Int?
   // kitchen               Int?
-  userIDs         String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
   location        String    @db.VarChar(255) //GET THIS FROM BUILDING LOCATION
   creatorId       Int
   adminIDs        String?   @db.VarChar(255)
+  residentIDs     String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
   size            Float
   // floor           Int
   // houseNumber     Int
@@ -83,18 +85,21 @@ model houses {
 }
 
 model invitations {
-  id            Int       @id @default(autoincrement())
-  buildingId    Int
-  senderId      Int
-  receiverId    Int
-  receiverEmail String    @db.VarChar(255)
-  status        String    @db.VarChar(255)
-  isAccepted    Boolean? //POSSIBLE TO BE REMOVED
-  isValidated   Boolean? //POSSIBLE TO BE REMOVED
-  isAdmin       Boolean? //POSSIBLE TO BE REMOVED
-  //teamid      Int
-  create_time   DateTime? @db.DateTime(0)
-  update_time   DateTime? @db.DateTime(0)
+  id                 Int       @id @default(autoincrement())
+  buildingId         Int
+  buildingName       String    @db.VarChar(255)
+  senderId           Int
+  senderName         String    @db.VarChar(255)
+  receiverId         Int
+  receiverName       String    @db.VarChar(255)
+  receiverHouseIDs   String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
+  receiverHouseNames String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
+  receiverEmail      String    @db.VarChar(255)
+  status             String    @db.VarChar(255)
+  isAdmin            Boolean?
+  senderIsAdmin      Boolean?
+  create_time        DateTime? @db.DateTime(0)
+  update_time        DateTime? @db.DateTime(0)
 }
 
 model payements {

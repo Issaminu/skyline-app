@@ -5,29 +5,18 @@ import toast from 'react-hot-toast'
 import { useUser } from '@auth0/nextjs-auth0'
 import axios from 'axios';
 import Select from 'react-select';
-
-
 const SelectCreatorHouse = (props) => {
   const queryClient = useQueryClient();
-
   const addMyBuilding = useMutation(
     async (DataToSend) => {
-      // console.log("add my building neeo")
       (await axios.post('/api/addBuildingAPI', DataToSend));
-      // console.log(newBuilding.data.building.id)
     },
     {
       onSuccess: async () => {
-        // console.log("invalidate sussy backa?")
         queryClient.invalidateQueries('getBuildings');
         toast.success('Action réalisée avec succès');
         closeHandler3();
         props.closeOlderModal();
-        // setSelectedCityOption(null)
-        // setName()
-        // setLocation()
-        // setSurface()
-        // setHouses()
       },
     }
   );
@@ -40,9 +29,9 @@ const SelectCreatorHouse = (props) => {
     }),
     menuList: (base) => ({
       ...base,
-      maxHeight: '10rem', // your desired height
+      maxHeight: '10rem',
     }),
-  }
+  };
   const [selectedCreatorHouses, setSelectedCreatorHouses] = useState(null);
   const [submitStatus3, setSubmitStatus3] = useState(true)
   const [visible3, setVisible3] = useState(true);
@@ -51,28 +40,17 @@ const SelectCreatorHouse = (props) => {
     setVisible3(false)
     props.closeModal()
   }
-
   const selectCreatorHouse = async (e) => {
     e.preventDefault()
     props.DataToSend.selectedCreatorHouses = selectedCreatorHouses;
     addMyBuilding.mutate(props.DataToSend);
-    // console.log(selectedCreatorHouses);
   }
-  // const [housesArray, setHousesArray] = useState([]);
   useEffect(() => {
-    // console.log("hey, welcome to selectCreatorHouse");
     props.DataToSend.appartements.map((appartement, index) => {
       appartement.value = appartement.name;
       appartement.label = appartement.name;
-      // setHousesArray([...housesArray, appartement])
     });
-    // props.closeModal()
-
-    // props.closeOlderModal('none');
   }, []);
-  // console.log(props);
-  // console.log(selectedCreatorHouses);
-  // let x = 0;
   useEffect(() => {
     if (selectedCreatorHouses?.[0]) {
       setSubmitStatus3(false);
@@ -116,18 +94,14 @@ const SelectCreatorHouse = (props) => {
                       Votre appartements
                     </p>
                     <Select
-                      // defaultValue={[colourOptions[2], colourOptions[3]]}
                       isMulti
                       onChange={(e) => {
                         setSelectedCreatorHouses(e)
                       }}
                       name="selectTenants"
-                      // label="Ville"
                       options={props.DataToSend.appartements}
                       styles={customStyles}
-                      // placeholder="Sélectionnez une ville..."
                       placeholder=""
-                      // style={{ width: "10rem", minWidth: '10rem' }}
                       className="basic-multi-select"
                       classNamePrefix="select"
                     />
@@ -158,5 +132,4 @@ const SelectCreatorHouse = (props) => {
     </>
   )
 }
-
 export default SelectCreatorHouse

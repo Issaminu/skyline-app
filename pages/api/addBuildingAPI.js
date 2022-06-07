@@ -52,7 +52,7 @@ const addBuildingAPI = async (req, res) => {
             name: req.body.appartements[i].name,
             size: parseFloat(req.body.selectedCreatorHouses[j].size),
             buildingId: building.id,
-            userIDs: String(session.user.id),
+            residentIDs: String(session.user.id),
             location: req.body.location,
             houseId: building.id + "-" + (i + 1),
             buildingName: req.body.name,

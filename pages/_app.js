@@ -26,8 +26,8 @@ function MyApp({ Component, pageProps }) {
     <UserProvider>
       <NextUIProvider theme={theme}>
         <AuthWrapper>
-          <Navbar />
           <QueryClientProvider client={queryClient}>
+            <Navbar />
             <Toaster />
             <Component {...pageProps} />
             <ReactQueryDevtools />
