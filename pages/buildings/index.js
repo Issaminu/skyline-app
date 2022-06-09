@@ -16,6 +16,8 @@ const buildings = () => {
   const queryClient = useQueryClient();
   queryClient.removeQueries(["getOneBuilding"]);
   queryClient.removeQueries(["getHousesList"]);
+  queryClient.removeQueries(['getResidentsList']);
+
   // console.log("hey")
   return (
     <>

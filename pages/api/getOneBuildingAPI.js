@@ -1,8 +1,6 @@
 // import { PrismaClient } from "@prisma/client";
 import { getSession } from '@auth0/nextjs-auth0';
-import { useRouter } from 'next/router';
-import prisma from '../../components/prismaClient'
-// const user = useUser();
+import prisma from '../../components/prismaClient';
 
 const getOneBuildingAPI = async (req, res) => {
   const session = getSession(req, res);
@@ -25,25 +23,32 @@ const getOneBuildingAPI = async (req, res) => {
       id: true,
       name: true
     },
-    orderBy: {
-      id: 'desc'
-    }
+    // orderBy: {
+    //   id: 'desc'
+    // }
   });
-  if (building && appartements) {
-    // console.log(building)
+  const residents = [];
+  const residentIDsArray = building.residentIDs.split(", ");
+  // console.log(residentIDsArray)
+  await Promise.all(residentIDsArray.map(async (residentID) => {
+    residents.push(await prisma.users.findUnique({
+      where: {
+        id: parseInt(residentID)
+      },
+    }));
+  }));
+  if (building && appartements && residents) {
+    // console.log(residents)
     // console.log(appartements)
     const result = {
       building: building,
-      appartements: appartements
-    }
+      appartements: appartements,
+      residents: residents
+    };
     res.json({ result: JSON.stringify(result) });
     // console.log(res.result)
     await prisma.$disconnect();
     return res;
   }
-  res.json({ building: null, appartements: null });
-
-  await prisma.$disconnect();
-  return res;
 }
 export default getOneBuildingAPI;

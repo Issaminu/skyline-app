@@ -16,9 +16,6 @@ const getBuildingsListAPI = async (req, res) => {
         contains: String(session.user.id)
       }
     },
-    orderBy: {
-      create_time: 'desc'
-    }
   });
   // console.log(buildings);
   if (buildings) {

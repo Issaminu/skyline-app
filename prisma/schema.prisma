@@ -103,31 +103,36 @@ model invitations {
 }
 
 model payements {
-  id          Int       @id @default(autoincrement())
-  type        String    @db.VarChar(255)
-  userID      Int
+  id           Int       @id @default(autoincrement())
+  // type        String    @db.VarChar(255)
+  userId       Int
+  userName     String    @db.VarChar(255)
   // comment     String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
-  amount      Float
+  amount       Float
   // month       Int
-  status      String?   @db.VarChar(255) //POSSIBLE TO BE REMOVED
-  houseId     Int
-  buildingId  Int
+  // status      String?   @db.VarChar(255) //POSSIBLE TO BE REMOVED
+  // houseId     Int
+  buildingId   Int
+  reason       String    @db.VarChar(255)
+  buildingName String    @db.VarChar(255)
+  payementDate DateTime  @db.DateTime(0)
   //teamid      Int
-  create_time DateTime? @db.DateTime(0)
-  update_time DateTime? @db.DateTime(0)
+  create_time  DateTime? @db.DateTime(0)
+  update_time  DateTime? @db.DateTime(0)
 }
 
 model expenses {
-  id          Int       @id @default(autoincrement())
-  reason      String    @db.VarChar(255)
+  id           Int       @id @default(autoincrement())
+  reason       String    @db.VarChar(255)
   // comment     String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
-  amount      Float
-  date        DateTime?
-  status      String?   @db.VarChar(255)
-  buildingId  Int
+  amount       Float
+  buildingId   Int
+  buildingName String    @db.VarChar(255)
+  beneficiary  String    @db.VarChar(255)
+  expenseDate  DateTime? @db.DateTime(0)
   //teamid      Int
-  create_time DateTime? @db.DateTime(0)
-  update_time DateTime? @db.DateTime(0)
+  create_time  DateTime? @db.DateTime(0)
+  update_time  DateTime? @db.DateTime(0)
 }
 
 //BELLOW ARE THE MODELS NEEDED BY NextAuth.js

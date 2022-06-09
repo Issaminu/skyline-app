@@ -69,13 +69,13 @@ const Navbar = () => {
                   Immeubles
                 </Button></Link>
               </li>
-              <li style={{ marginBottom: 0 }}><Link href="/tenants" style={{ textDecoration: 'none', color: 'inherit' }} passHref>
-                <Button light css={isActiveRoute('/tenants')} color="stuff" auto>
-                  Payements
+              <li style={{ marginBottom: 0 }}><Link href="/payements" style={{ textDecoration: 'none', color: 'inherit' }} passHref>
+                <Button light css={isActiveRoute('/payements')} color="stuff" auto>
+                  Paiements
                 </Button></Link>
               </li>
-              <li style={{ marginBottom: 0 }}><Link href="/fixes" style={{ textDecoration: 'none', color: 'inherit' }} passHref>
-                <Button light css={isActiveRoute('/fixes')} color="stuff" auto>
+              <li style={{ marginBottom: 0 }}><Link href="/expenses" style={{ textDecoration: 'none', color: 'inherit' }} passHref>
+                <Button light css={isActiveRoute('/expenses')} color="stuff" auto>
                   Dépenses
                 </Button></Link>
               </li>

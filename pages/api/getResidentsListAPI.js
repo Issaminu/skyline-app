@@ -8,20 +8,51 @@ const getResidentsListAPI = async (req, res) => {
         in: req.body.residentIDsArray
       }
     },
-    select: {
-      id: true,
-      name: true,
-      image: true,
-      phone: true,
-    },
-  })
+  });
+  let tempHouses = {};
+  await Promise.all(users.map(async (user) => {
+    user.residentHouses = null;
+    tempHouses = await prisma.houses.findMany({
+      where: {
+        residentIDs: {
+          contains: String(user.id)
+        }
+      },
+      select: {
+        name: true,
+      }
+    });
+    await Promise.all(tempHouses.map((house, index) => {
+      if (index == 0) {
+        user.residentHouses = house.name;
+      } else {
+        user.residentHouses = user.residentHouses + ", " + house.name;
+        // } console.log(user.residentHouses);
+      }
+    }));
+  }));
+  // console.log(tempHouses);
+  // await tempHouses.map((house, index) => {
+  //   // console.log(house)
+  //   if (index == 0) {
+  //     user.residentHouses = house.name;
+  //   } else {
+  //     user.residentHouses = user.residentHouses + ", " + house.name;
+  //     // } console.log(user.residentHouses);
+  //   }
+  // });
+  // user.residentHouses = redidentHouses;
+  // await console.log(users);
+  // return null;
   if (users) {
+    // return null
     res.json({ residents: JSON.stringify(users) });
+    // console.log(users)
     await prisma.$disconnect();
     return res;
   }
   res.json({ residents: null });
-  await prisma.$disconnect();
+  prisma.$disconnect();
   return res;
 }
 export default getResidentsListAPI;

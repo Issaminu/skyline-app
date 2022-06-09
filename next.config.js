@@ -10,7 +10,9 @@ console.warn = (...args) => {
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['avatars.githubusercontent.com'],
+    domains: ['avatars.githubusercontent.com',
+      `${process.env.S3_UPLOAD_BUCKET}.s3.amazonaws.com`,
+      `${process.env.S3_UPLOAD_BUCKET}.s3.${process.env.S3_UPLOAD_REGION}.amazonaws.com`],
   },
 }
 

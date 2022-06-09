@@ -11,8 +11,11 @@ import Select from 'react-select';
 import cityOptions from '../MoroccoCities.json';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
+import MonetizationOnRoundedIcon from '@mui/icons-material/MonetizationOnRounded';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-const AddInvitation = (props) => {
+const AddPayement = (props) => {
   const [visible, setVisible] = useState(false);
   const [name, setName] = useState();
   const [location, setLocation] = useState();
@@ -21,18 +24,16 @@ const AddInvitation = (props) => {
   const [submitStatus, setSubmitStatus] = useState(true);
   const queryClient = useQueryClient();
   const { user } = useUser();
-  const [newInvitation, setNewInvitation] = useState("");
-  const [selectedCityOption, setSelectedCityOption] = useState(null);
-  const [receiverEmail, setReceiverEmail] = useState();
-  const [adminSelection, setAdminSelection] = useState(false);
-  const [receiverHouses, setReceiverHouses] = useState([]);
+  const [residentPaying, setResidentPaying] = useState([]);
+  const [payementDate, setPayementDate] = useState(new Date());
+  const [amountPaid, setAmountPaid] = useState(null);
+  const [reason, setReason] = useState(null);
 
-
-  const addMyInvitation = useMutation((DataToSend) => {
-    return axios.post('/api/addInvitationAPI', DataToSend);
+  const addMyPayement = useMutation((DataToSend) => {
+    return axios.post('/api/addPayementAPI', DataToSend);
   }, {
     onSuccess: async () => {
-      toast.success("Invitation envoyée avec succès.");
+      toast.success("Cotisation ajoutée avec succès.");
       closeHandler();
     },
     onError: async (error) => {
@@ -55,38 +56,35 @@ const AddInvitation = (props) => {
   const handler = () => setVisible(true);
   const closeHandler = () => {
     setVisible(false);
-    setAdminSelection(false);
   };
   // console.log(receiverHouses);
-
-  const addInvitation = async (e) => {
+  let residents = null;
+  useEffect(() => {
+    residents = props.residents;
+  }, []);
+  const addPayement = async (e) => {
     e.preventDefault();
-    let receiverHouseNames = "";
-    let receiverHouseIDs = "";
-    receiverHouses.map((house, index) => {
-      receiverHouseNames = receiverHouseNames + house.name + ", ";
-      receiverHouseIDs = receiverHouseIDs + house.id + ", ";
-    });
+
     let DataToSend = {
       building: props.building,
-      receiverEmail: receiverEmail.target.value,
-      isAdmin: adminSelection,
-      receiverHouseIDs: receiverHouseIDs,
-      receiverHouseNames: receiverHouseNames,
+      resident: residentPaying,
+      amountPaid: amountPaid,
+      payementDate: payementDate,
+      reason: reason,
     };
-    addMyInvitation.mutate(DataToSend);
-    setAdminSelection(false);
-  }
-  // console.log(addMyInvitation);
+    addMyPayement.mutate(DataToSend);
+  };
+  // console.log(residentPaying?.id != null);
+  // console.log(payementDate)
   // console.log(receiverHouses?.[0] != null);
   useEffect(() => {
-    if (receiverEmail?.target.value && receiverEmail?.target.value.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) && receiverHouses?.[0] != null) {
+    if (residentPaying?.id != null && payementDate && amountPaid && reason) {
       setSubmitStatus(false);
     }
-    if ((receiverEmail?.target.value.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) == null || !(!!receiverEmail?.target.value) || (receiverHouses?.[0] == null)) {
+    if (residentPaying?.id == null || !payementDate || !amountPaid || !reason) {
       setSubmitStatus(true);
     }
-  }, [receiverEmail?.target.value, receiverHouses]);
+  }, [payementDate, amountPaid, residentPaying, reason]);
   return (<>
     <Modal
       style={{ zIndex: 1, height: "30rem" }}
@@ -97,19 +95,13 @@ const AddInvitation = (props) => {
       width="35rem"
     >
       <Modal.Header>
-        <h3 b="true" style={{ margin: 0, }}>Inviter un utilisateur</h3>
+        <h3 b="true" style={{ margin: 0, }}>Ajout cotisation</h3>
       </Modal.Header>
-      <form onSubmit={addInvitation}>
+      <form onSubmit={addPayement}>
         <Modal.Body style={{ height: '20rem' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem" }}>
-            <Input bordered type="email" label="Email de l'invité" name="invitationName" onChange={setReceiverEmail} required={true} />
+            {/* {props.building.adminIDs.includes(user.id) ? */}
 
-            {props.building.adminIDs.includes(user.id) ?
-              <Checkbox isSelected={adminSelection} onChange={setAdminSelection} color="primary" size="sm">
-                Rendez cet utilisateur un administrateur
-              </Checkbox>
-
-              : <p style={{ marginTop: 0, marginBottom: 0, color: "#F5A524" }}><ErrorOutlineRoundedIcon style={{ height: '0.9rem', paddingTop: '0.07rem' }} /><b>Un administrateur de cet immeuble va vérifier cette invitation.</b></p>}
             <div>
               <p
                 style={{
@@ -120,20 +112,38 @@ const AddInvitation = (props) => {
                   userSelect: 'none',
                 }}
               >
-                Appartements occupés par l'invité
+                Personne payante
               </p>
               <Select
-                isMulti
                 onChange={(e) => {
-                  setReceiverHouses(e);
+                  setResidentPaying(e);
                 }}
                 name="selectTenants"
-                options={props.appartements}
+                options={props.residents}
                 styles={customStyles}
                 placeholder=""
-                className="basic-multi-select"
+                className="basic-single"
                 classNamePrefix="select"
               />
+            </div>
+            <Input bordered type="text" label="Raison" onChange={(e) => { setReason(e.target.value) }} required={true} />
+
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <div>
+                <p
+                  style={{
+                    margin: 0,
+                    marginLeft: '0.29rem',
+                    fontSize: '0.875rem',
+                    letterSpacing: '0.01rem',
+                    userSelect: 'none',
+                  }}
+                >
+                  Date de cotisation
+                </p>
+                <DatePicker dateFormat="dd/MM/yyyy" style={{}} selected={payementDate} onChange={(date) => setPayementDate(date)} />
+              </div>
+              <Input css={{ height: '3.5rem', marginLeft: '3rem' }} bordered type="number" min="1" step="0.001" label="Montant" labelRight="DH" onChange={(e) => { setAmountPaid(e.target.value) }} required={true} />
             </div>
           </div>
         </Modal.Body>
@@ -142,14 +152,14 @@ const AddInvitation = (props) => {
             <Button size="md" onClick={closeHandler} light color="bruh">
               Annuler
             </Button>
-            <Button disabled={submitStatus} size="md" shadow type="submit">Inviter</Button>
+            <Button disabled={submitStatus} size="md" shadow type="submit">Enregistrer</Button>
           </Row>
         </Modal.Footer>
       </form>
     </Modal>
-    <Button css={{ marginTop: "1rem", }} shadow auto onClick={handler}><AddCircleRoundedIcon style={{ marginRight: '0.5rem' }} />Inviter un utilisateur</Button>
+    <Button css={{ marginTop: "1rem", }} color="success" shadow auto onClick={handler}><MonetizationOnRoundedIcon style={{ marginRight: '0.5rem' }} />Ajouter une cotisation</Button>
   </>
   )
 }
 
-export default AddInvitation;
+export default AddPayement;

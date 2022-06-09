@@ -13,8 +13,15 @@ import ListResidents from "../../../components/Resident/ListResidents";
 import AddInvitation from "../../../components/Invitation/AddInvitation";
 // import { useQueryClient } from 'react-query'
 import { useUser } from "@auth0/nextjs-auth0";
+import AddPayement from "../../../components/Payement/AddPayement";
+import AddExpense from "../../../components/Expense/AddExpense";
 // import { Modal } from "bootstrap";
+
+
+
 const buildingInfo = () => {
+
+
   const router = useRouter();
   const { user } = useUser();
   const queryClient = useQueryClient();
@@ -22,22 +29,30 @@ const buildingInfo = () => {
 
   const getResult = useQuery('getOneBuilding', async () => {
     const result = await JSON.parse((await axios.get('/api/getOneBuildingAPI')).data.result);
-    // console.log(building)
+    // console.log(result.residents)
     return result;
   })
-  useEffect(() => {
-    queryClient.removeQueries('getResidentsList');
-  }, [])
+  // useEffect(() => {
+  // queryClient.removeQueries(['getResidentsList']);
+  // queryClient.removeQueries(["getOneHouse"]);
+  // });
   if (getResult.status == "loading") return <main><Loading /></main>
 
   getResult.data.appartements.map((appartement) => {
     appartement.value = appartement.name;
     appartement.label = appartement.name;
   });
-  queryClient.removeQueries(["getOneHouse"]);
+  getResult.data.residents.map((resident) => {
+    // console.log(resident)
+    resident.value = resident.name;
+    resident.label = resident.name;
+  });
+  // console.log(getResult.data.residents);
   // queryClient.removeQueries(['getOneBuilding'], { exact: true });
   // console.log(getHouses)
-
+  getResult.data.residents.map((resident) => {
+    resident = resident.name;
+  });
   const fullLocation = getResult.data.building.location + ", " + getResult.data.building.city;
   return (
     <main>
@@ -54,7 +69,15 @@ const buildingInfo = () => {
           {/* </div> */}
           {/* {getResult.data.building.adminIDs.includes(user.id) ? */}
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <AddInvitation appartements={getResult.data.appartements} building={getResult.data.building} />
+            {getResult.data.building.adminIDs.includes(user.id) ? (
+              <>
+                <AddExpense building={getResult.data.building} />
+                <Spacer />
+                <AddPayement building={getResult.data.building} residents={getResult.data.residents} />
+                <Spacer />
+              </>) : null}
+            < AddInvitation appartements={getResult.data.appartements} building={getResult.data.building} />
+
           </div>
           {/* :
                         null
@@ -94,32 +117,15 @@ const buildingInfo = () => {
                   <Table.Header css={{}}>
                     <Table.Column css={{ width: '13rem' }}>Fiche d'information</Table.Column>
                     <Table.Column css={{ paddingRight: "0rem !important", display: 'flex', flexDirection: 'row' }}>
-                      {/* <Button.Group light color="success" size="sm" css={{ marginTop: 0, marginBottom: 0 }}> */}
-                      {/* <div style={{ width: "2rem", marginLeft: "2rem" }}>
-                                                    <ModifyBuilding getBuilding={getResult.data.building} />
-
-                                                </div> */}
                       <div style={{ width: "3rem", marginRight: "0rem", marginLeft: '4.3rem' }}>
                         <DeleteBuilding />
                       </div>
-
-
-                      {/* </Button.Group> */}
                     </Table.Column>
                   </Table.Header>
-
                   <Table.Body>
-                    {/* <Table.Row key="1">
-                                                <Table.Cell css={{ textSize: "2" }}>Nom:</Table.Cell>
-                                                <Table.Cell css={{ textAlign: 'right' }}>{getResult.data.building.name}</Table.Cell>
-                                            </Table.Row> */}
-                    {/* <Table.Row key="1">
-                                                <Table.Cell>N. Etages:</Table.Cell>
-                                                <Table.Cell css={{ textAlign: 'right' }}>{getResult.data.building.floors}</Table.Cell>
-                                            </Table.Row> */}
                     <Table.Row key="1">
                       <Table.Cell>Trésorerie:</Table.Cell>
-                      <Table.Cell css={{ textAlign: 'right' }}><b>{getResult.data.building.treasury}</b></Table.Cell>
+                      <Table.Cell css={{ textAlign: 'right' }}><b>{getResult.data.building.treasury}</b> DH</Table.Cell>
                     </Table.Row>
                     <Table.Row key="2">
                       <Table.Cell>N. appartements:</Table.Cell>
@@ -133,34 +139,10 @@ const buildingInfo = () => {
                       <Table.Cell>N. résidents:</Table.Cell>
                       <Table.Cell css={{ textAlign: 'right' }}>{getResult.data.building.residentIDs.split(', ').length} </Table.Cell>
                     </Table.Row>
-                    {/* <Table.Row key="3">
-                                                <Table.Cell>Population totale:</Table.Cell>
-                                                <Table.Cell css={{ textAlign: 'right' }}>{getResult.data.building.populationTotal}</Table.Cell>
-                                            </Table.Row> */}
-
-                    {/* <Table.Row key="5">
-                                                <Table.Cell>Taille d'appartements:</Table.Cell>
-                                                <Table.Cell css={{ textAlign: 'right' }}>{getResult.data.building.houseSize} m² </Table.Cell>
-                                            </Table.Row> */}
-                    {/* <Table.Row key="6">
-                                                <Table.Cell>Prix de location:</Table.Cell>
-                                                <Table.Cell css={{ textAlign: 'right' }}>{getResult.data.building.rent} DH </Table.Cell>
-                                            </Table.Row> */}
-                    {/* <Table.Row key="5">
-                                                <Table.Cell>Commentaire:</Table.Cell>
-                                                <Table.Cell css={{ textAlign: 'right' }}>
-                                                    <Text css={{ inlineSize: '4rem', overflowWrap: 'break-word' }}>
-                                                        {getResult.data.building.notes}
-                                                    </Text></Table.Cell>
-                                            </Table.Row> */}
                   </Table.Body>
                 </Table>
-
-
               </div>
-              {/* </Card.Body> */}
             </Card>
-
           </div>
           <div style={{ marginLeft: "2rem", marginTop: "1.5rem" }}>
             <Card css={{ width: "60rem" }}>
@@ -172,12 +154,7 @@ const buildingInfo = () => {
               </Card.Body>
             </Card>
           </div>
-
-
         </div>
-
-        {/* </div > */}
-
       </div>
     </main >
   )

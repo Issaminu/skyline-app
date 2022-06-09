@@ -62,7 +62,7 @@ const ListResidents = (props) => {
             {getResidentsList.data.map((resident) => {
               {
                 return <Grid key={resident.name} >
-                  <Resident resident={resident} />
+                  <Resident building={props.building} resident={resident} />
                 </Grid>
               }
 
