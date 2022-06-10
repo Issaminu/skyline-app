@@ -34,7 +34,7 @@ const ListPayements = (props) => {
       case "amount":
         return (
           <Row justify="center" align="center">
-            <Col css={{ d: "flex" }}>
+            <Col css={{ d: "flex", justifyContent: 'center' }}>
               <b>{payement.amount} DH</b>
             </Col>
           </Row>
@@ -42,7 +42,7 @@ const ListPayements = (props) => {
       case "payementDate":
         return (
           <Row justify="center" align="center">
-            <Col css={{ d: "flex" }}>
+            <Col css={{ d: "flex", justifyContent: 'center' }}>
               {dateFormat(payement.payementDate, "dd/mm/yyyy")}
             </Col>
           </Row>
@@ -50,17 +50,17 @@ const ListPayements = (props) => {
       case "reason":
         return (
           <Row justify="center" align="center">
-            <Col css={{ d: "flex" }}>
+            <Col css={{ d: "flex", justifyContent: 'center' }}>
               {payement.reason.charAt(0).toUpperCase() + payement.reason.slice(1)}
             </Col>
           </Row>
         );
       case "status":
-        return <StyledBadge type="active">succès</StyledBadge>;
+        return <span style={{ display: 'flex', justifyContent: 'center' }}><StyledBadge type="active">succès</StyledBadge></span>;
       case "actions":
         return (
           <Row justify="center" align="center">
-            <Col css={{ d: "flex" }}>
+            <Col css={{ d: "flex", justifyContent: 'center' }}>
               <IconButton onClick={() => console.log("Modifier cotisation", payement.user.id)}>
                 <EditIcon size={20} fill="#979797" />
               </IconButton>
@@ -68,12 +68,15 @@ const ListPayements = (props) => {
           </Row>
         );
       default:
-        return cellValue;
+        return <div style={{ display: 'flex', justifyContent: 'center' }}>{cellValue}</div>;
     }
   };
   return (
     <main style={{ marginLeft: '4rem', marginRight: '4rem' }}>
       <Table
+        striped
+        lined
+        // headerLined
         bordered
         aria-label="Table de payements"
         css={{
@@ -84,11 +87,16 @@ const ListPayements = (props) => {
       >
         <Table.Header columns={columns}>
           {(column) => (
+
             <Table.Column
               width={column.uid === "userName" ? "16rem" : "inherit"}
               key={column.uid}
+              css={{ textAlign: 'center' }}
             >
+              {/* <div style={{ display: 'flex', justifyContent: 'flex' }}> */}
               {column.name}
+              {/* </div> */}
+
             </Table.Column>
           )}
         </Table.Header>
@@ -101,6 +109,13 @@ const ListPayements = (props) => {
             </Table.Row>
           )}
         </Table.Body>
+        <Table.Pagination
+          shadow
+          noMargin
+          align="center"
+          rowsPerPage={14}
+          onPageChange={(page) => console.log({ page })}
+        />
       </Table>
     </main>
   )

@@ -29,7 +29,7 @@ const ListExpenses = (props) => {
       case "beneficiary":
         return (
           <Row justify="center" align="center">
-            <Col css={{ d: "flex" }}>
+            <Col css={{ d: "flex", justifyContent: 'center' }}>
               {expense.beneficiary}
             </Col>
           </Row>
@@ -37,7 +37,7 @@ const ListExpenses = (props) => {
       case "amount":
         return (
           <Row justify="center" align="center">
-            <Col css={{ d: "flex" }}>
+            <Col css={{ d: "flex", justifyContent: 'center' }}>
               <b>{expense.amount} DH</b>
             </Col>
           </Row>
@@ -45,7 +45,7 @@ const ListExpenses = (props) => {
       case "expenseDate":
         return (
           <Row justify="center" align="center">
-            <Col css={{ d: "flex" }}>
+            <Col css={{ d: "flex", justifyContent: 'center' }}>
               {dateFormat(expense.expenseDate, "dd/mm/yyyy")}
             </Col>
           </Row>
@@ -53,17 +53,19 @@ const ListExpenses = (props) => {
       case "reason":
         return (
           <Row justify="center" align="center">
-            <Col css={{ d: "flex" }}>
+            <Col css={{ d: "flex", justifyContent: 'center' }}>
               {expense.reason.charAt(0).toUpperCase() + expense.reason.slice(1)}
             </Col>
           </Row>
         );
       case "status":
-        return <StyledBadge type="active">succès</StyledBadge>;
+        return <span style={{ display: 'flex', justifyContent: 'center' }}>
+          <StyledBadge type="active">succès</StyledBadge>
+        </span>;
       case "actions":
         return (
           <Row justify="center" align="center">
-            <Col css={{ d: "flex" }}>
+            <Col css={{ d: "flex", justifyContent: 'center' }}>
               <IconButton onClick={() => console.log("Modifier dépense", expense.id)}>
                 <EditIcon size={20} fill="#979797" />
               </IconButton>
@@ -71,13 +73,15 @@ const ListExpenses = (props) => {
           </Row>
         );
       default:
-        return cellValue;
+        return <div style={{ display: 'flex', justifyContent: 'center' }}>{cellValue}</div>;
     }
   };
   return (
     <main style={{ marginLeft: '4rem', marginRight: '4rem' }}>
       <div style={{ marginLeft: '4rem', marginRight: '4rem' }}>
         <Table
+          striped
+          lined
           bordered
           aria-label="Table de expenses"
           css={{
@@ -91,6 +95,7 @@ const ListExpenses = (props) => {
               <Table.Column
                 width={column.uid === "userName" ? "16rem" : "inherit"}
                 key={column.uid}
+                css={{ textAlign: 'center' }}
               >
                 {column.name}
               </Table.Column>
@@ -105,6 +110,13 @@ const ListExpenses = (props) => {
               </Table.Row>
             )}
           </Table.Body>
+          <Table.Pagination
+            shadow
+            noMargin
+            align="center"
+            rowsPerPage={14}
+            onPageChange={(page) => console.log({ page })}
+          />
         </Table>
       </div>
     </main>
