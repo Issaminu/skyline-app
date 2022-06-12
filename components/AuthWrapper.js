@@ -7,10 +7,11 @@ import Loading from "./Loading";
 
 const AuthWrapper = ({ children }) => { //WE USE THE AUTH WRAPPER TO WAIT TILL THE PAGE AND EVERYTHING ELSE FINISHES LOADING BEFORE SHOWING IT TO THE USER, OTHERWISE IT WILL LOOK BAD, TO CHECK THIS, COMMENT OUT THE LINE THAT RETURNS "NULL" AND REFRESH ANY PAGE.
   const router = useRouter();
+  let { user, error, isLoading } = useUser();
+
   if (router.pathname == 'api/Auth0GetUserInfoAPI') {
     return <>{children}</>;
   }
-  let { user, error, isLoading } = useUser();
   console.log(user)
   const authedRoutes = ['/dashboard', '...'] //ADD ALL THE ROUTES THAT REQUIRE THE USER TO BE LOGGED IN TO THIS ARRAY
   if (isLoading) return null;
