@@ -74,11 +74,11 @@ const Resident = (props) => {
         {resident.importance != 3 ?
           (resident.id == user.id ?
             <Dropdown.Item textValue="Remove user" key="logout" color="error" withDivider>
-              Quitter l'immeuble
+              Quitter l&apos;immeuble
             </Dropdown.Item>
             : (user.importance >= 2 ?
               <Dropdown.Item textValue="Remove user" key="logout" color="error" withDivider css={{ width: 'fit-content' }}>
-                Retirer cet utilisateur de l'immeuble
+                Retirer cet utilisateur de l&apos;immeuble
               </Dropdown.Item> : null)) : null}
       </Dropdown.Menu>
     </Dropdown>

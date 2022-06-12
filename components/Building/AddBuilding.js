@@ -71,7 +71,7 @@ const AddBuilding = () => {
     })
     setStartHousesNow(true)
     closeHandler()
-  }
+  };
   const customStyles = {
     control: (base, state) => ({
       ...base,
@@ -83,7 +83,7 @@ const AddBuilding = () => {
       ...base,
       maxHeight: '10rem',
     }),
-  }
+  };
   useEffect(() => {
     if (
       name?.target.value != null &&

@@ -120,7 +120,7 @@ const AddInvitation = (props) => {
                   userSelect: 'none',
                 }}
               >
-                Appartements occupés par l'invité
+                Appartements occupés par l&apos;invité
               </p>
               <Select
                 isMulti

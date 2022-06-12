@@ -5,7 +5,7 @@ import Loading from '../components/Loading'
 import MenuItem from '@mui/material/MenuItem';
 import { useEffect, useState } from "react";
 import Select from '@mui/material/Select';
-const payements = () => {
+const Payements = () => {
   const [selectedBuilding, setSelectedBuilding] = useState();
   const getBuildingsList = useQuery('getBuildings', async () => {
     const buildings = await JSON.parse((await axios.get('/api/getBuildingsListAPI')).data.buildings);
@@ -38,4 +38,4 @@ const payements = () => {
     </main >
   )
 }
-export default payements
+export default Payements

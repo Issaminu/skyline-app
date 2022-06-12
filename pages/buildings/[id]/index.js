@@ -19,7 +19,7 @@ import AddExpense from "../../../components/Expense/AddExpense";
 
 
 
-const buildingInfo = () => {
+const BuildingInfo = () => {
 
 
   const router = useRouter();
@@ -92,7 +92,7 @@ const buildingInfo = () => {
 
             <Card css={{ width: "23rem" }}>
               {/* <div height="fit-content"> */}
-              <Image css={{ border: '0rem solid', marginTop: "-0.8rem" }} showSkeleton src={getResult.data.building.thumbnail} height={"16rem"} width="100%" />
+              <Image css={{ border: '0rem solid', marginTop: "-0.8rem" }} alt="image de l'immeuble" showSkeleton src={getResult.data.building.thumbnail} height={"16rem"} width="100%" />
               {/* </div> */}
               {/* <h2>{getResult.data.building.name}</h2>
                                 <h4>{getResult.data.building.location}</h4> */}
@@ -115,7 +115,7 @@ const buildingInfo = () => {
                   }}
                 >
                   <Table.Header css={{}}>
-                    <Table.Column css={{ width: '13rem' }}>Fiche d'information</Table.Column>
+                    <Table.Column css={{ width: '13rem' }}>Fiche d&apos;information</Table.Column>
                     <Table.Column css={{ paddingRight: "0rem !important", display: 'flex', flexDirection: 'row' }}>
                       <div style={{ width: "3rem", marginRight: "0rem", marginLeft: '4.3rem' }}>
                         <DeleteBuilding />
@@ -160,4 +160,4 @@ const buildingInfo = () => {
   )
 }
 
-export default buildingInfo
+export default BuildingInfo

@@ -50,7 +50,7 @@ const SelectCreatorHouse = (props) => {
       appartement.value = appartement.name;
       appartement.label = appartement.name;
     });
-  }, []);
+  }, [props.DataToSend.appartements]);
   useEffect(() => {
     if (selectedCreatorHouses?.[0]) {
       setSubmitStatus3(false);

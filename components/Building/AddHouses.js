@@ -72,7 +72,7 @@ const AddHouses = (props) => {
             >
               <Modal.Header>
                 <h3 b="true" style={{ margin: 0 }}>
-                  Ajout d'appartements
+                  Ajout d&apos;appartements
                 </h3>
               </Modal.Header>
               <form onSubmit={addHouse}>

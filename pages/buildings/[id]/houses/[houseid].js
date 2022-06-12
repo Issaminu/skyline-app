@@ -11,7 +11,7 @@ import { Image, css, Spacer, Modal, Button, Text, Card, Textarea, Grid, Col, Row
 // import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 // import { Modal } from "bootstrap";
-const houseInfo = (req, res) => {
+const HouseInfo = (req, res) => {
   const router = useRouter();
   const getHouse = useQuery('getOneHouse', async () => {
     const house = await JSON.parse((await axios.get('/api/getOneHouseAPI')).data.house);
@@ -64,9 +64,9 @@ const houseInfo = (req, res) => {
                       tableLayout: "auto"
                     }}
                   >
-                    <Table.Header css={{}}>
-                      <Table.Column css={{ width: '13rem' }}>Fiche d'information</Table.Column>
-                      <Table.Column css={{ paddingRight: "0rem !important", }}>
+                    <Table.Header>
+                      <Table.Column css={{ width: '13rem' }}>Fiche d&apos;information</Table.Column>
+                      <Table.Column css={{ paddingRight: "0rem !important" }}>
 
                       </Table.Column>
                     </Table.Header>
@@ -93,7 +93,7 @@ const houseInfo = (req, res) => {
                         <Table.Cell css={{ textAlign: 'right' }}>{getHouse.data.size} m²</Table.Cell>
                       </Table.Row>
                       <Table.Row key="5">
-                        <Table.Cell>% d'immeuble:</Table.Cell>
+                        <Table.Cell>% d&apos;immeuble:</Table.Cell>
                         <Table.Cell css={{ textAlign: 'right' }}>{(getHouse.data.size * 100 / getHouse.data.buildingSurface).toFixed(2)}%</Table.Cell>
                       </Table.Row>
                       <Table.Row key="6">
@@ -142,4 +142,4 @@ const houseInfo = (req, res) => {
   )
 }
 
-export default houseInfo
+export default HouseInfo

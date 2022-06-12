@@ -25,7 +25,7 @@ const ListInvitations = () => {
       </div>)
       :
       (<div style={{ marginTop: '4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-        <h2 style={{ display: 'flex', justifyContent: "center", color: '#555454' }}>Vous n'avez aucune invitation en attente.</h2>
+        <h2 style={{ display: 'flex', justifyContent: "center", color: '#555454' }}>Vous n&apos;avez aucune invitation en attente.</h2>
       </div>)
     )
   )

@@ -19,7 +19,7 @@ import { useMutation } from "react-query";
 import { useS3Upload } from 'next-s3-upload';
 import axios from 'axios';
 import AddAPhotoRoundedIcon from '@mui/icons-material/AddAPhotoRounded';
-const setup = (props) => {
+const Setup = (props) => {
   const { user } = useUser();
   // const [visible, setVisible] = useState(true);
 
@@ -250,5 +250,5 @@ export const getServerSideProps = withPageAuthRequired({
 // }
 
 
-export default setup;
+export default Setup;
 // export const getServerSideProps = withPageAuthRequired();

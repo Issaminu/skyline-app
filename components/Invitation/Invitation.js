@@ -105,8 +105,8 @@ const Invitation = (props) => {
                     {myIncludes(invitation.receiverHouseNames) ?
                       <span style={{ display: 'inline', color: 'black', fontSize: '1.4rem' }}> aux appartements </span>
                       :
-                      <span style={{ display: 'inline', color: 'black', fontSize: '1.4rem' }}> à l'appartement </span>}
-                    <b title={invitation.receiverHouseNames}>{invitation.receiverHouseNames}</b> d'immeuble <b title={invitation.buildingName}>{invitation.buildingName}</b> </b></p>
+                      <span style={{ display: 'inline', color: 'black', fontSize: '1.4rem' }}> à l&apos;appartement </span>}
+                    <b title={invitation.receiverHouseNames}>{invitation.receiverHouseNames}</b> d&apos;immeuble <b title={invitation.buildingName}>{invitation.buildingName}</b> </b></p>
                 </div>
 
                 {invitation.isAdmin ?
@@ -146,8 +146,8 @@ const Invitation = (props) => {
                     {myIncludes(invitation.receiverHouseNames) ?
                       <span style={{ display: 'inline', color: '#595959', fontSize: '1.4rem' }}> aux appartements </span>
                       :
-                      <span style={{ display: 'inline', color: '#595959', fontSize: '1.4rem' }}> à l'appartement </span>}
-                    <b title={invitation.receiverHouseNames}>{invitation.receiverHouseNames}</b> d'immeuble <b title={invitation.buildingName}>{invitation.buildingName}</b> </b></p>
+                      <span style={{ display: 'inline', color: '#595959', fontSize: '1.4rem' }}> à l&apos;appartement </span>}
+                    <b title={invitation.receiverHouseNames}>{invitation.receiverHouseNames}</b> d&apos;immeuble <b title={invitation.buildingName}>{invitation.buildingName}</b> </b></p>
                 </div>
               </Grid>
               {/* <Spacer x={4} /> */}
