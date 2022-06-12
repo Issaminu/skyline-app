@@ -118,8 +118,6 @@ export default function Index(props) {
     );
   } else {
     return (<>
-      <Navbar />
-
       <h1>You are NOT logged in! <Link href='/api/auth/login'><a>Click here to log in</a></Link></h1>
     </>)
   }
