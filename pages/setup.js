@@ -1,7 +1,3 @@
-
-// import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-// import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
-// import { withRouter } from 'next/router';
 import Navbar from "../components/Navbar/Navbar";
 import { useRouter } from 'next/router';
 import { useUser } from '@auth0/nextjs-auth0';
@@ -21,75 +17,46 @@ import axios from 'axios';
 import AddAPhotoRoundedIcon from '@mui/icons-material/AddAPhotoRounded';
 const Setup = (props) => {
   const { user } = useUser();
-  // const [visible, setVisible] = useState(true);
-
-  // console.log(user);
-  // var currentdate = new Date();
-  // console.log(currentdate.toISOString());
-
-  // console.log(currentdate);
-  // var datetime = "Last Sync: " + currentdate.getDay() + "/" + currentdate.getMonth()
-  //     + "/" + currentdate.getFullYear() + " @ "
-  //     + currentdate.getHours() + ":"
-  //     + currentdate.getMinutes() + ":" + currentdate.getSeconds();
-  // console.log(datetime);
-
   const router = useRouter()
   const nameIcon = <PersonIcon />
-  // const passwordIcon = <HttpsIcon />
-  // const calendarIcon = <CalendarTodayIcon />
   const [name, setName] = useState(null);
   const [phone, setPhone] = useState(null);
   const [image, setImage] = useState(null);
   const [buttonStatus, setButtonStatus] = useState(true);
   const sendSetup = useMutation((DataToSend) => {
-    // console.log(DataToSend);
     const ress = axios.post('/api/setupAPI', DataToSend).data;
-    // console.log(ress);
     return ress;
   }, {
     onSuccess: async () => {
-      // console.log("success");
       user.name = ress.body.user.name;
       user.phone = ress.body.user.phone;
-      // user.type = ress.body.user.type;
       user.accountStatus = ress.body.user.accountStatus;
-
       router.push('/');
     },
   });
-
   async function handleSetupAPI(e) {
     e.preventDefault();
-    // return null;
     let dataToSend = {};
     if (!name || !phone) return null;
     dataToSend.name = name.replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
       letter.toUpperCase()
     );
-    // let body = encodeURIComponent(image.name);
     dataToSend.phone = phone;
     dataToSend.email = user.email;
     console.log(dataToSend);
-    // dataToSend.image = "/default.jpg";
-    // image = imageUrl;
     if (imageUrl) {
       dataToSend.image = imageUrl;
     } else {
       dataToSend.image = "/default.jpg";
     }
-    // console.log(dataToSend);
     sendSetup.mutate(dataToSend);
   }
   let { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
   let [imageUrl, setImageUrl] = useState();
-  // console.log(imageUrl);
-
   let handleFileChange = async file => {
     let { url } = await uploadToS3(file);
     setImageUrl(url);
   };
-
   useEffect(() => {
     if (!name || !phone) {
       setButtonStatus(true);
@@ -107,7 +74,6 @@ const Setup = (props) => {
         preventClose
         css={{
           width: "60rem", display: "flex", justifyContent: 'center',
-          // backgroundImage: "/public/LoginBackgroundImage.webp",
         }}>
         <Modal.Header>
           <h3>Remplissez vos informations</h3>
@@ -148,9 +114,8 @@ const Setup = (props) => {
             </input> */}
             <div>
               <FileInput onChange={handleFileChange} />
-
               <Button color="neutral" flat onClick={openFileDialog} css={{ width: '100%', minWidth: '100%' }}><AddAPhotoRoundedIcon style={{ width: '1rem', height: '1rem', marginRight: '1rem' }} />Ajoutez votre photo</Button>
-              {/* <Image layout="fill" src="https://skyline-app-bucket.s3.eu-west-3.amazonaws.com/next-s3-uploads/03aabdd3-16dc-400d-81c1-2bab582b9ab7/avatar-49119fe7e3364a59bf8e09bb6340f70e.jpg" /> */}
+              {/* <Image layout="fill" src="https:
               {/* {imageUrl && <img src={imageUrl} />} */}
             </div>
             <br></br>
@@ -180,14 +145,12 @@ const Setup = (props) => {
   )
 }
 export const getServerSideProps = withPageAuthRequired({
-
   async getServerSideProps(ctx) {
     const session = getSession(ctx.req, ctx.res);
     const prisma = await new PrismaClient();
     let currentdate = new Date();
     currentdate = currentdate.toISOString();
-    // console.log(session.user)
-    const DBuser = await prisma.users.upsert({ //upsert() is Prisma's create if not exist
+    const DBuser = await prisma.users.upsert({
       where: {
         email: session.user.email,
       },
@@ -195,7 +158,6 @@ export const getServerSideProps = withPageAuthRequired({
         email: session.user.email,
         name: 'TEMP',
         image: '/default.jpg',
-        // type: 'TEMP',
         accountStatus: 'TEMP',
         email_Verified: session.user.email_verified,
         create_time: currentdate,
@@ -204,24 +166,16 @@ export const getServerSideProps = withPageAuthRequired({
       update: {}
     });
     if (DBuser) {
-      // res.json({ user: user });
-      // console.log("heeeho:");
-      // console.log(session.user);
       session.user.name = DBuser.name;
       session.user.image = DBuser.image;
-      // session.user.type = DBuser.type;
       session.user.accountStatus = DBuser.accountStatus;
-      // session.user.email_Verified = DBuser.email_Verified;
       prisma.$disconnect();
-      // console.log('bye!');
       return {
         props: {
           user: session.user
         }
       }
     }
-    // res.json({ user: null });
-
     prisma.$disconnect();
     return {
       props: {
@@ -230,25 +184,4 @@ export const getServerSideProps = withPageAuthRequired({
     }
   }
 })
-
-
-
-
-// async function handleSetup1(user) { //THIS IS DEPRICATED FOR getServerSideProps
-
-//     if (user) {
-//         let ress = await fetch('/api/handleSetup1', {
-//             method: 'POST',
-//             headers: { 'Content-Type': 'application/json' },
-//             body: JSON.stringify(user),
-//         })
-//             .then(function (response) {
-//                 return response.json();
-//             }).then(data => console.log(JSON.stringify(data)))
-//         return ress;
-//     }
-// }
-
-
 export default Setup;
-// export const getServerSideProps = withPageAuthRequired();
