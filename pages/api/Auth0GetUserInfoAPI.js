@@ -1,12 +1,14 @@
 import prisma from '../../components/prismaClient';
 
 const Auth0GetUserInfoAPI = async (req, res) => {
-  const user = await prisma.users.findUnique({
+  // console.log(req.body.email)
+  const user = await prisma.users.findFirst({
     where: {
       email: req.body.email
     },
   });
   if (user) {
+    // console.log(user)
     res.json({ user: user });
     prisma.$disconnect();
     return res;
