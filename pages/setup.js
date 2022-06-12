@@ -24,7 +24,7 @@ const Setup = (props) => {
   const [image, setImage] = useState(null);
   const [buttonStatus, setButtonStatus] = useState(true);
   const sendSetup = useMutation((DataToSend) => {
-    const ress = axios.post('/api/setupAPI', DataToSend).data;
+    const ress = axios.post('/api/setupAPI', DataToSend).data.result;
     return ress;
   }, {
     onSuccess: async () => {
