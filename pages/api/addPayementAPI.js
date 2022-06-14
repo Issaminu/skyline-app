@@ -2,7 +2,6 @@ import prisma from '../../components/prismaClient'
 import { getSession } from '@auth0/nextjs-auth0';
 
 const addPayementAPI = async (req, res) => {
-  const session = getSession(req, res);
   let currentdate = new Date();
   currentdate = currentdate.toISOString();
   const payement = await prisma.payements.create({

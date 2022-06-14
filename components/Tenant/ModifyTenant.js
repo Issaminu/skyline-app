@@ -10,8 +10,11 @@ import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios';
 import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
 import toast from 'react-hot-toast';
+import { useRecoilState } from 'recoil';
+import { myUserState } from '../../store/atoms';
 
 const ModifyTenant = (getTenant) => {
+    const [myUser, setMyUser] = useRecoilState(myUserState);
     const [visible, setVisible] = useState(false);
     // const [editVisible, setEditVisible] = useState(false);
     // const editHandler = () => setEditVisible(true);
@@ -75,7 +78,7 @@ const ModifyTenant = (getTenant) => {
             // notes: "TEMP", //THIS NEEDS TO GET REMOVED
             // rent: parseFloat(rent.target.value),
             // appartementSize: parseFloat(appartementSize.target.value),
-            teamid: user.id,
+            teamid: myUser.id,
         };
         // console.log(DataToSend)
         modifyMyTenant.mutate(DataToSend);

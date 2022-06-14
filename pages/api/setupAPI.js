@@ -39,7 +39,7 @@ const setupAPI = async (req, res) => {
     // await req.body.save();
     // console.log('REQ: ' + req.session.get('user'));
     prisma.$disconnect();
-    res.json({ result: JSON.stringify((DBuser)) });
+    res.json({ result: DBuser });
     // console.log('bye');
 
     return res;

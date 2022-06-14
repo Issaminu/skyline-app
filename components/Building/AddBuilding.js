@@ -19,7 +19,8 @@ import Select from 'react-select'
 import cityOptions from '../MoroccoCities.json'
 import AddHouses from './AddHouses';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
-
+import { useRecoilState } from 'recoil';
+import { myUserState } from '../../store/atoms';
 
 const AddBuilding = () => {
   const [visible, setVisible] = useState(false)
@@ -29,7 +30,9 @@ const AddBuilding = () => {
   const [houses, setHouses] = useState()
   const [submitStatus, setSubmitStatus] = useState(true)
   const queryClient = useQueryClient()
-  const { user } = useUser()
+  const { user } = useUser();
+  const [myUser, setMyUser] = useRecoilState(myUserState);
+
   const [selectedCityOption, setSelectedCityOption] = useState(null)
   const [startHousesNow, setStartHousesNow] = useState(false)
   const [card1, setCard1] = useState('inherit')
@@ -67,7 +70,8 @@ const AddBuilding = () => {
       city: selectedCityOption.value,
       surface: parseFloat(surface.target.value),
       houses: parseInt(houses.target.value),
-      teamid: user.id,
+      teamid: myUser.id,
+      myUser: myUser,
     })
     setStartHousesNow(true)
     closeHandler()

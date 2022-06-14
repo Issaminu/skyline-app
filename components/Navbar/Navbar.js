@@ -8,7 +8,10 @@ import Link from 'next/link';
 import { User } from '@nextui-org/react';
 import { useUser } from '@auth0/nextjs-auth0';
 import { useQuery, useQueryClient } from 'react-query';
+import { useRecoilState } from 'recoil';
+import { myUserState } from '../../store/atoms';
 const Navbar = () => {
+  const [myUser, setMyUser] = useRecoilState(myUserState);
   const router = useRouter();
   const { user } = useUser();
   const queryClient = useQueryClient();
@@ -84,7 +87,7 @@ const Navbar = () => {
                 <Link href="/invitations" style={{ textDecoration: 'none', color: 'inherit' }} passHref>
                   <Button light css={isActiveRoute('/invitations')} color="stuff" auto>
                     Invitations
-                    {user.notificationCount > 0 ?
+                    {myUser?.notificationCount > 0 ?
                       <div style={{
                         backgroundColor: '#FF0000',
                         borderRadius: '2rem',
@@ -100,7 +103,7 @@ const Navbar = () => {
                         marginTop: '0.6rem',
                         marginBottom: '0.5rem',
                       }}>
-                        <span style={{ fontSize: '0.64rem' }}>{user.notificationCount}</span>
+                        <span style={{ fontSize: '0.64rem' }}>{myUser?.notificationCount}</span>
                       </div>
                       : null}
                   </Button></Link>
@@ -111,8 +114,8 @@ const Navbar = () => {
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <User
-              src={user.image}
-              name={user.name}
+              src={myUser?.image}
+              name={myUser?.name}
               size="sm"
               css={{
                 "& .nextui-user-name": {

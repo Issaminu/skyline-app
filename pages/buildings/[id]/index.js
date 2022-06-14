@@ -16,12 +16,14 @@ import { useUser } from "@auth0/nextjs-auth0";
 import AddPayement from "../../../components/Payement/AddPayement";
 import AddExpense from "../../../components/Expense/AddExpense";
 // import { Modal } from "bootstrap";
-
+import { useRecoilState } from 'recoil';
+import { myUserState } from '../../../store/atoms';
 
 
 const BuildingInfo = () => {
 
 
+  const [myUser, setMyUser] = useRecoilState(myUserState);
   const router = useRouter();
   const { user } = useUser();
   const queryClient = useQueryClient();
@@ -69,7 +71,7 @@ const BuildingInfo = () => {
           {/* </div> */}
           {/* {getResult.data.building.adminIDs.includes(user.id) ? */}
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            {getResult.data.building.adminIDs.includes(user.id) ? (
+            {getResult.data.building.adminIDs.includes(myUser.id) ? (
               <>
                 <AddExpense building={getResult.data.building} />
                 <Spacer />

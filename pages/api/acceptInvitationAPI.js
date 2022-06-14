@@ -2,7 +2,6 @@ import { getSession } from '@auth0/nextjs-auth0';
 import Receiver from 'tailwind/dist/wires/commandbus/amqp/Receiver';
 import prisma from '../../components/prismaClient';
 
-
 const acceptInvitationAPI = async (req, res) => { //THIS API IS CALLED ONLY BY INVITATION RECEIVERS, NOT BY ADMINS
   const session = getSession(req, res);
   let invitation = null;
@@ -28,7 +27,7 @@ const acceptInvitationAPI = async (req, res) => { //THIS API IS CALLED ONLY BY I
         id: req.body.buildingId
       },
       data: {
-        residentIDs: building.residentIDs + ", " + session.user.id,
+        residentIDs: building.residentIDs + ", " + req.body.myUser.id,
         update_time: currentdate
       }
     });
@@ -48,7 +47,7 @@ const acceptInvitationAPI = async (req, res) => { //THIS API IS CALLED ONLY BY I
             id: parseInt(houseId)
           },
           data: {
-            residentIDs: house.residentIDs + ", " + session.user.id,
+            residentIDs: house.residentIDs + ", " + req.body.myUser.id,
             update_time: currentdate
 
           }
@@ -59,7 +58,7 @@ const acceptInvitationAPI = async (req, res) => { //THIS API IS CALLED ONLY BY I
             id: parseInt(houseId)
           },
           data: {
-            residentIDs: String(session.user.id),
+            residentIDs: String(req.body.myUser.id),
             update_time: currentdate
 
           }
@@ -72,7 +71,7 @@ const acceptInvitationAPI = async (req, res) => { //THIS API IS CALLED ONLY BY I
           id: req.body.buildingId
         },
         data: {
-          adminIDs: building.adminIDs + ", " + session.user.id,
+          adminIDs: building.adminIDs + ", " + req.body.myUser.id,
           update_time: currentdate
 
         }
@@ -117,7 +116,7 @@ const acceptInvitationAPI = async (req, res) => { //THIS API IS CALLED ONLY BY I
   };
   if (invitation) {
     await prisma.users.update({
-      where: { id: session.user.id },
+      where: { id: req.body.myUser.id },
       data: {
         notificationCount: { increment: -1 },
         update_time: currentdate

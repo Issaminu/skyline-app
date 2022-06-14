@@ -11,9 +11,11 @@ import Select from 'react-select';
 import cityOptions from '../MoroccoCities.json';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
-
+import { useRecoilState } from 'recoil';
+import { myUserState } from '../../store/atoms';
 const AddInvitation = (props) => {
   const [visible, setVisible] = useState(false);
+  const [myUser, setMyUser] = useRecoilState(myUserState);
   const [name, setName] = useState();
   const [location, setLocation] = useState();
   const [surface, setSurface] = useState();
@@ -73,6 +75,7 @@ const AddInvitation = (props) => {
       isAdmin: adminSelection,
       receiverHouseIDs: receiverHouseIDs,
       receiverHouseNames: receiverHouseNames,
+      myUser: myUser
     };
     addMyInvitation.mutate(DataToSend);
     setAdminSelection(false);
@@ -104,7 +107,7 @@ const AddInvitation = (props) => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem" }}>
             <Input bordered type="email" label="Email de l'invité" name="invitationName" onChange={setReceiverEmail} required={true} />
 
-            {props.building.adminIDs.includes(user.id) ?
+            {props.building.adminIDs.includes(myUser.id) ?
               <Checkbox isSelected={adminSelection} onChange={setAdminSelection} color="primary" size="sm">
                 Rendez cet utilisateur un administrateur
               </Checkbox>

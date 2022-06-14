@@ -10,12 +10,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import toast from 'react-hot-toast';
 import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
 const DeleteBuilding = () => {
-  const { user } = useUser();
   const router = useRouter();
   const deleteThisBuilding = (async () => {
     // console.log(user.user.buildingIDs)
     await axios.get('/api/delBuildingAPI');
-    user.buildingIDs.pop(router.asPath.split("/").slice(2).join("/"))
+    // user.buildingIDs.pop(router.asPath.split("/").slice(2).join("/"))
     toast.success("Action réalisée avec succès");
 
     router.push('/buildings');

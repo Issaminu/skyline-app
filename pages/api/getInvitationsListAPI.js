@@ -3,11 +3,12 @@ import { getSession } from '@auth0/nextjs-auth0';
 
 
 const getInvitationsList = async (req, res) => {
-  const session = getSession(req, res);
+  // const session = getSession(req, res);
+  // console.log(req.body)
   const adminOfBuildings = await prisma.buildings.findMany({
     where: {
       adminIDs: {
-        contains: String(session.user.id)
+        contains: String(req.body.myUser.id)
       }
     },
     select: {
@@ -23,7 +24,7 @@ const getInvitationsList = async (req, res) => {
   })
   const userInvites = await prisma.invitations.findMany({
     where: {
-      receiverId: session.user.id,
+      receiverId: req.body.myUser.id,
       status: "pendingAcceptance"
     },
     orderBy: {
@@ -57,7 +58,7 @@ const getInvitationsList = async (req, res) => {
   const invitations = [...userInvites, ...adminValidates];
   // console.log(invitations)
   let position = "";
-  session.user.notificationCount = parseInt(invitations.length);
+  req.body.myUser.notificationCount = parseInt(invitations.length);
 
   invitations.map(invitation => {
     // invitation.receiverHouseNames = "1g1, 2f1, 53g1, 345g, 4234f, 345g "
@@ -70,16 +71,15 @@ const getInvitationsList = async (req, res) => {
     }
   });
   if (invitations) {
-    // console.log("wtfff")
-
-    res.invitations = invitations;
-    res.json({ invitations: JSON.stringify(invitations) });
+    const result = { invitations: JSON.stringify(invitations), myUser: req.body.myUser };
+    // console.log(result);
+    res.json({ result: result });
     prisma.$disconnect();
     return res;
   };
-  console.log("wtf")
+  // console.log("wtf")
   res.invitations = null;
-  res.json({ invitations: null });
+  res.json({ result: null });
   prisma.$disconnect();
   return res;
 

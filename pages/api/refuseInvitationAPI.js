@@ -3,13 +3,12 @@ import prisma from '../../components/prismaClient';
 
 
 const refuseInvitationAPI = async (req, res) => {
-  const session = getSession(req, res);
   let currentdate = new Date();
   currentdate = currentdate.toISOString();
   const adminOfBuildings = await prisma.buildings.findMany({
     where: {
       adminIDs: {
-        contains: String(session.user.id)
+        contains: String(req.body.myUser.id)
       }
     },
     select: {
@@ -27,7 +26,7 @@ const refuseInvitationAPI = async (req, res) => {
   //   where: {
   //     id: { equals: req.body.invitationId },
   //     OR: [
-  //       { receiverId: session.user.id },
+  //       { receiverId: req.body.myUser.id },
   //       { buildingId: { in: adminOfBuildingsArray } }
   //     ]
   //   }
@@ -38,13 +37,13 @@ const refuseInvitationAPI = async (req, res) => {
       id: req.body.invitationId,
     }
   });
-  // session.user.notificationCount = session.user.notificationCount - 1;
-  // console.log(session.user);
+  // req.body.myUser.notificationCount = req.body.myUser.notificationCount - 1;
+  // console.log(req.body.myUser);
   if (invitation) {
     await prisma.users.update({
-      where: { id: session.user.id },
+      where: { id: req.body.myUser.id },
       data: {
-        notificationCount: session.user.notificationCount - 1,
+        notificationCount: req.body.myUser.notificationCount - 1,
         update_time: currentdate
 
       }

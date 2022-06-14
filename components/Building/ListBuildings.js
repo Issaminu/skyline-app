@@ -9,13 +9,22 @@ import axios from "axios";
 import { useUser } from "@auth0/nextjs-auth0";
 // import { QueryClient } from 'react-query'
 // import { useEffect } from "react";
+import { useRecoilState } from 'recoil';
+import { myUserState } from '../../store/atoms';
 
 const ListBuildings = () => {
   // const { user } = useUser();
-  // console.log(user);
+  const [myUser, setMyUser] = useRecoilState(myUserState);
+  // console.log(myUser);
   // user.user.buildingIDs = [];
+  let DataToSend = {
+    email: myUser.email,
+    myUser: myUser,
+  };
   const getBuildingsList = useQuery('getBuildings', async () => {
-    const buildings = await JSON.parse((await axios.get('/api/getBuildingsListAPI')).data.buildings);
+
+    // console.log(DataToSend);
+    const buildings = await JSON.parse((await axios.post('/api/getBuildingsListAPI', DataToSend)).data.buildings);
     return buildings;
   })
 

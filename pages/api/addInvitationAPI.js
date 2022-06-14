@@ -3,7 +3,6 @@ import prisma from '../../components/prismaClient'
 import { getSession } from '@auth0/nextjs-auth0';
 
 const addInvitationAPI = async (req, res) => {
-  const session = getSession(req, res);
 
   // console.log("here's req:");
   // console.log(session.req.body.name);
@@ -51,21 +50,21 @@ const addInvitationAPI = async (req, res) => {
       message: 'Cet utilisateur est déjà invité à cet immeuble.'
     });
   }
-  if (!(req.body.building.adminIDs.includes(String((session.user.id)))) && req.body.isAdmin) {
+  if (!(req.body.building.adminIDs.includes(String((req.body.myUser.id)))) && req.body.isAdmin) {
     return res.status(400).send({
       message: 'Une erreur est survenue.'
     });
   }
   let senderIsAdmin = false;
-  if (req.body.building.adminIDs.includes(String((session.user.id)))) {
+  if (req.body.building.adminIDs.includes(String((req.body.myUser.id)))) {
     senderIsAdmin = true;
   };
   const invitation = await prisma.invitations.create({
     data: {
       buildingId: req.body.building.id,
       buildingName: req.body.building.name,
-      senderId: session.user.id,
-      senderName: session.user.name,
+      senderId: req.body.myUser.id,
+      senderName: req.body.myUser.name,
       receiverId: invitedUser.id,
       receiverName: invitedUser.name,
       receiverEmail: invitedUser.email,
@@ -93,9 +92,9 @@ const addInvitationAPI = async (req, res) => {
 
 
   if (invitation) {
-    // session.user.invitationIDs.push(invitation.id);
+    // req.body.myUser.invitationIDs.push(invitation.id);
     // session.save();
-    // console.log(session.user.invitationIDs)
+    // console.log(req.body.myUser.invitationIDs)
     res.invitation = invitation;
     res.json({ invitation: invitation });
     // onsole.log("heeeho:");

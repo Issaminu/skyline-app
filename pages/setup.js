@@ -14,24 +14,34 @@ import Image from "next/image";
 import { useMutation } from "react-query";
 import { useS3Upload } from 'next-s3-upload';
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import { myUserState } from '../store/atoms';
 import AddAPhotoRoundedIcon from '@mui/icons-material/AddAPhotoRounded';
 const Setup = (props) => {
   const { user } = useUser();
+  const [myUser, setMyUser] = useRecoilState(myUserState);
+  // console.log(myUser);
+  // const router = useRouter();
   const router = useRouter()
+
+  if (myUser.accountStatus != "TEMP" && router.pathname == '/setup') {
+    router.push('/'); //HERE IS WHERE FULLY SETUP USERS WHO TRY TO GO TO SETUP AGAIN GET REDIRECTED TO ROOT DIRECTORY
+  }
   const nameIcon = <PersonIcon />
   const [name, setName] = useState(null);
   const [phone, setPhone] = useState(null);
   const [image, setImage] = useState(null);
   const [buttonStatus, setButtonStatus] = useState(true);
   const sendSetup = useMutation((DataToSend) => {
-    const ress = axios.post('/api/setupAPI', DataToSend).data;
-    console.log(ress);
+    const ress = axios.post('/api/setupAPI', DataToSend).then((res) => {
+      return res.data;
+    });
     return ress;
   }, {
     onSuccess: async () => {
-      user.name = ress.body.user.name;
-      user.phone = ress.body.user.phone;
-      user.accountStatus = ress.body.user.accountStatus;
+      // user.name = ress.body.user.name;
+      // user.phone = ress.body.user.phone;
+      // user.accountStatus = ress.body.user.accountStatus;
       router.push('/');
     },
   });
@@ -44,7 +54,7 @@ const Setup = (props) => {
     );
     dataToSend.phone = phone;
     dataToSend.email = user.email;
-    console.log(dataToSend);
+    // console.log(dataToSend);
     if (imageUrl) {
       dataToSend.image = imageUrl;
     } else {

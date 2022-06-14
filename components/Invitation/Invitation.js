@@ -4,8 +4,10 @@ import { useMutation, useQueryClient } from 'react-query'
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useUser } from '@auth0/nextjs-auth0';
-
+import { useRecoilState } from 'recoil';
+import { myUserState } from '../../store/atoms';
 const Invitation = (props) => {
+  const [myUser, setMyUser] = useRecoilState(myUserState);
   const { user } = useUser();
   // console.log(props)
   const invitation = props.invitation;
@@ -13,7 +15,8 @@ const Invitation = (props) => {
   // console.log(invitation)
   const refuseInvitation = () => {
     let DataToSend = {
-      invitationId: invitation.id
+      invitationId: invitation.id,
+      myUser: myUser
     }
     deleteInvitation.mutate(DataToSend);
   }
@@ -25,7 +28,7 @@ const Invitation = (props) => {
     },
     {
       onSuccess: async () => {
-        user.notificationCount = user.notificationCount - 1;
+        myUser.notificationCount = myUser.notificationCount - 1;
         queryClient.invalidateQueries('getInvitations');
         queryClient.invalidateQueries('getBuildings');
         toast.success("Action réalisée avec succès");
@@ -40,6 +43,7 @@ const Invitation = (props) => {
       isAdmin: invitation.isAdmin,
       receiverId: invitation.receiverId,
       receiverHouseIDs: invitation.receiverHouseIDs,
+      myUser: myUser,
     }
     confirmInvitation.mutate(DataToSend);
   }
@@ -49,7 +53,10 @@ const Invitation = (props) => {
     },
     {
       onSuccess: async () => {
-        user.notificationCount = user.notificationCount - 1;
+        let tempObj = { ...myUser };
+        tempObj.notificationCount = tempObj.notificationCount - 1;
+        setMyUser(tempObj);
+        // myUser.notificationCount = myUser.notificationCount - 1;
         queryClient.invalidateQueries('getInvitations');
         queryClient.invalidateQueries('getBuildings');
         if (invitation.senderIsAdmin) {
@@ -66,6 +73,7 @@ const Invitation = (props) => {
       buildingId: invitation.buildingId,
       receiverId: invitation.receiverId,
       receiverHouseIDs: invitation.receiverHouseIDs,
+      myUser: myUser,
     }
     approveInvitation.mutate(DataToSend);
   }
@@ -75,7 +83,7 @@ const Invitation = (props) => {
     },
     {
       onSuccess: async () => {
-        user.notificationCount = user.notificationCount - 1;
+        myUser.notificationCount = myUser.notificationCount - 1;
         queryClient.invalidateQueries('getInvitations');
         queryClient.invalidateQueries('getBuildings');
         // if(invitation.senderIsAdmin) {

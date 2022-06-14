@@ -2,10 +2,9 @@ import { getSession } from '@auth0/nextjs-auth0';
 import prisma from '../../components/prismaClient';
 
 const getExpensesListAPI = async (req, res) => {
-  const session = getSession(req, res);
   const buildings = await prisma.buildings.findMany({
     where: {
-      residentIDs: { contains: String(session.user.id) }
+      residentIDs: { contains: String(req.body.myUser.id) }
     }
   });
   let expenses = [];

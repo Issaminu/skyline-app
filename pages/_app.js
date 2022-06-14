@@ -1,15 +1,23 @@
 import { createTheme, NextUIProvider, globalCss } from "@nextui-org/react"
 import AuthWrapper from "../components/AuthWrapper";
 import { UserProvider, useUser } from '@auth0/nextjs-auth0';
+import MyUser from '../components/MyUserProvider';
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools'
 import '../styles/globals.css';
 import Navbar from "../components/Navbar/Navbar";
 import toast, { Toaster } from 'react-hot-toast';
-
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from 'recoil';
+let user = null;
 const queryClient = new QueryClient();
 function MyApp({ Component, pageProps }) {
-
+  // let user = [];
   const theme = createTheme({
     type: "light", // it could be "light" or "dark"
     theme: {
@@ -24,16 +32,23 @@ function MyApp({ Component, pageProps }) {
   })
   return (
     <UserProvider>
-      <NextUIProvider theme={theme}>
-        <AuthWrapper>
-          <QueryClientProvider client={queryClient}>
-            <Navbar />
-            <Toaster />
-            <Component {...pageProps} />
-            <ReactQueryDevtools />
-          </QueryClientProvider>
-        </AuthWrapper>
-      </NextUIProvider>
+      <QueryClientProvider client={queryClient}>
+        {/* {user = useUser()} */}
+        {/* <MyUser.Provider> */}
+        <NextUIProvider theme={theme}>
+
+          <RecoilRoot>
+            <AuthWrapper>
+              <Navbar />
+              <Toaster />
+              <Component {...pageProps} />
+            </AuthWrapper>
+          </RecoilRoot>
+        </NextUIProvider>
+
+        {/* </MyUser.Provider> */}
+        <ReactQueryDevtools />
+      </QueryClientProvider>
     </UserProvider>
   );
 }

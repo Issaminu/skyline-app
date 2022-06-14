@@ -12,16 +12,19 @@ import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import LocalPoliceRoundedIcon from '@mui/icons-material/LocalPoliceRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded';
-
+import { useRecoilState } from 'recoil';
+import { myUserState } from '../../store/atoms';
 const Resident = (props) => {
+  const [myUser, setMyUser] = useRecoilState(myUserState);
   const { user } = useUser();
+  let tempMyUser = { ...myUser };
   // console.log(user);
 
   const resident = props.resident;
-  if (props.building.adminIDs.includes(user.id)) {
-    user.importance = 2;
-    if (props.building.creatorId == user.id) {
-      user.importance = 3;
+  if (props.building.adminIDs.includes(myUser.id)) {
+    tempMyUser.importance = 2;
+    if (props.building.creatorId == myUser.id) {
+      tempMyUser.importance = 3;
     }
   }
   let checked = (resident.importance == 2);
@@ -63,7 +66,7 @@ const Resident = (props) => {
             </span>
           </Text>
         </Dropdown.Item>
-        {user.importance == 3 ?
+        {tempMyUser.importance == 3 ?
           (resident.importance != 3 ?
             <Dropdown.Item textValue="Remove admin" key="settings" withDivider css={{ cursor: 'pointer' }}>
               <div style={{ display: 'flex', alignContent: 'center', justifyContent: 'space-between' }}>
@@ -72,11 +75,11 @@ const Resident = (props) => {
             </Dropdown.Item>
             : null) : null}
         {resident.importance != 3 ?
-          (resident.id == user.id ?
+          (resident.id == myUser.id ?
             <Dropdown.Item textValue="Remove user" key="logout" color="error" withDivider>
               Quitter l&apos;immeuble
             </Dropdown.Item>
-            : (user.importance >= 2 ?
+            : (myUser.importance >= 2 ?
               <Dropdown.Item textValue="Remove user" key="logout" color="error" withDivider css={{ width: 'fit-content' }}>
                 Retirer cet utilisateur de l&apos;immeuble
               </Dropdown.Item> : null)) : null}

@@ -3,7 +3,6 @@ import prisma from '../../components/prismaClient'
 import { getSession } from '@auth0/nextjs-auth0';
 
 const addBuildingAPI = async (req, res) => {
-  const session = getSession(req, res);
 
   // console.log("here's req:");
   // console.log(session.req.body.name);
@@ -23,9 +22,9 @@ const addBuildingAPI = async (req, res) => {
       // floors: parseInt(req.body.floors),
       surface: parseFloat(req.body.surface),
       houseQuantity: parseInt(req.body.houses),
-      creatorId: parseInt(session.user.id),
-      adminIDs: String(session.user.id),
-      residentIDs: String(session.user.id),
+      creatorId: parseInt(req.body.myUser.id),
+      adminIDs: String(req.body.myUser.id),
+      residentIDs: String(req.body.myUser.id),
       treasury: 0,
       houseIDs: null,
       // userIDs: "TEMP",
@@ -52,14 +51,14 @@ const addBuildingAPI = async (req, res) => {
             name: req.body.appartements[i].name,
             size: parseFloat(req.body.selectedCreatorHouses[j].size),
             buildingId: building.id,
-            residentIDs: String(session.user.id),
+            residentIDs: String(req.body.myUser.id),
             location: req.body.location,
             houseId: building.id + "-" + (i + 1),
             buildingName: req.body.name,
             status: "full",
             buildingSurface: parseFloat(req.body.surface),
-            adminIDs: String(session.user.id),
-            creatorId: parseInt(session.user.id),
+            adminIDs: String(req.body.myUser.id),
+            creatorId: parseInt(req.body.myUser.id),
             create_time: currentdate,
             update_time: currentdate,
           },
@@ -86,8 +85,8 @@ const addBuildingAPI = async (req, res) => {
         buildingName: req.body.name,
         status: "empty",
         buildingSurface: parseFloat(req.body.surface),
-        adminIDs: String(session.user.id),
-        creatorId: parseInt(session.user.id),
+        adminIDs: String(req.body.myUser.id),
+        creatorId: parseInt(req.body.myUser.id),
         create_time: currentdate,
         update_time: currentdate,
       },
@@ -128,16 +127,15 @@ const addBuildingAPI = async (req, res) => {
   // }
 
   if (building && appartements[0]) {
-    // session.user.buildingIDs.push(building.id);
+    // req.body.myUser.buildingIDs.push(building.id);
     // session.save();
-    // console.log(session.user.buildingIDs)
+    // console.log(req.body.myUser.buildingIDs)
     // res.building = building;
     // res.json({ building: building });
     res.building = building;
     res.appartements = appartements;
     res.json({ building: building, appartements: appartements });
     // console.log("heeeho:");
-    // console.log(res.user);
     prisma.$disconnect();
     return res;
   }
