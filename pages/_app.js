@@ -1,12 +1,11 @@
 import { createTheme, NextUIProvider, globalCss } from "@nextui-org/react"
 import AuthWrapper from "../components/AuthWrapper";
 import { UserProvider, useUser } from '@auth0/nextjs-auth0';
-import MyUser from '../components/MyUserProvider';
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from 'react-query/devtools'
 import '../styles/globals.css';
 import Navbar from "../components/Navbar/Navbar";
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import {
   RecoilRoot,
   atom,

@@ -15,5 +15,14 @@ const nextConfig = {
       `${process.env.S3_UPLOAD_BUCKET}.s3.${process.env.S3_UPLOAD_REGION}.amazonaws.com`],
   },
 }
+const intercept = require("intercept-stdout");
+function interceptStdout(text) {
+  if (text.includes('Duplicate atom key')) {
+    return ''
+  }
+  return text
+}
 
+// Intercept in dev and prod
+intercept(interceptStdout)
 module.exports = nextConfig
