@@ -113,7 +113,7 @@ const ListPayements = (props) => {
           shadow
           noMargin
           align="center"
-          rowsPerPage={14}
+          rowsPerPage={11}
           onPageChange={(page) => console.log({ page })}
         />
       </Table>

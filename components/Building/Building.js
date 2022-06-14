@@ -18,6 +18,7 @@ const Building = (building) => {
           showSkeleton
           src={thisBuilding.thumbnail}
           height="100%"
+          css={{ maxHeight: '26rem' }}
           width="100%"
           alt={thisBuilding.name}
         />

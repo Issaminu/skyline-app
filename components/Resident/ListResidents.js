@@ -3,7 +3,7 @@
 import { Grid, Container, Card, Button, Image, css } from "@nextui-org/react"
 // import { useEffect, useState } from "react";
 import Building from "../Building/Building";
-import Loading from '../Loading'
+// import Loading from '../Loading'
 import { useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import { useUser } from "@auth0/nextjs-auth0";
@@ -12,6 +12,8 @@ import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import LocalPoliceRoundedIcon from '@mui/icons-material/LocalPoliceRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import Resident from "./Resident";
+import { Loading, styled } from "@nextui-org/react";
+
 // import { QueryClient } from 'react-query'
 // import { useEffect } from "react";
 // import '../TagifyUser.js'
@@ -33,7 +35,28 @@ const ListResidents = (props) => {
   });
   // const queryClient = useQueryClient();
   // let i = 1;
-  if (getResidentsList.status == "loading") return <Loading />
+  if (getResidentsList.status == "loading") {
+    const Box = styled("div", {
+      boxSizing: "border-box",
+      d: "flex",
+      minHeight: "10rem",
+      width: "100%",
+      jc: "center",
+      alignItems: "center"
+    });
+
+    return (
+      <Box>
+        <Loading type="gradient"
+          loadingCss={{
+            marginTop: "-3rem",
+            $$loadingSize: "4rem",
+          }}
+        />
+      </Box>
+    );
+  }
+
   // let residentArray = [];
   // getResidentsList.data.map((resident) => {
   //     residentArray.push([resident.floor, resident]);

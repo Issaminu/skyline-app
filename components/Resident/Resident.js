@@ -1,6 +1,6 @@
 // import React from 'react'
 // import { useUser } from "@auth0/nextjs-auth0";
-import { Grid, Container, Card, Button, Image, css, Dropdown, Text, Tooltip, Switch } from "@nextui-org/react"
+import { Grid, Container, Card, Button, Image, css, Dropdown, Text, Tooltip, Switch, Spacer } from "@nextui-org/react"
 // import { useEffect, useState } from "react";
 import Building from "../Building/Building";
 import Loading from '../Loading'
@@ -56,12 +56,19 @@ const Resident = (props) => {
           <Text b color="inherit" css={{ d: "flex", justifyContent: 'center' }}>
             {resident.email}
           </Text>
-          <Text b color="inherit" css={{ d: "flex", justifyContent: 'center' }}>
+          <Text b color="inherit" css={{ marginTop: '-0.4rem', d: "flex", justifyContent: 'center' }}>
             {resident.phone}
           </Text>
           <Text color="inherit" css={{ d: "flex", justifyContent: 'center' }}>
-            <span style={{ maxWidth: '9rem' }}>
-              {/* {resident.residentHouses = "1g, 3f, 5f, 7g, 21f, 1g, 3f, 5f, 7g, 21f"} */}
+            <span style={{ maxWidth: '9rem', marginTop: '0rem' }}>
+              <b>Appartements:</b>
+            </span>
+          </Text>
+          {/* <Spacer y={1} /> */}
+          <Text color="inherit" css={{ d: "flex", justifyContent: 'center' }}>
+
+            <span style={{ maxWidth: '9rem', marginTop: '-0.6rem' }}>
+
               {resident.residentHouses}
             </span>
           </Text>
@@ -70,7 +77,7 @@ const Resident = (props) => {
           (resident.importance != 3 ?
             <Dropdown.Item textValue="Remove admin" key="settings" withDivider css={{ cursor: 'pointer' }}>
               <div style={{ display: 'flex', alignContent: 'center', justifyContent: 'space-between' }}>
-                Administrateur <Switch checked={checked} animated={false} size="sm" />
+                Administrateur <Switch css={{ marginLeft: '2rem' }} checked={checked} animated={false} size="sm" />
               </div>
             </Dropdown.Item>
             : null) : null}

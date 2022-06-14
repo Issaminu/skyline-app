@@ -16,12 +16,22 @@ const addExpenseAPI = async (req, res) => {
       update_time: currentdate,
     }
   });
+  const building = await prisma.buildings.findUnique(
+    {
+      where: {
+        id: req.body.building.id
+      }
+    });
+  console.log('building:', building)
+  console.log('amountSpent:', parseInt(req.body.amountSpent));
+  const expenseAmount = building.treasury - parseInt(req.body.amountSpent);
+  console.log(expenseAmount);
   await prisma.buildings.update({
     where: {
       id: req.body.building.id
     },
     data: {
-      treasury: parseInt(req.body.building.treasury) - parseInt(req.body.amountSpent)
+      treasury: expenseAmount
     }
   });
   if (expense) {
