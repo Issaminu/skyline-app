@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react'
 import { useRecoilState } from 'recoil';
 import { myUserState } from '../store/atoms';
-const rerouter = (context) => {
+const Rerouter = (context) => {
   const router = useRouter();
 
 
@@ -25,4 +25,4 @@ const rerouter = (context) => {
   };
 }
 
-export default rerouter
+export default Rerouter

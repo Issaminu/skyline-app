@@ -33,10 +33,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <UserProvider>
       <QueryClientProvider client={queryClient}>
-        {/* {user = useUser()} */}
-        {/* <MyUser.Provider> */}
         <NextUIProvider theme={theme}>
-
           <RecoilRoot>
             <AuthWrapper>
               <Navbar />
@@ -45,8 +42,6 @@ function MyApp({ Component, pageProps }) {
             </AuthWrapper>
           </RecoilRoot>
         </NextUIProvider>
-
-        {/* </MyUser.Provider> */}
         <ReactQueryDevtools />
       </QueryClientProvider>
     </UserProvider>

@@ -43,7 +43,7 @@ const Expenses = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'column', marginLeft: "4rem", marginRight: "4rem" }}>
         <h1 style={{ marginBottom: 0, color: "#457B9D" }}>Dépenses</h1>
         <div style={{ marginTop: '3rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <h2 style={{ display: 'flex', justifyContent: "center", color: '#555454' }}>Vous n&apos;êtes résident d'aucun immeuble.</h2>
+          <h2 style={{ display: 'flex', justifyContent: "center", color: '#555454' }}>Vous n&apos;êtes résident d&apos;aucun immeuble.</h2>
         </div>
       </div>
     </main>

@@ -4,7 +4,7 @@ import ListInvitations from "../components/Invitation/ListInvitations"
 import { useRecoilState } from 'recoil';
 import { myUserState } from '../store/atoms';
 
-const invitations = () => {
+const Invitations = () => {
 
   const [myUser, setMyUser] = useRecoilState(myUserState);
 
@@ -19,4 +19,4 @@ const invitations = () => {
   )
 }
 
-export default invitations
+export default Invitations

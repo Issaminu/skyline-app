@@ -42,9 +42,9 @@ export default function Index() {
       // console.log(newBuilding.data.building.id)
       return bruh
     } else {
-      useEffect(() => {
-        router.push('/api/auth/login');
-      })
+      // useEffect(() => {
+      router.push('/api/auth/login');
+      // })
     }
 
   }, {

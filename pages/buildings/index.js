@@ -15,7 +15,7 @@ import { myUserState } from '../../store/atoms';
 import axios from 'axios';
 // import { MyUser } from "../../components/MyUserProvider";
 
-const buildings = () => {
+const Buildings = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   let { user } = useUser();
   // let test = useContext('MyUser');
@@ -81,4 +81,4 @@ const buildings = () => {
   )
 }
 
-export default buildings
+export default Buildings
