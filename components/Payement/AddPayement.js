@@ -152,7 +152,7 @@ const AddPayement = (props) => {
             <Button size="md" onClick={closeHandler} light color="bruh">
               Annuler
             </Button>
-            <Button disabled={submitStatus} size="md" shadow type="submit">Enregistrer</Button>
+            <Button color="success" disabled={submitStatus} size="md" shadow type="submit">Enregistrer</Button>
           </Row>
         </Modal.Footer>
       </form>

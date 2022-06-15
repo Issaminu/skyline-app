@@ -13,6 +13,7 @@ import {
   useRecoilState,
   useRecoilValue,
 } from 'recoil';
+import Head from "next/head";
 let user = null;
 const queryClient = new QueryClient();
 function MyApp({ Component, pageProps }) {
@@ -37,6 +38,9 @@ function MyApp({ Component, pageProps }) {
             <AuthWrapper>
               <Navbar />
               <Toaster />
+              <Head>
+                <title>Skyline 1337</title>
+              </Head>
               <Component {...pageProps} />
             </AuthWrapper>
           </RecoilRoot>
