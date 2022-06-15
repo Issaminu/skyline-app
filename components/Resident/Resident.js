@@ -28,7 +28,7 @@ const Resident = (props) => {
     }
   }
   let checked = (resident.importance == 2);
-  // console.log(checked)
+  // tempMyUser.importance = 2;
   return (
     <Dropdown placement="right-top" disableAnimation>
       <Dropdown.Trigger>
@@ -86,7 +86,8 @@ const Resident = (props) => {
             <Dropdown.Item textValue="Remove user" key="logout" color="error" withDivider>
               Quitter l&apos;immeuble
             </Dropdown.Item>
-            : (myUser.importance >= 2 ?
+
+            : (tempMyUser.importance >= 2 ?
               <Dropdown.Item textValue="Remove user" key="logout" color="error" withDivider css={{ width: 'fit-content' }}>
                 Retirer cet utilisateur de l&apos;immeuble
               </Dropdown.Item> : null)) : null}
