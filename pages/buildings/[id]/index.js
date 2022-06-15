@@ -119,9 +119,11 @@ const BuildingInfo = () => {
                   <Table.Header css={{}}>
                     <Table.Column css={{ width: '13rem' }}>Fiche d&apos;information</Table.Column>
                     <Table.Column css={{ paddingRight: "0rem !important", display: 'flex', flexDirection: 'row' }}>
-                      <div style={{ width: "3rem", marginRight: "0rem", marginLeft: '4.3rem' }}>
-                        <DeleteBuilding />
-                      </div>
+                      {getResult.data.building.adminIDs.includes(myUser.id) ? (
+                        <div style={{ width: "3rem", marginRight: "0rem", marginLeft: '4.3rem' }}>
+                          <DeleteBuilding />
+                        </div>
+                      ) : null}
                     </Table.Column>
                   </Table.Header>
                   <Table.Body>

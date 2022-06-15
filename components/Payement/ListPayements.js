@@ -20,7 +20,7 @@ const ListPayements = (props) => {
     { name: "RAISON", uid: "reason" },
     { name: "STATUS", uid: "status" },
     { name: "DATE", uid: "payementDate" },
-    { name: "ACTION", uid: "actions" },
+    // { name: "ACTION", uid: "actions" },
   ];
   const renderCell = (payement, columnKey) => {
     const cellValue = payement[columnKey];
@@ -57,16 +57,16 @@ const ListPayements = (props) => {
         );
       case "status":
         return <span style={{ display: 'flex', justifyContent: 'center' }}><StyledBadge type="active">succès</StyledBadge></span>;
-      case "actions":
-        return (
-          <Row justify="center" align="center">
-            <Col css={{ d: "flex", justifyContent: 'center' }}>
-              <IconButton onClick={() => console.log("Modifier cotisation", payement.user.id)}>
-                <EditIcon size={20} fill="#979797" />
-              </IconButton>
-            </Col>
-          </Row>
-        );
+      // case "actions":
+      //   return (
+      //     <Row justify="center" align="center">
+      //       <Col css={{ d: "flex", justifyContent: 'center' }}>
+      //         <IconButton onClick={() => console.log("Modifier cotisation", payement.user.id)}>
+      //           <EditIcon size={20} fill="#979797" />
+      //         </IconButton>
+      //       </Col>
+      //     </Row>
+      //   );
       default:
         return <div style={{ display: 'flex', justifyContent: 'center' }}>{cellValue}</div>;
     }
