@@ -149,7 +149,7 @@ const BuildingInfo = () => {
             </Card>
           </div>
           <div style={{ marginLeft: "2rem", marginTop: "1.5rem" }}>
-            <Card css={{ width: "60rem" }}>
+            <Card css={{ width: "85rem" }}>
               <Card.Header css={{ paddingBottom: 0 }}>
                 <h3>Residents</h3>
               </Card.Header>

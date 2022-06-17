@@ -83,14 +83,15 @@ const Resident = (props) => {
             : null) : null}
         {resident.importance != 3 ?
           (resident.id == myUser.id ?
-            <Dropdown.Item textValue="Remove user" key="logout" color="error" withDivider>
-              Quitter l&apos;immeuble
-            </Dropdown.Item>
-
+            (resident.id == 2 ?
+              <Dropdown.Item textValue="Remove user" key="logout" color="error" withDivider>
+                Quitter l&apos;immeuble
+              </Dropdown.Item>
+              : null)
             : (tempMyUser.importance >= 2 ?
-              <Dropdown.Item textValue="Remove user" key="logout" color="error" withDivider css={{ width: 'fit-content' }}>
-                Retirer cet utilisateur de l&apos;immeuble
-              </Dropdown.Item> : null)) : null}
+            <Dropdown.Item textValue="Remove user" key="logout" color="error" withDivider css={{ width: 'fit-content' }}>
+              Retirer cet utilisateur de l&apos;immeuble
+            </Dropdown.Item> : null)) : null}
       </Dropdown.Menu>
     </Dropdown>
   )

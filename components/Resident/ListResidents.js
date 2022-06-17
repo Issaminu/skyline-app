@@ -29,6 +29,7 @@ const ListResidents = (props) => {
   const getResidentsList = useQuery('getResidentsList', async () => {
     let DataToSend = {
       residentIDsArray: props.building.residentIDs.split(', ').map(Number),
+      buildingId: props.building.id
     }
     const residents = await JSON.parse((await axios.post('/api/getResidentsListAPI', DataToSend)).data.residents);
     return residents;

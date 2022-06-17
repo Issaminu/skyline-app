@@ -13,6 +13,9 @@ const getExpensesListAPI = async (req, res) => {
     tempExpenses = await prisma.expenses.findMany({
       where: {
         buildingId: parseInt(building.id)
+      },
+      orderBy: {
+        expenseDate: "desc"
       }
     });
     expenses = [...expenses, ...tempExpenses];

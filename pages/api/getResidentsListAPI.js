@@ -16,7 +16,8 @@ const getResidentsListAPI = async (req, res) => {
       where: {
         residentIDs: {
           contains: String(user.id)
-        }
+        },
+        buildingId: req.body.buildingId
       },
       select: {
         name: true,
