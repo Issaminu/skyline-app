@@ -18,10 +18,10 @@ const Rerouter = (context) => {
   } else { //NOT BRAND NEW USERS HERE, POSSIBLY NOT FINISHED SETUP
     if (myUser.accountStatus == "TEMP" && router.pathname != '/setup') {
       router.push('/setup'); //HERE IS WHERE AUTHED USERS WHO STILL DIDN'T FINISH SETUP GET REDIRECTED TO FINISH IT
-    }
-    // console.log(context.req.headers.referer);
-    router.push('/buildings');
-    // router.back();
+    } else {
+      // console.log(context.req.headers.referer);
+      router.push('/buildings');
+    }// router.back();
   };
 }
 

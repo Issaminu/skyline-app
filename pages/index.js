@@ -8,7 +8,7 @@ import { useRecoilState } from 'recoil';
 import { myUserState } from '../store/atoms';
 import { useEffect, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query'
-
+import Loading from '../components/Loading';
 // import { useRecoilState } from 'recoil';
 // import { myUserState } from '../../store/atoms';
 import axios from 'axios';
@@ -65,7 +65,7 @@ export default function Index() {
     // console.log(user?.email);
   }, [user,]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (test.isLoading) return <Loading />;
   // if (isLoading) return null;
   if (error) return <div>{error.message}</div>;
 
