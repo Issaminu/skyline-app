@@ -87,7 +87,7 @@ const AddHouses = (props) => {
                           <Spacer x={1} />
                           <p>Identifiant</p>
                           <Spacer x={7.7} />
-                          <p>Dimensions</p>
+                          <p>Surface</p>
                         </Grid>
                         {/* </div> */}
                         {Array(props.houseQuantity)

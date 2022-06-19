@@ -74,7 +74,7 @@ const Navbar = () => {
               </li>
               <li style={{ marginBottom: 0 }}><Link href="/payements" style={{ textDecoration: 'none', color: 'inherit' }} passHref>
                 <Button light css={isActiveRoute('/payements')} color="stuff" auto>
-                  Paiements
+                  Cotisations
                 </Button></Link>
               </li>
               <li style={{ marginBottom: 0 }}><Link href="/expenses" style={{ textDecoration: 'none', color: 'inherit' }} passHref>

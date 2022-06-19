@@ -15,7 +15,7 @@ const ListExpenses = (props) => {
   });
   // console.log(expenses)
   const columns = [
-    { name: "BÉNÉFICIAIRE", uid: "beneficiary" },
+    { name: "NUM. FACTURE", uid: "beneficiary" },
     { name: "MONTANT", uid: "amount" },
     { name: "IMMEUBLE", uid: "buildingName" },
     { name: "RAISON", uid: "reason" },

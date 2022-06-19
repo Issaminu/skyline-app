@@ -91,7 +91,7 @@ const AddExpense = (props) => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: "1rem" }}>
             {/* {props.building.adminIDs.includes(user.id) ? */}
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Input bordered type="text" label="Bénéficiaire" onChange={(e) => { setBeneficiary(e.target.value) }} required={true} />
+              <Input bordered type="text" label="Numéro de facture" onChange={(e) => { setBeneficiary(e.target.value) }} required={true} />
               <Input bordered type="text" label="Raison" onChange={(e) => { setReason(e.target.value) }} required={true} />
             </div>
 
