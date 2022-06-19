@@ -12,8 +12,17 @@ const AuthWrapper = ({ children }) => { //WE USE THE AUTH WRAPPER TO WAIT TILL T
   const router = useRouter();
   // return <>{children}</>
 
+ 
   // const authedRoutes = ['/dashboard', '...'] //ADD ALL THE ROUTES THAT REQUIRE THE USER TO BE LOGGED IN TO THIS ARRAY
   if (isLoading) return null;
+  if (typeof window != "undefined" && !window.matchMedia('(min-width: 1800px)').matches) {
+    return (
+      <main style={{ display: 'flex', justifyContent: "center", flexDirection:'column'}}>
+        <h1 style={{color:'#f31260'}}>Erreur</h1>
+        <h2 style={{color: '#555454' }}>Veuillez utiliser un PC pour visiter cette page.</h2>
+      </main>
+    )
+  }
   // if (isLoading) return null;
   // console.log('heere is user')
   // console.log(user)
