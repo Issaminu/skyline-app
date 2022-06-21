@@ -1,4 +1,3 @@
-// import React from "react";
 import { Text, Button, Grid, Row, Modal } from "@nextui-org/react";
 import { useMutation, useQueryClient } from "react-query";
 import { useRouter } from 'next/router';
@@ -12,21 +11,14 @@ import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
 const DeleteBuilding = () => {
   const router = useRouter();
   const deleteThisBuilding = (async () => {
-    // console.log(user.user.buildingIDs)
     await axios.get('/api/delBuildingAPI');
-    // user.buildingIDs.pop(router.asPath.split("/").slice(2).join("/"))
     toast.success("Action réalisée avec succès");
-
     router.push('/buildings');
   })
   const [visible, setVisible] = useState(false);
-  // const [editVisible, setEditVisible] = useState(false);
   const handler = () => setVisible(true);
-  // const editHandler = () => setEditVisible(true);
-
   const closeHandler = () => {
     setVisible(false);
-    // console.log("closed");
   };
   return (
     <>
@@ -36,21 +28,14 @@ const DeleteBuilding = () => {
         color="error"
         icon={<HighlightOffRoundedIcon fill="currentColor" />}
         auto
-        // size="xs"
         css={{
           width: '1rem',
           height: '2rem',
           minWidth: '3rem',
           marginTop: '0.2rem',
           marginLeft: '2.3rem'
-          // backgroundColor: "#FCD7E5",
-          // color: "#F21361",
-          // "&:active": {
-          //     backgroundColor: "#fcc5d8"
-          // }
         }}
       />
-
       <Modal
         closeButton
         aria-labelledby="modal-title"
@@ -66,7 +51,6 @@ const DeleteBuilding = () => {
             <Text>Êtes-vous sûr que vous souhaitez désactiver cette immeuble ?</Text>
             <Text b>Cette action est réversible</Text>
           </div>
-
         </Modal.Body>
         <Modal.Footer>
           {/* <div style={{ display: 'flex' }}>
@@ -80,8 +64,6 @@ const DeleteBuilding = () => {
                                 Sign in
                             </Button>
                         </div>
-
-
                     </div> */}
           <Grid.Container justify="space-between" alignContent="center">
             <Grid>
@@ -91,7 +73,6 @@ const DeleteBuilding = () => {
             </Grid>
             <Grid>
               <Button shadow color="error" css={{ width: "8rem", minWidth: "3rem" }}
-              // onClick={deleteThisBuilding}
               >
                 Désactiver
               </Button>
@@ -102,5 +83,4 @@ const DeleteBuilding = () => {
     </>
   )
 }
-
 export default DeleteBuilding

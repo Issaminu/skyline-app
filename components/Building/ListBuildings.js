@@ -11,7 +11,6 @@ import { useUser } from "@auth0/nextjs-auth0";
 // import { useEffect } from "react";
 import { useRecoilState } from 'recoil';
 import { myUserState } from '../../store/atoms';
-
 const ListBuildings = () => {
   // const { user } = useUser();
   const [myUser, setMyUser] = useRecoilState(myUserState);
@@ -22,18 +21,15 @@ const ListBuildings = () => {
     myUser: myUser,
   };
   const getBuildingsList = useQuery('getBuildings', async () => {
-
     // console.log(DataToSend);
     const buildings = await JSON.parse((await axios.post('/api/getBuildingsListAPI', DataToSend)).data.buildings);
     return buildings;
   })
-
   // const queryClient = new QueryClient();
   // queryClient.removeQueries(['getOneBuilding'], { exact: true });
   // console.log(getBuildingsList.data?.[0] == null);
   if (getBuildingsList.status == "loading") return <Loading />
   return (
-
     (getBuildingsList.data?.[0] != null ?
       (<div style={{ marginLeft: "4rem", marginRight: "4rem" }}>
         <Grid.Container gap={2} justify="left">
@@ -49,5 +45,4 @@ const ListBuildings = () => {
       </div >)
   )
 }
-
 export default ListBuildings

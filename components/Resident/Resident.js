@@ -1,7 +1,4 @@
-// import React from 'react'
-// import { useUser } from "@auth0/nextjs-auth0";
 import { Grid, Container, Card, Button, Image, css, Dropdown, Text, Tooltip, Switch, Spacer } from "@nextui-org/react"
-// import { useEffect, useState } from "react";
 import Building from "../Building/Building";
 import Loading from '../Loading'
 import { useQuery, useQueryClient } from "react-query";
@@ -18,8 +15,6 @@ const Resident = (props) => {
   const [myUser, setMyUser] = useRecoilState(myUserState);
   const { user } = useUser();
   let tempMyUser = { ...myUser };
-  // console.log(user);
-
   const resident = props.resident;
   if (props.building.adminIDs.includes(myUser.id)) {
     tempMyUser.importance = 2;
@@ -28,16 +23,13 @@ const Resident = (props) => {
     }
   }
   let checked = (resident.importance == 2);
-  // tempMyUser.importance = 2;
   return (
     <Dropdown placement="right-top" disableAnimation>
       <Dropdown.Trigger>
-
         <Card isHoverable variant="bordered" title={(resident.importance == 1 ? "Résident" : (resident.importance == 3 ? "Créateur" : "Administrateur"))} css={{
           padding: 0,
           cursor: 'pointer',
           width: "8rem", height: "8rem", display: "flex", justifyContent: "center",
-          // backgroundColor: (resident.importance == 1 ? "#C3C1C1" : (resident.importance == 3 ? "#ED9F55" : "#f31260"))
         }}>
           <div style={{ color: (resident.importance == 1 ? "#C3C1C1" : (resident.importance == 3 ? "#ED9F55" : "#ED9F55")), display: 'flex', justifyContent: 'center', marginBottom: '0.5rem' }}>
             {resident.importance == 1 ? <PersonRoundedIcon style={{ height: '2.6rem', width: '2.6rem' }} /> : (resident.importance == 3 ? <LocalPoliceRoundedIcon style={{ height: '2.6rem', width: '2.6rem' }} /> : <ShieldRoundedIcon style={{ height: '2.6rem', width: '2.6rem' }} />)}
@@ -66,9 +58,7 @@ const Resident = (props) => {
           </Text>
           {/* <Spacer y={1} /> */}
           <Text color="inherit" css={{ d: "flex", justifyContent: 'center' }}>
-
             <span style={{ maxWidth: '9rem', marginTop: '-0.6rem' }}>
-
               {resident.residentHouses}
             </span>
           </Text>
@@ -96,5 +86,4 @@ const Resident = (props) => {
     </Dropdown>
   )
 }
-
 export default Resident
