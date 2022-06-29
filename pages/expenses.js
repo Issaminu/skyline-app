@@ -14,7 +14,7 @@ const Expenses = () => {
 
   const queryClient = useQueryClient();
   // queryClient.removeQueries(['getExpenses']);
-  // queryClient.removeQueries(['getPayements']);
+  queryClient.removeQueries(['getPayements']);
   // queryClient.removeQueries(['getInvitations']);
 
 

@@ -58,8 +58,8 @@ const Buildings = () => {
   // })
   // console.log(myUser);
   const queryClient = useQueryClient();
-  // queryClient.removeQueries(['getExpenses']);
-  // queryClient.removeQueries(['getPayements']);
+  queryClient.removeQueries(['getExpenses']);
+  queryClient.removeQueries(['getPayements']);
   queryClient.removeQueries(["getOneBuilding"]);
   queryClient.removeQueries(["getHousesList"]);
   queryClient.removeQueries(['getResidentsList']);
