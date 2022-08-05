@@ -1,7 +1,7 @@
 datasource db {
   provider             = "mysql"
   url                  = env("DATABASE_URL")
-  // shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
+  shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
@@ -46,7 +46,6 @@ model buildings {
   //teamid        Int
   create_time   DateTime? @db.DateTime(0)
   update_time   DateTime? @db.DateTime(0)
-
 }
 
 model houses {
@@ -81,7 +80,6 @@ model houses {
   //teamid          Int
   create_time     DateTime? @db.DateTime(0)
   update_time     DateTime? @db.DateTime(0)
-
 }
 
 model invitations {
