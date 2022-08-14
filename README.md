@@ -1,7 +1,7 @@
 # About
 
 As part of creating a solution that solves the multitude of problems encountered by 
-co-owners, I conceived and created a web application which will centralize all 
+co-owners, I conceived and created a web application that centralizes all 
 the actions relating to managing buildings.
 
 A complete and innovative solution of co-ownership management which takes into 
@@ -18,7 +18,7 @@ privileges over the building, as well as manage the collection of co-owner funds
 spend these funds on various actions related to the improvement of their common 
 space, such as building improvements, repairs, etc.
 
-To learn more about the application, feel free to check out the application repport: https://bit.ly/3w4BnIq (Note: Currently, it's only available in French)
+To learn more about the application, feel free to check out the application repport: https://bit.ly/3w4BnIq (Note: Currently, it's only available in French).
 
 # Application link
 
