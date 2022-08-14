@@ -18,7 +18,7 @@ privileges over the building, as well as manage the collection of co-owner funds
 spend these funds on various actions related to the improvement of their common 
 space, such as building improvements, repairs, etc.
 
-To learn more about the application, feel free to check out the application repport: https://docs.google.com/viewer?url=https://github.com/Issam-Boubcher/skyline-app/raw/main/Rapport%20de%20Projet%20de%20Stage%201337.pdf (Note: Currently, it's only available in French)
+To learn more about the application, feel free to check out the application repport: https://bit.ly/3w4BnIq (Note: Currently, it's only available in French)
 
 # Application link
 
