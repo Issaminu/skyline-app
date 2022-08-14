@@ -56,4 +56,4 @@ S3_UPLOAD_REGION=  #Same value as REGION
 
 3. Run `npm install` to install the application's dependencies.
 4. Run `npm run dev` to start your local server.
-5. Visit http://localhost:3000 to use the application.
+5. Visit http://localhost:3000 to use the application locally.
