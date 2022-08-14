@@ -1,4 +1,4 @@
-## About
+# About
 
 As part of creating a solution that solves the multitude of problems encountered by 
 co-owners, I conceived and created a web application which will centralize all 
@@ -20,11 +20,11 @@ space, such as building improvements, repairs, etc.
 
 To learn more about the application, feel free to check out the application repport: https://docs.google.com/viewer?url=https://github.com/Issam-Boubcher/skyline-app/raw/main/Rapport%20de%20Projet%20de%20Stage%201337.pdf (Note: Currently, it's only available in French)
 
-## Application link
+# Application link
 
 Visit www.skyline-app.ga to use the application.
 
-## Local deployement
+# Local deployement
 
 Follow these steps to run this app locally:
 1. Clone the repo with `git clone https://github.com/Issam-Boubcher/skyline-app.git`
@@ -57,4 +57,3 @@ S3_UPLOAD_REGION=  #Same value as REGION
 3. Run `npm install` to install the application's dependencies.
 4. Run `npm run dev` to start your local server.
 5. Visit http://localhost:3000 to use the application.
-
