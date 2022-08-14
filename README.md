@@ -1,34 +1,60 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## About
 
-## Getting Started
+As part of creating a solution that solves the multitude of problems encountered by 
+co-owners, I conceived and created a web application which will centralize all 
+the actions relating to managing buildings.
 
-First, run the development server:
+A complete and innovative solution of co-ownership management which takes into 
+account all the functionalities essential to the activity of a syndic would be 
+extremely beneficial to any co-owner. It would allow easy access to information on 
+who, when and how much someone has contributed to the building's treasury, as 
+well as provide clear and detailed information on how the contributed funds are 
+spent. This ensures total transparency of the collection and spending of funds.
 
-```bash
-npm run dev
-# or
-yarn dev
+My solution, hosted on the web at www.skyline-app.ga on a Heroku server, 
+allows users to add buildings where they own or rent apartments to the application, 
+invite other co-owners to join the building, give some of them administrator 
+privileges over the building, as well as manage the collection of co-owner funds and 
+spend these funds on various actions related to the improvement of their common 
+space, such as building improvements, repairs, etc.
+
+To learn more about the application, feel free to check out the application repport: https://docs.google.com/viewer?url=https://github.com/Issam-Boubcher/skyline-app/raw/main/Rapport%20de%20Projet%20de%20Stage%201337.pdf (Note: Currently, it's only available in French)
+
+## Application link
+
+Visit www.skyline-app.ga to use the application.
+
+## Local deployement
+
+Follow these steps to run this app locally:
+1. Clone the repo with `git clone https://github.com/Issam-Boubcher/skyline-app.git`
+2. Create a `.env` file in the repo and provide the following variables:
+```
+#Prisma variables:
+DATABASE_URL= #Provide the string connection to your database
+SHADOW_DATABASE_URL=  #(Optional) Provide the string connection to your shadow database, check here for more info: https://www.prisma.io/docs/concepts/components/prisma-migrate/shadow-database
+
+#Auth0 variables:
+AUTH0_SECRET=
+AUTH0_BASE_URL=
+AUTH0_ISSUER_BASE_URL=
+AUTH0_CLIENT_ID=
+AUTH0_CLIENT_SECRET=
+
+#Amazon S3 variables:
+ACCESS_KEY=
+SECRET_KEY=
+BUCKET_NAME=
+REGION=
+
+#next-s3-upload variables:
+S3_UPLOAD_KEY=  #Same value as ACCESS_KEY
+S3_UPLOAD_SECRET=  #Same value as SECRET_KEY
+S3_UPLOAD_BUCKET=  #Same value as BUCKET_NAME
+S3_UPLOAD_REGION=  #Same value as REGION
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Run `npm install` to install the application's dependencies.
+4. Run `npm run dev` to start your local server.
+5. Visit http://localhost:3000 to use the application.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
