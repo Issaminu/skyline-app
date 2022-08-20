@@ -6,6 +6,14 @@ const Auth0GetUserInfoAPI = async (req, res) => {
     where: {
       email: req.body.email
     },
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      image: true,
+      accountStatus: true,
+      notificationCount: true
+    }
   });
 
   // console.log(user)
