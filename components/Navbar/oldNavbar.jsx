@@ -111,9 +111,8 @@ export default function Navbar() {
                   </div>
                   <nav className="mt-5 px-2 space-y-1">
                     {navigation.map((item) => (
-                      <div className="mt-16 mb-16">
+                      <div className="mt-16 mb-16" key={item.name}>
                         <a
-                          key={item.name}
                           href={item.href}
                           className={classNames(
                             item.current
