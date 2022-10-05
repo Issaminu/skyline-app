@@ -2,35 +2,18 @@ import { Fragment, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import { useSession, signOut } from "next-auth/react";
 import logo from "../../public/1337.png";
-import {
-  ChevronRightIcon,
-  ChevronDownIcon,
-  DotsVerticalIcon,
-  SelectorIcon,
-  MenuIcon,
-} from "@heroicons/react/solid";
+import Image from "next/image";
 
 import {
   CogIcon,
   CollectionIcon,
-  HeartIcon,
   HomeIcon,
   MenuAlt2Icon,
   PhotographIcon,
-  PlusSmIcon as PlusSmIconOutline,
   UserGroupIcon,
   ViewGridIcon as ViewGridIconOutline,
   XIcon,
 } from "@heroicons/react/outline";
-import {
-  PencilIcon,
-  PlusSmIcon as PlusSmIconSolid,
-  SearchIcon,
-  ViewGridIcon as ViewGridIconSolid,
-  ViewListIcon,
-} from "@heroicons/react/solid";
-import Image from "next/image";
-import { useRouter } from "next/router";
 
 const navigation = [
   { name: "Home", href: "#", icon: HomeIcon, current: false },
