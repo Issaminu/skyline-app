@@ -28,6 +28,8 @@ export const authOptions = {
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
+        const bcrypt = require("bcrypt");
+
         const user = await prisma.users.findUnique({
           where: {
             email: credentials.email,
@@ -36,18 +38,24 @@ export const authOptions = {
             id: true,
             email: true,
             name: true,
+            password: true,
             image: true,
             accountStatus: true,
             notificationCount: true,
           },
         });
-        // await prisma.$disconnect();
-        // If no error and we have user data, return it
         if (user) {
-          return user;
+          const match = await bcrypt.compare(
+            credentials.password,
+            user.password
+          );
+          if (match) {
+            delete user.password;
+            return user;
+          } else {
+            return null;
+          }
         }
-        // Return null if user data could not be retrieved
-        return null;
       },
     }),
   ],

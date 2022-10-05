@@ -16,7 +16,7 @@ model users {
   email             String    @unique @db.VarChar(255)
   image             String    @db.VarChar(255)
   phone             String?   @db.VarChar(255)
-  // password       String    @db.VarChar(255)
+  password          String?   @db.VarChar(255)
   // type           String    @db.VarChar(255)
   // houseId        String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
   accountStatus     String    @db.VarChar(255)

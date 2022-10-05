@@ -85,6 +85,7 @@ export default function Navbar() {
               </div>
               <div className="flex items-center flex-col mt-20 w-full px-2 space-y-1 mb-2">
                 <a
+                  onClick={() => signOut({ callbackUrl: "/login" })}
                   key={session.user.name}
                   href="#"
                   className={classNames(
