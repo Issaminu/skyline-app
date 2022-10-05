@@ -45,16 +45,19 @@ export const authOptions = {
           },
         });
         if (user) {
-          const match = await bcrypt.compare(
-            credentials.password,
-            user.password
-          );
-          if (match) {
-            delete user.password;
-            return user;
-          } else {
-            return null;
-          }
+          // const match = await bcrypt.compare(
+          //   credentials.password,
+          //   user.password
+          // );
+          // if (match) {
+          //   delete user.password;
+          //   return user;
+          // } else {
+          //   return null;
+          // }
+          return user;
+        } else {
+          return null;
         }
       },
     }),
