@@ -29,7 +29,7 @@ export default function Login() {
         className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8"
         style={{
           layout: "fit",
-          background: "url('/login-bg.jpg') no-repeat center center fixed",
+          background: "url('/login-bg.webp') no-repeat center center fixed",
           backgroundSize: "cover",
           minHeight: "100vh",
         }}

@@ -10,7 +10,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
         <Head>
           <title>Skyline 1337</title>
         </Head>
-        <Navbar />
+        <div style={{ width: "fit-content" }}>
+          <Navbar />
+        </div>
         {Component.auth ? (
           <Auth>
             <Component {...pageProps} />
