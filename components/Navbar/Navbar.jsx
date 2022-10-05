@@ -3,18 +3,11 @@ import { Dialog, Menu, Transition } from "@headlessui/react";
 import { useSession, signOut } from "next-auth/react";
 import logo from "../../public/1337.png";
 import Image from "next/image";
-
-import {
-  CogIcon,
-  CollectionIcon,
-  HomeIcon,
-  MenuAlt2Icon,
-  PhotographIcon,
-  UserGroupIcon,
-  ViewGridIcon as ViewGridIconOutline,
-  XIcon,
-} from "@heroicons/react/outline";
-
+import EngineeringRoundedIcon from "@mui/icons-material/EngineeringRounded";
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import MonetizationOnRoundedIcon from "@mui/icons-material/MonetizationOnRounded";
+import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
+import { XIcon, MenuAlt2Icon } from "@heroicons/react/outline";
 const navigation = [
   {
     name: "Immeubles",
@@ -205,6 +198,7 @@ export default function Navbar() {
                     </div>
                     <div>
                       <a
+                        onClick={() => signOut({ callbackUrl: "/login" })}
                         key={session.user.name}
                         href="#"
                         className={classNames(
