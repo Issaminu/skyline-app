@@ -1,4 +1,4 @@
-const buildings = () => {
+const Buildings = () => {
   return (
     <main className="flex-1">
       <div className="py-6">
@@ -16,5 +16,5 @@ const buildings = () => {
     </main>
   );
 };
-buildings.auth = true;
-export default buildings;
+Buildings.auth = true;
+export default Buildings;

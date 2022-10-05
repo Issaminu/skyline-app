@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  images: {
+    domains: ["tailwindui.com", "images.unsplash.com"],
+  },
   webpack: (config, options) => {
     config.experiments = {
       topLevelAwait: true,

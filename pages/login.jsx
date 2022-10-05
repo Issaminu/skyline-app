@@ -19,7 +19,7 @@ export default function Login() {
       callbackUrl: `${window.location.origin}`,
     });
     if (res.ok) {
-      Router.push("/welcome");
+      Router.push("/buildings");
     }
   };
 
@@ -124,7 +124,7 @@ export default function Login() {
                 </button>
               </div>
               <div className="text-sm">
-                Don't have an account? &nbsp;
+                Don&apos;t have an account? &nbsp;
                 <a
                   href="#"
                   className="font-medium text-cyan-600 hover:text-cyan-500"

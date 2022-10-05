@@ -1,6 +1,6 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import Router from "next/router";
-const welcome = () => {
+const Welcome = () => {
   const { data: session } = useSession();
   if (session) {
     // Router.push("/buildings");
@@ -15,5 +15,5 @@ const welcome = () => {
     );
   }
 };
-welcome.auth = true;
-export default welcome;
+Welcome.auth = true;
+export default Welcome;
