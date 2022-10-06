@@ -29,6 +29,8 @@ export const authOptions = {
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
         const bcrypt = require("bcrypt");
+        console.log("credentials.email: ", credentials.email);
+        console.log("credentials.password: ", credentials.password);
 
         const user = await prisma.users.findUnique({
           where: {
@@ -45,19 +47,22 @@ export const authOptions = {
           },
         });
         if (user) {
-          // const match = await bcrypt.compare(
-          //   credentials.password,
-          //   user.password
-          // );
-          // if (match) {
-          //   delete user.password;
+          const match = await bcrypt.compare(
+            credentials.password,
+            user.password
+          );
+          console.log("user.password: ", user.password);
+          console.log("match: ", match);
+
+          if (match) {
+            delete user.password;
+            return user;
+          } else {
+            return null;
+          }
           //   return user;
           // } else {
           //   return null;
-          // }
-          return user;
-        } else {
-          return null;
         }
       },
     }),
