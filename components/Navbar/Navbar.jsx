@@ -95,7 +95,8 @@ export default function Navbar() {
                 >
                   <Image
                     src={session.user.picture}
-                    class="block mx-auto h-10 w-10 rounded-full"
+                    className="block mx-auto h-10 w-10"
+                    style={{ borderRadius: "50%" }}
                     width={50}
                     height={50}
                   />
@@ -209,7 +210,8 @@ export default function Navbar() {
                       >
                         <Image
                           src={session.user.picture}
-                          class="block mx-auto h-4 w-4 rounded-full"
+                          className="block mx-auto h-4 w-4"
+                          style={{ borderRadius: "50%" }}
                           width={35}
                           height={35}
                         />
@@ -232,7 +234,7 @@ export default function Navbar() {
             <div className="relative z-10 flex-shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex">
               <button
                 type="button"
-                className="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
+                className="border-r border-gray-200 px-4 text-gray-500 md:hidden"
                 onClick={() => setMobileMenuOpen(true)}
               >
                 <span className="sr-only">Open sidebar</span>
