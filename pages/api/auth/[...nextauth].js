@@ -48,9 +48,13 @@ export const authOptions = {
             notificationCount: true,
           },
         });
-        console.log("user: ", user);
+        prisma.$disconnect();
+        console.log("user: ");
         if (user) {
-          const match = bcrypt.compare(credentials.password, user.password);
+          const match = await bcrypt.compare(
+            credentials.password,
+            user.password
+          );
           console.log("user.password: ", user.password);
           console.log("match: ", match);
           if (match) {
@@ -62,6 +66,8 @@ export const authOptions = {
           //   return user;
           // } else {
           //   return null;
+        } else {
+          return null;
         }
       },
     }),
