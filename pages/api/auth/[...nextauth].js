@@ -1,7 +1,9 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { prisma } from "../../../components/prisma";
+// import { prisma } from "../../../components/prisma";
+import { PrismaClient } from "@prisma/client";
 import { Router } from "next/router";
+const prisma = new PrismaClient();
 export const authOptions = {
   // Configure one or more authentication providers
   providers: [
@@ -46,14 +48,11 @@ export const authOptions = {
             notificationCount: true,
           },
         });
+        console.log("user: ", user);
         if (user) {
-          const match = await bcrypt.compare(
-            credentials.password,
-            user.password
-          );
+          const match = bcrypt.compare(credentials.password, user.password);
           console.log("user.password: ", user.password);
           console.log("match: ", match);
-
           if (match) {
             delete user.password;
             return user;
