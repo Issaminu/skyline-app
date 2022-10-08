@@ -58,28 +58,30 @@ export default function Navbar() {
                 </div>
                 <div className="flex-1 mt-6 w-full px-2 space-y-1">
                   {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className={classNames(
-                        item.current
-                          ? "bg-cyan-800 text-white"
-                          : "text-cyan-100 hover:bg-cyan-800 hover:text-white",
-                        "group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium"
-                      )}
-                      aria-current={item.current ? "page" : undefined}
-                    >
-                      <item.icon
+                    <div style={{ marginBottom: "1rem" }}>
+                      <a
+                        key={item.name}
+                        href={item.href}
                         className={classNames(
                           item.current
-                            ? "text-white"
-                            : "text-cyan-500 group-hover:text-white",
-                          "h-6 w-6"
+                            ? "bg-cyan-800 text-white"
+                            : "text-cyan-100 hover:bg-cyan-800 hover:text-white",
+                          "group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium"
                         )}
-                        aria-hidden="true"
-                      />
-                      <span className="mt-2">{item.name}</span>
-                    </a>
+                        aria-current={item.current ? "page" : undefined}
+                      >
+                        <item.icon
+                          className={classNames(
+                            item.current
+                              ? "text-white"
+                              : "text-cyan-500 group-hover:text-white",
+                            "h-6 w-6"
+                          )}
+                          aria-hidden="true"
+                        />
+                        <span className="mt-2">{item.name}</span>
+                      </a>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -173,29 +175,31 @@ export default function Navbar() {
                   >
                     <div className="flex-1 mt-6 w-full px-2 space-y-1">
                       {navigation.map((item) => (
-                        <a
-                          key={item.name}
-                          href={item.href}
-                          style={{ height: "3rem" }}
-                          className={classNames(
-                            item.current
-                              ? "bg-cyan-800 text-white"
-                              : "text-cyan-100 hover:bg-cyan-800 hover:text-white",
-                            "group py-2 px-3 rounded-md flex items-center text-sm font-medium"
-                          )}
-                          aria-current={item.current ? "page" : undefined}
-                        >
-                          <item.icon
+                        <div style={{ marginBottom: "0.5rem" }}>
+                          <a
+                            key={item.name}
+                            href={item.href}
+                            style={{ height: "3rem" }}
                             className={classNames(
                               item.current
-                                ? "text-white"
-                                : "text-cyan-500 group-hover:text-white",
-                              "mr-3 h-6 w-6"
+                                ? "bg-cyan-800 text-white"
+                                : "text-cyan-100 hover:bg-cyan-800 hover:text-white",
+                              "group py-2 px-3 rounded-md flex items-center text-sm font-medium"
                             )}
-                            aria-hidden="true"
-                          />
-                          <span>{item.name}</span>
-                        </a>
+                            aria-current={item.current ? "page" : undefined}
+                          >
+                            <item.icon
+                              className={classNames(
+                                item.current
+                                  ? "text-white"
+                                  : "text-cyan-500 group-hover:text-white",
+                                "mr-3 h-6 w-6"
+                              )}
+                              aria-hidden="true"
+                            />
+                            <span>{item.name}</span>
+                          </a>
+                        </div>
                       ))}
                     </div>
                     <div>
