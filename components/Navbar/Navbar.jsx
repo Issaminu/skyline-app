@@ -33,7 +33,6 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  // const router = useRouter();
   const { data: session, status } = useSession();
   if (!session) {
     return null;
@@ -58,9 +57,8 @@ export default function Navbar() {
                 </div>
                 <div className="flex-1 mt-6 w-full px-2 space-y-1">
                   {navigation.map((item) => (
-                    <div style={{ marginBottom: "1rem" }}>
+                    <div key={item.name} style={{ marginBottom: "1rem" }}>
                       <a
-                        key={item.name}
                         href={item.href}
                         className={classNames(
                           item.current
@@ -175,9 +173,8 @@ export default function Navbar() {
                   >
                     <div className="flex-1 mt-6 w-full px-2 space-y-1">
                       {navigation.map((item) => (
-                        <div style={{ marginBottom: "0.5rem" }}>
+                        <div key={item.name} style={{ marginBottom: "0.5rem" }}>
                           <a
-                            key={item.name}
                             href={item.href}
                             style={{ height: "3rem" }}
                             className={classNames(
