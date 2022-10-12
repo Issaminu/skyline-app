@@ -4,7 +4,8 @@ import Image from "next/image";
 import logo1337 from "../public/1337.jpg";
 import Link from "next/link";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
 export default function Signup() {
   const { data: session, status } = useSession();
@@ -12,13 +13,20 @@ export default function Signup() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [isNameValid, setIsNameValid] = useState(true);
+  const [isPhoneValid, setIsPhoneValid] = useState(true);
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const [inputStyling, setInputStyling] = useState("");
   const router = useRouter();
   if (session) {
     router.push("/buildings");
   }
+  console.log("btw isEmailValid is", isEmailValid);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsEmailValid(true);
     axios
       .post("/api/signupAPI", {
         email: email,
@@ -27,7 +35,7 @@ export default function Signup() {
         password: password,
       })
       .then(async (res) => {
-        if (res.status === 200) {
+        if (res.status === 200 && res.data.status === "success") {
           const res = await signIn("credentials", {
             redirect: false,
             email: email,
@@ -37,6 +45,20 @@ export default function Signup() {
           if (res.ok) {
             Router.push("/buildings");
           }
+        }
+        // console.log("midbruh isEmailValid is", isEmailValid);
+        if (!res.ok) {
+          toast.error(res.data.error);
+          setTimeout(() => {
+            setIsEmailValid(false);
+          }, 5000);
+
+          console.log("isEmailValid is now:", isEmailValid);
+          // email.style +=
+          //   "--tw-ring-opacity: 1; --tw-ring-color: rgb(239 68 68 / var(--tw-ring-opacity));";
+
+          // email.style +=
+          //   "--tw-border-opacity: 1; border-color: rgb(239 68 68 / var(--tw-border-opacity));";
         }
       });
   };
@@ -98,20 +120,23 @@ export default function Signup() {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
-                />
-                <div className="mt-1">
+                  className="text-sm font-medium text-gray-700"
+                  style={{ visibility: isEmailValid ? "hidden" : "visible" }}
+                >
+                  eeemail
+                </label>{" "}
+                <div>
                   <input
                     id="email"
                     name="email"
                     type="email"
-                    placeholder="Email address *"
                     onChange={(e) => {
                       setEmail(e.target.value);
                     }}
                     autoComplete="email"
                     required
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm"
+                    placeholder="Email address *"
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm focus:ring-cyan-500 focus:border-cyan-500"
                   />
                 </div>
               </div>
