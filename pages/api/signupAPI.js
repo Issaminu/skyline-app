@@ -5,7 +5,6 @@ const signupAPI = async (req, res) => {
   switch (method) {
     case "POST":
       try {
-        console.log("het");
         const { name, email, password, phone } = req.body;
         const regexName = /^[a-zA-Z][a-zA-Z ]*$/;
         const regexPhone =
@@ -56,7 +55,7 @@ const signupAPI = async (req, res) => {
             errorMessage = "Le nom saisie n'est pas valide.";
             break;
           case "name_length":
-            errorMessage = "Le nom doit contenir entre 3 et 30 caractères.";
+            errorMessage = "Nom doit contenir entre 3 et 30 caractères.";
             break;
           case "users_email_key":
             errorMessage = "Cet e-mail est déjà utilisé.";
@@ -65,11 +64,10 @@ const signupAPI = async (req, res) => {
             errorMessage = "L'adresse e-mail saisie n'est pas valide";
             break;
           case "password_length":
-            errorMessage =
-              "Le mot de passe doit contenir au moins 8 caractères.";
+            errorMessage = "La mot de passe doit être >= 8 caractères.";
             break;
           case "phone_not_valid":
-            errorMessage = "Le numéro de téléphone saisi n'est pas valide.";
+            errorMessage = "Numéro de téléphone saisi n'est pas valide.";
             break;
         }
         res.status(200).json({
