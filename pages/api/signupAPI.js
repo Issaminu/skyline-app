@@ -48,26 +48,25 @@ const signupAPI = async (req, res) => {
         }
         res.status(200).json({ ok: true, status: "success" });
       } catch (error) {
-        let errorMessage =
-          "Une erreur est survenue, veuillez réessayer plus tard.";
+        let errorMessage = "An error has occurred, please try again later";
         switch (error.meta.target) {
           case "name_not_alphabet":
-            errorMessage = "Le nom saisie n'est pas valide.";
+            errorMessage = "The name entered is invalid";
             break;
           case "name_length":
-            errorMessage = "Nom doit contenir entre 3 et 30 caractères.";
+            errorMessage = "Name must contain between 3 and 30 characters";
             break;
           case "users_email_key":
-            errorMessage = "Cet e-mail est déjà utilisé.";
+            errorMessage = "This email is already in use";
             break;
           case "email_not_valid":
-            errorMessage = "L'adresse e-mail saisie n'est pas valide";
+            errorMessage = "The email address entered is not valid";
             break;
           case "password_length":
-            errorMessage = "La mot de passe doit être >= 8 caractères.";
+            errorMessage = "The password must be >= 8 characters";
             break;
           case "phone_not_valid":
-            errorMessage = "Numéro de téléphone saisi n'est pas valide.";
+            errorMessage = "The phone number entered is invalid";
             break;
         }
         res.status(200).json({

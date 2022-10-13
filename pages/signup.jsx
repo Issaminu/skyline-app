@@ -8,29 +8,29 @@ import { useState } from "react";
 import { ExclamationCircleIcon } from "@heroicons/react/solid";
 
 export default function Signup() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isNameValid, setIsNameValid] = useState(true);
-  const [isPhoneValid, setIsPhoneValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const [isPhoneValid, setIsPhoneValid] = useState(true);
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const router = useRouter();
   if (session) {
     router.push("/buildings");
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsEmailValid(true);
     setIsNameValid(true);
-    setIsPhoneValid(true);
+    setIsEmailValid(true);
     setIsPasswordValid(true);
+    setIsPhoneValid(true);
     axios
       .post("/api/signupAPI", {
         email: email,
