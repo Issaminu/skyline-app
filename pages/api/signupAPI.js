@@ -51,22 +51,22 @@ const signupAPI = async (req, res) => {
         let errorMessage = "An error has occurred, please try again later";
         switch (error.meta.target) {
           case "name_not_alphabet":
-            errorMessage = "The name entered is invalid";
+            errorMessage = "The entered name is invalid";
             break;
           case "name_length":
-            errorMessage = "Name must contain between 3 and 30 characters";
+            errorMessage = "Name must be >= 3 and <=30 characters";
             break;
           case "users_email_key":
             errorMessage = "This email is already in use";
             break;
           case "email_not_valid":
-            errorMessage = "The email address entered is not valid";
+            errorMessage = "The entered email address is not valid";
             break;
           case "password_length":
             errorMessage = "The password must be >= 8 characters";
             break;
           case "phone_not_valid":
-            errorMessage = "The phone number entered is invalid";
+            errorMessage = "The entered phone number is invalid";
             break;
         }
         res.status(200).json({
