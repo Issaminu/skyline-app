@@ -1,4 +1,4 @@
-import { useSession, signIn, signOut, getCsrfToken } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import Router, { useRouter } from "next/router";
 import Image from "next/image";
 import logo1337 from "../public/1337.jpg";
@@ -128,7 +128,7 @@ export default function Signup() {
                         autoComplete="name"
                         required
                         autoFocus
-                        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
                       />
                     </div>
                   </div>
@@ -186,7 +186,7 @@ export default function Signup() {
                         }}
                         autoComplete="email"
                         required
-                        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
                       />
                     </div>
                   </div>
@@ -244,7 +244,7 @@ export default function Signup() {
                         }}
                         autoComplete="password"
                         required
-                        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
                       />
                     </div>
                   </div>
@@ -306,7 +306,7 @@ export default function Signup() {
                         autoComplete="phone"
                         required
                         defaultValue={"+212"}
-                        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        className="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 block w-full sm:text-sm border-gray-300 rounded-md"
                       />
                     </div>
                   </div>
