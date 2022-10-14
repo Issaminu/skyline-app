@@ -94,7 +94,7 @@ export default function Navbar() {
                   )}
                 >
                   <Image
-                    src={session.user.picture}
+                    src={session.user.image}
                     className="block mx-auto h-10 w-10"
                     style={{ borderRadius: "50%" }}
                     width={50}
@@ -210,7 +210,7 @@ export default function Navbar() {
                         )}
                       >
                         <Image
-                          src={session.user.picture}
+                          src={session.user.image}
                           className="block mx-auto h-4 w-4"
                           style={{ borderRadius: "50%" }}
                           width={35}

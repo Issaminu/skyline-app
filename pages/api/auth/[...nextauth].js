@@ -56,8 +56,7 @@ export const authOptions = {
     async jwt({ token, user, account }) {
       if (account && user) {
         return {
-          ...token,
-          ...account,
+          user: user,
           accessToken: token.accessToken,
           refreshToken: token.refreshToken,
         };
@@ -65,12 +64,11 @@ export const authOptions = {
 
       return token;
     },
-
     async session({ session, token }) {
-      session.user = token;
-      session.user.accessToken = token.accessToken;
-      session.user.refreshToken = token.refreshToken;
-      session.user.accessTokenExpires = token.accessTokenExpires;
+      session.user = token.user;
+      session.accessToken = token.accessToken;
+      session.refreshToken = token.refreshToken;
+      session.accessTokenExpires = token.accessTokenExpires;
       return session;
     },
   },
