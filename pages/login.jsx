@@ -5,16 +5,21 @@ import logo1337 from "../public/1337.jpg";
 import Link from "next/link";
 import { useState } from "react";
 import { ExclamationCircleIcon } from "@heroicons/react/solid";
+import { userState } from "../store/atoms";
+import { useRecoilState } from "recoil";
 
 export default function Login() {
-  const { data: session } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const [user, setUser] = useRecoilState(userState);
+  const { data: session } = useSession();
+
   const error = "Wrong email or password";
   const router = useRouter();
   if (session) {
+    setUser(session.user);
     router.push("/buildings");
   }
   const handleSubmit = async (e) => {
@@ -27,9 +32,7 @@ export default function Login() {
       password: password,
       callbackUrl: `${window.location.origin}`,
     });
-    if (res.ok) {
-      Router.push("/buildings");
-    } else {
+    if (!res.ok) {
       setIsEmailValid(false);
       setIsPasswordValid(false);
     }

@@ -30,7 +30,6 @@ export const authOptions = {
             notificationCount: true,
           },
         });
-        // prisma.$disconnect();
         if (user) {
           const match = await bcrypt.compare(
             credentials.password,

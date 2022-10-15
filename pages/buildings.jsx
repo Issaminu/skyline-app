@@ -1,4 +1,9 @@
+import { userState } from "../store/atoms";
+import { useRecoilState } from "recoil";
+
 const Buildings = () => {
+  const [user, setUser] = useRecoilState(userState);
+  console.log(user);
   return (
     <main className="min-w-0 flex-1 border-t border-gray-200">
       <div className="py-6">

@@ -4,8 +4,10 @@ import Image from "next/image";
 import logo1337 from "../public/1337.jpg";
 import Link from "next/link";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ExclamationCircleIcon } from "@heroicons/react/solid";
+import { userState } from "../store/atoms";
+import { useRecoilState } from "recoil";
 
 export default function Signup() {
   const { data: session } = useSession();
@@ -21,8 +23,11 @@ export default function Signup() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  const [user, setUser] = useRecoilState(userState);
+  // let router = useRouter();
   const router = useRouter();
   if (session) {
+    setUser(session.user);
     router.push("/buildings");
   }
   const handleSubmit = async (e) => {
@@ -40,15 +45,12 @@ export default function Signup() {
       })
       .then(async (res) => {
         if (res.status === 200 && res.data.status === "success") {
-          const res = await signIn("credentials", {
+          await signIn("credentials", {
             redirect: false,
             email: email,
             password: password,
             callbackUrl: `${window.location.origin}`,
           });
-          if (res.ok) {
-            Router.push("/buildings");
-          }
         }
         if (!res.ok) {
           if (

@@ -3,6 +3,7 @@ import Head from "next/head";
 import { SessionProvider, useSession } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
 import Navbar from "../components/Navbar/Navbar";
+import { RecoilRoot } from "recoil";
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <>
@@ -11,13 +12,17 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
         <Head>
           <title>Skyline 1337</title>
         </Head>
-        <Navbar />
         {Component.auth ? (
           <Auth>
-            <Component {...pageProps} />
+            <RecoilRoot>
+              <Navbar />
+              <Component {...pageProps} />
+            </RecoilRoot>
           </Auth>
         ) : (
-          <Component {...pageProps} />
+          <RecoilRoot>
+            <Component {...pageProps} />
+          </RecoilRoot>
         )}
       </SessionProvider>
     </>
