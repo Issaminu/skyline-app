@@ -6,26 +6,22 @@ import Navbar from "../components/Navbar/Navbar";
 import { RecoilRoot } from "recoil";
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
-    <>
-      <SessionProvider session={session}>
-        <Toaster />
-        <Head>
-          <title>Skyline 1337</title>
-        </Head>
+    <SessionProvider session={session}>
+      <Head>
+        <title>Skyline 1337</title>
+      </Head>
+      <RecoilRoot>
         {Component.auth ? (
           <Auth>
-            <RecoilRoot>
-              <Navbar />
-              <Component {...pageProps} />
-            </RecoilRoot>
+            <Navbar />
+            <Toaster />
+            <Component {...pageProps} />
           </Auth>
         ) : (
-          <RecoilRoot>
-            <Component {...pageProps} />
-          </RecoilRoot>
+          <Component {...pageProps} />
         )}
-      </SessionProvider>
-    </>
+      </RecoilRoot>
+    </SessionProvider>
   );
 }
 function Auth({ children }) {
@@ -33,7 +29,7 @@ function Auth({ children }) {
   const { status } = useSession({ required: true });
 
   if (status === "loading") {
-    return <div></div>;
+    return <></>;
   }
 
   return children;

@@ -1,5 +1,5 @@
 import { useSession, signIn } from "next-auth/react";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import logo1337 from "../public/1337.jpg";
 import Link from "next/link";
@@ -24,12 +24,13 @@ export default function Signup() {
   const [passwordError, setPasswordError] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [user, setUser] = useRecoilState(userState);
-  // let router = useRouter();
   const router = useRouter();
-  if (session) {
-    setUser(session.user);
-    router.push("/buildings");
-  }
+  useEffect(() => {
+    if (session) {
+      setUser(session.user);
+      router.push("/buildings");
+    }
+  }, [session]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsNameValid(true);
