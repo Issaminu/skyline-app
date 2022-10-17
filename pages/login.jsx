@@ -1,5 +1,5 @@
 import { useSession, signIn } from "next-auth/react";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import logo1337 from "../public/1337.jpg";
 import Link from "next/link";
@@ -9,6 +9,7 @@ import { userState } from "../store/atoms";
 import { useRecoilState } from "recoil";
 
 export default function Login() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true);
@@ -17,7 +18,6 @@ export default function Login() {
   const { data: session } = useSession();
 
   const error = "Wrong email or password";
-  const router = useRouter();
   useEffect(() => {
     if (session) {
       setUser(session.user);
@@ -213,6 +213,7 @@ export default function Login() {
                 <div>
                   <button
                     type="submit"
+                    // disabled={true}
                     className="w-full h-11 flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-cyan-700 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
                   >
                     <div className="flex items-center h-full">Sign in</div>

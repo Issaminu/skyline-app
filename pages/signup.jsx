@@ -38,7 +38,7 @@ export default function Signup() {
     setIsPasswordValid(true);
     setIsPhoneValid(true);
     axios
-      .post("/api/signupAPI", {
+      .post("/api/signup", {
         email: email,
         name: name,
         phone: phone,

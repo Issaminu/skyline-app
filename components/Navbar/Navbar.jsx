@@ -37,6 +37,12 @@ export default function Navbar() {
   const [user, setUser] = useRecoilState(userState);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const logout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("recoil-persist");
+    signOut({ callbackUrl: "/login" });
+  };
+
   return (
     <>
       <div className="h-full min-h-screen float-left flex">
@@ -84,7 +90,7 @@ export default function Navbar() {
             </div>
             <div className="flex items-center flex-col mt-20 w-full px-2 space-y-1 mb-2">
               <a
-                onClick={() => signOut({ callbackUrl: "/login" })}
+                onClick={logout}
                 key={user.name}
                 href="#"
                 className={classNames(

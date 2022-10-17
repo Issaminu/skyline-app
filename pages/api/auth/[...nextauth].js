@@ -7,11 +7,7 @@ export const authOptions = {
       id: "credentials",
       name: "email",
       credentials: {
-        email: {
-          label: "Email",
-          type: "text",
-          placeholder: "jsmith@gmail.com",
-        },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
