@@ -19,6 +19,7 @@ export default function Signup() {
   const [isNameValid, setIsNameValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
   const [isPhoneValid, setIsPhoneValid] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -26,6 +27,10 @@ export default function Signup() {
   const [user, setUser] = useRecoilState(userState);
   const router = useRouter();
   useEffect(() => {
+    setIsNameValid(true);
+    setIsEmailValid(true);
+    setIsPasswordValid(true);
+    setIsPhoneValid(true);
     if (session) {
       setUser(session.user);
       router.push("/buildings");
@@ -33,10 +38,7 @@ export default function Signup() {
   }, [session]);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsNameValid(true);
-    setIsEmailValid(true);
-    setIsPasswordValid(true);
-    setIsPhoneValid(true);
+    setIsLoading(true);
     axios
       .post("/api/signup", {
         email: email,
@@ -54,6 +56,7 @@ export default function Signup() {
           });
         }
         if (!res.ok) {
+          setIsLoading(false);
           if (
             res.data.errorType == "email_not_valid" ||
             res.data.errorType == "users_email_key"
@@ -377,7 +380,8 @@ export default function Signup() {
                 <div>
                   <button
                     type="submit"
-                    className="w-full h-11 flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-cyan-700 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                    disabled={isLoading}
+                    className="w-full h-11 flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-cyan-700 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <div className="flex items-center h-full">Sign up</div>
                   </button>
