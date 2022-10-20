@@ -4,10 +4,11 @@ import Image from "next/image";
 import logo1337 from "../public/1337.jpg";
 import Link from "next/link";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { ExclamationCircleIcon } from "@heroicons/react/solid";
 import { userState } from "../store/atoms";
 import { useRecoilState } from "recoil";
+import LoadingBar from "react-top-loading-bar";
 
 export default function Signup() {
   const { data: session } = useSession();
@@ -26,6 +27,8 @@ export default function Signup() {
   const [phoneError, setPhoneError] = useState("");
   const [user, setUser] = useRecoilState(userState);
   const router = useRouter();
+  const ref = useRef(null);
+
   useEffect(() => {
     setIsNameValid(true);
     setIsEmailValid(true);
@@ -39,6 +42,7 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    ref.current.staticStart();
     axios
       .post("/api/signup", {
         email: email,
@@ -47,6 +51,7 @@ export default function Signup() {
         password: password,
       })
       .then(async (res) => {
+        ref.current.complete();
         if (res.status === 200 && res.data.status === "success") {
           await signIn("credentials", {
             redirect: false,
@@ -93,6 +98,7 @@ export default function Signup() {
       >
         <div className="mt-8 sm:mx-auto sm:w-96 sm:max-w-md">
           <div className="bg-white pt-14 pb-6 px-4 shadow sm:rounded-2xl sm:px-12">
+            <LoadingBar height={3} color="#f5b062" ref={ref} />
             <div className="sm:mx-auto mb-10 sm:w-full sm:max-w-md">
               <div className="flex justify-center">
                 <Image

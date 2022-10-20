@@ -3,11 +3,13 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import logo1337 from "../public/1337.jpg";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { ExclamationCircleIcon } from "@heroicons/react/solid";
 import { userState } from "../store/atoms";
 import { useRecoilState } from "recoil";
+import LoadingBar from "react-top-loading-bar";
 
+const error = "Wrong email or password";
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -17,8 +19,8 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useRecoilState(userState);
   const { data: session } = useSession();
+  const ref = useRef(null);
 
-  const error = "Wrong email or password";
   useEffect(() => {
     setIsEmailValid(true);
     setIsPasswordValid(true);
@@ -30,12 +32,14 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    ref.current.staticStart();
     const res = await signIn("credentials", {
       redirect: false,
       email: email,
       password: password,
       callbackUrl: `${window.location.origin}`,
     });
+    ref.current.complete();
     if (!res.ok) {
       setIsEmailValid(false);
       setIsPasswordValid(false);
@@ -56,6 +60,7 @@ export default function Login() {
       >
         <div className="mt-8 sm:mx-auto sm:w-96 sm:max-w-md">
           <div className="bg-white pt-14 pb-6 px-4 shadow sm:rounded-2xl sm:px-12">
+            <LoadingBar height={3} color="#f5b062" ref={ref} />
             <div className="sm:mx-auto mb-10 sm:w-full sm:max-w-md">
               <div className="flex justify-center">
                 <Image
