@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState, useRef } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import { signOut } from "next-auth/react";
 import logo from "../../public/1337.png";
@@ -10,24 +10,11 @@ import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import { XIcon, MenuAlt2Icon } from "@heroicons/react/outline";
 import { userState } from "../../store/atoms";
 import { useRecoilState } from "recoil";
-const navigation = [
-  {
-    name: "Immeubles",
-    href: "/buildings",
-    icon: HomeRoundedIcon,
-    current: true,
-  },
-  {
-    name: "Cotisations",
-    href: "#",
-    icon: MonetizationOnRoundedIcon,
-    current: false,
-  },
-  { name: "Dépenses", href: "#", icon: EngineeringRoundedIcon, current: false },
-  { name: "Invitations", href: "#", icon: EmailRoundedIcon, current: false },
-  // { name: "Documents", href: "#", icon: InboxIcon, current: false },
-  // { name: "Reports", href: "#", icon: ChartBarIcon, current: false },
-];
+import useWindowDimensions from "../windowDimensions";
+import LoadingBar from "react-top-loading-bar";
+// import { useLocation } from "react-router-dom";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -36,7 +23,53 @@ function classNames(...classes) {
 export default function Navbar() {
   const [user, setUser] = useRecoilState(userState);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { height, width } = useWindowDimensions();
+  const [path, setPath] = useState("");
+  const router = useRouter();
+  const ref = useRef(null);
+  useEffect(() => {
+    ref.current.staticStart();
+    setPath(router.asPath);
+    const onPageLoad = () => {
+      console.log("page loaded");
+      ref.current.complete();
+    };
+    if (document.readyState === "complete") {
+      onPageLoad();
+    } else {
+      window.addEventListener("load", onPageLoad, false);
+      return () => window.removeEventListener("load", onPageLoad);
+    }
+  }, [router]);
 
+  const navigation = [
+    {
+      name: "Immeubles",
+      href: "/buildings",
+      icon: HomeRoundedIcon,
+      current: "/buildings" === path,
+    },
+    {
+      name: "Cotisations",
+      href: "/cotisations",
+      icon: MonetizationOnRoundedIcon,
+      current: "/cotisations" === path,
+    },
+    {
+      name: "Dépenses",
+      href: "/depenses",
+      icon: EngineeringRoundedIcon,
+      current: "/depenses" === path,
+    },
+    {
+      name: "Invitations",
+      href: "/invitations",
+      icon: EmailRoundedIcon,
+      current: "/invitations" === path,
+    },
+    // { name: "Documents", href: "#", icon: InboxIcon, current: false },
+    // { name: "Reports", href: "#", icon: ChartBarIcon, current: false },
+  ];
   const logout = (e) => {
     e.preventDefault();
     localStorage.removeItem("recoil-persist");
@@ -66,27 +99,28 @@ export default function Navbar() {
               <div className="flex-1 mt-6 w-full px-2 space-y-1">
                 {navigation.map((item) => (
                   <div key={item.name} style={{ marginBottom: "1rem" }}>
-                    <a
-                      href={item.href}
-                      className={classNames(
-                        item.current
-                          ? "bg-cyan-800 text-white"
-                          : "text-cyan-100 hover:bg-cyan-800 hover:text-white",
-                        "group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium"
-                      )}
-                      aria-current={item.current ? "page" : undefined}
-                    >
-                      <item.icon
+                    <Link href={item.href}>
+                      <a
                         className={classNames(
                           item.current
-                            ? "text-white"
-                            : "text-cyan-500 group-hover:text-white",
-                          "h-6 w-6"
+                            ? "bg-cyan-800 text-white"
+                            : "text-cyan-100 hover:bg-cyan-800 hover:text-white",
+                          "group w-full p-3 rounded-md flex flex-col items-center text-xs font-medium"
                         )}
-                        aria-hidden="true"
-                      />
-                      <span className="mt-2">{item.name}</span>
-                    </a>
+                        aria-current={item.current ? "page" : undefined}
+                      >
+                        <item.icon
+                          className={classNames(
+                            item.current
+                              ? "text-white"
+                              : "text-cyan-500 group-hover:text-white",
+                            "h-6 w-6"
+                          )}
+                          aria-hidden="true"
+                        />
+                        <span className="mt-2">{item.name}</span>
+                      </a>
+                    </Link>
                   </div>
                 ))}
               </div>
@@ -252,6 +286,13 @@ export default function Navbar() {
           </div>
         </header>
       </div>
+      {/* App-wide loading bar */}
+      <LoadingBar
+        containerStyle={width > 768 ? { left: "7rem", zIndex: 1 } : {}}
+        height={4}
+        color="#06b6d4"
+        ref={ref}
+      />
     </>
   );
 }

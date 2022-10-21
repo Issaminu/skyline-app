@@ -1,7 +1,6 @@
 import { userState } from "../store/atoms";
 import { useRecoilState } from "recoil";
 import { useEffect, useState, useRef } from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const Buildings = () => {
   const [user, setUser] = useRecoilState(userState);
@@ -17,16 +16,12 @@ const Buildings = () => {
     <main className="min-w-0 flex-1 border-t border-gray-200">
       <div className="py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-2xl font-semibold text-gray-900">Buildings</h1>
+          <h1 className="text-2xl font-semibold text-gray-900">Invitations</h1>
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
           <button onClick={testFunc}>Test</button>
           <div className="py-4">
             <div className="border-4 border-dashed border-gray-200 rounded-lg h-96" />
-            <LazyLoadImage
-              loading="lazy"
-              src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?cs=srgb&dl=pexels-pixabay-36717.jpg&fm=jpg"
-            />
           </div>
           {/* /End replace */}
         </div>

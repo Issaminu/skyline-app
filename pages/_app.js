@@ -4,6 +4,7 @@ import { SessionProvider, useSession } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
 import Navbar from "../components/Navbar/Navbar";
 import { RecoilRoot } from "recoil";
+
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
