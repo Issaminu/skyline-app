@@ -45,7 +45,10 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="h-full min-h-screen float-left flex">
+      <div
+        className="h-full min-h-screen float-left flex absolute"
+        style={{ zIndex: 9999 }}
+      >
         {/* Narrow sidebar */}
         <div className="hidden w-28 bg-cyan-900 overflow-y-auto md:block">
           <div
