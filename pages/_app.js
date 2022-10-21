@@ -4,6 +4,10 @@ import { SessionProvider, useSession } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
 import Navbar from "../components/Navbar/Navbar";
 import { RecoilRoot } from "recoil";
+import { QueryClientProvider, QueryClient } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+
+const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
@@ -12,15 +16,18 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
         <title>Skyline 1337</title>
       </Head>
       <RecoilRoot>
-        {Component.auth ? (
-          <Auth>
-            <Navbar />
-            <Toaster />
+        <QueryClientProvider client={queryClient}>
+          {Component.auth ? (
+            <Auth>
+              <Navbar />
+              <Toaster />
+              <Component {...pageProps} />
+            </Auth>
+          ) : (
             <Component {...pageProps} />
-          </Auth>
-        ) : (
-          <Component {...pageProps} />
-        )}
+          )}
+          <ReactQueryDevtools position="bottom-right" />
+        </QueryClientProvider>
       </RecoilRoot>
     </SessionProvider>
   );

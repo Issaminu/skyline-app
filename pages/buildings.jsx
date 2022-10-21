@@ -1,18 +1,20 @@
 import { userState } from "../store/atoms";
 import { useRecoilState } from "recoil";
-import { useEffect, useState, useRef } from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useQuery } from "react-query";
 const Buildings = () => {
   const [user, setUser] = useRecoilState(userState);
-  const testFunc = (e) => {
-    e.preventDefault();
-    ref.current.staticStart();
-    setTimeout(() => {
-      ref.current.complete();
-    }, 1000);
-  };
+  const [buildings, setBuildings] = useState();
   console.log(user);
+  const getBuildings = useQuery("getBuildings", async () => {
+    const buildings = await axios
+      .post("/api/getBuildings", { userID: user.id })
+      .then((res) => setBuildings(JSON.parse(res.data.buildings)));
+    return buildings;
+  });
+  if (getBuildings.status == "loading") return <main />;
+
   return (
     <main className="min-w-0 flex-1 border-t border-gray-200">
       <div className="py-6">
@@ -20,13 +22,17 @@ const Buildings = () => {
           <h1 className="text-2xl font-semibold text-gray-900">Buildings</h1>
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-          <button onClick={testFunc}>Test</button>
           <div className="py-4">
+            {buildings?.map((building) => (
+              <div
+                key={building.id}
+                className="border-4 border-dashed border-gray-200 rounded-lg h-96"
+              >
+                {building.name}{" "}
+              </div>
+            ))}
+
             <div className="border-4 border-dashed border-gray-200 rounded-lg h-96" />
-            <LazyLoadImage
-              loading="lazy"
-              src="https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?cs=srgb&dl=pexels-pixabay-36717.jpg&fm=jpg"
-            />
           </div>
           {/* /End replace */}
         </div>

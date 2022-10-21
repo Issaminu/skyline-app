@@ -1,4 +1,4 @@
-import prisma from "../../components/prisma";
+import prisma from "../../../components/prisma";
 
 const signupAPI = async (req, res) => {
   const { method } = req;

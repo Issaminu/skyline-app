@@ -28,10 +28,9 @@ export default function Navbar() {
   const router = useRouter();
   const ref = useRef(null);
   useEffect(() => {
-    ref.current.staticStart();
     setPath(router.asPath);
+    ref.current.staticStart();
     const onPageLoad = () => {
-      console.log("page loaded");
       ref.current.complete();
     };
     if (document.readyState === "complete") {
@@ -79,13 +78,13 @@ export default function Navbar() {
   return (
     <>
       <div
-        className="h-full min-h-screen float-left flex absolute"
+        className="h-full min-h-screen float-left flex fixed"
         style={{ zIndex: 9999 }}
       >
         {/* Narrow sidebar */}
         <div className="hidden w-28 bg-cyan-900 overflow-y-auto md:block">
           <div
-            style={{ height: "100%" }}
+            style={{ height: "100%", position: "sticky !important" }}
             className="flex flex-col justify-between"
           >
             <div className="w-full py-6 flex flex-col items-center">

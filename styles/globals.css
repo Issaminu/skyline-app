@@ -1,7 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+.overflow-hidden {
+    overflow: auto;
+}
 @media (min-width: 768px) {
     main{
     margin-left: 8rem;

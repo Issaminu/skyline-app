@@ -30,6 +30,8 @@
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.0",
     "react-lazy-load-image-component": "^1.5.5",
+    "react-query": "^3.39.2",
+    "react-query-devtools": "^2.6.3",
     "react-router-dom": "^6.4.2",
     "react-top-loading-bar": "^2.3.1",
     "recoil": "^0.7.6",
