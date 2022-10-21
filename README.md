@@ -34,7 +34,9 @@ the currently-too-young NextUI library for the front-end. For V2, I'm transition
     V2 will have all API calls secured by the use of JWT, which is provides better security than the public APIs that V1 uses, also, inputs will be strictly validated.
     
 • Responsive design.
+
 • Better "feel":
     This is the main reason that made me consider making V2, the current version of skyline-app feels floaty and unresponsive. a big part of that is due to relying entirely on NextUI components, which is still in beta, as well as newbie mistakes I've made (I'm looking at you, data fetching from deeply nested components.)
+    
 • Better resilience:
     V2 will include better support for edge cases and will have (way) better input validation and sanity checks.
