@@ -30,6 +30,7 @@ export default function Navbar() {
   useEffect(() => {
     setPath(router.asPath);
     ref.current.staticStart();
+    setMobileMenuOpen(false);
     const onPageLoad = () => {
       ref.current.complete();
     };
@@ -274,7 +275,7 @@ export default function Navbar() {
         </Transition.Root>
       </div>
       <div className="flex-1 flex flex-col md:hidden overflow-hidden">
-        <header className="w-full">
+        <header className="fixed w-full">
           <div className="relative z-10 flex-shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex">
             <button
               type="button"
