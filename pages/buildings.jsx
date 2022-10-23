@@ -8,15 +8,15 @@ const Buildings = () => {
   const [buildings, setBuildings] = useState();
   console.log(user);
   const getBuildings = useQuery(["getBuildings"], async () => {
-    const buildings = await axios
-      .post("/api/getBuildings", { userID: user.id })
-      .then((res) => setBuildings(JSON.parse(res.data.buildings)));
-    return buildings;
+    return await axios.get("/api/getBuildings").then((res) => {
+      setBuildings(JSON.parse(res.data.buildings));
+      return res;
+    });
   });
   if (getBuildings.status == "loading") return <main />;
 
   return (
-    <main className="min-w-0 sm:mt-16 md:mt-0 flex-1 border-t border-gray-200">
+    <main className="min-w-0  flex-1 border-t border-gray-200">
       <div className="py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-2xl font-semibold text-gray-900">Buildings</h1>
