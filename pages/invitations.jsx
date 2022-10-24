@@ -13,7 +13,7 @@ const Buildings = () => {
   };
   console.log(user);
   return (
-    <main className="min-w-0 flex-1 border-t border-gray-200">
+    <main className="md:ml-28 min-w-0 flex-1 border-t border-gray-200">
       <div className="py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-2xl font-semibold text-gray-900">Invitations</h1>

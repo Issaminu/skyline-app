@@ -4,7 +4,7 @@ import { getToken } from "next-auth/jwt";
 const getBuildings = async (req, res) => {
   const token = await getToken({ req });
   const { method } = req;
-  console.log(token);
+  // console.log(token);
   switch (method) {
     case "GET":
       if (token) {

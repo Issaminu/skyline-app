@@ -154,7 +154,7 @@ export default function Navbar() {
         <Transition.Root show={mobileMenuOpen} as={Fragment}>
           <Dialog
             as="div"
-            className="fixed inset-0 z-40 flex md:hidden"
+            className="fixed inset-0 z-999999 flex md:hidden"
             onClose={setMobileMenuOpen}
           >
             <Transition.Child
@@ -276,7 +276,7 @@ export default function Navbar() {
       </div>
       <div className="flex-1 flex flex-col md:hidden overflow-hidden">
         <header className="fixed w-full">
-          <div className="relative z-10 flex-shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex">
+          <div className="relative z-999999 flex-shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex">
             <button
               type="button"
               className="border-r border-gray-200 px-4 text-gray-500 md:hidden"
@@ -290,7 +290,7 @@ export default function Navbar() {
       </div>
       {/* App-wide loading bar */}
       <LoadingBar
-        containerStyle={width > 768 ? { left: "7rem", zIndex: 1 } : {}}
+        containerStyle={width > 768 ? { left: "7rem", zIndex: 999 } : {}}
         height={4}
         color="#06b6d4"
         ref={ref}
