@@ -127,7 +127,6 @@ export default function Navbar() {
             <div className="flex items-center flex-col mt-20 w-full px-2 space-y-1 mb-2">
               <a
                 onClick={logout}
-                key={user.name}
                 href="#"
                 className={classNames(
                   "text-cyan-100 hover:bg-cyan-800 hover:text-white",
@@ -137,6 +136,7 @@ export default function Navbar() {
                 <Image
                   src={user.image}
                   className="block mx-auto h-10 w-10"
+                  alt="User image"
                   style={{ borderRadius: "50%" }}
                   width={50}
                   height={50}
@@ -243,7 +243,6 @@ export default function Navbar() {
                   <div>
                     <a
                       onClick={() => signOut({ callbackUrl: "/login" })}
-                      key={user.name}
                       href="#"
                       className={classNames(
                         "text-cyan-100 hover:bg-cyan-800 hover:text-white",
@@ -252,6 +251,7 @@ export default function Navbar() {
                     >
                       <Image
                         src={user.image}
+                        alt="User image"
                         className="block mx-auto h-4 w-4"
                         style={{ borderRadius: "50%" }}
                         width={35}
