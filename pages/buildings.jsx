@@ -207,7 +207,7 @@ const Buildings = () => {
 
   return (
     <div className="mt-16 md:mt-0 md:ml-28">
-      <header className="md:sticky h-46 flex-shrink-0 flex flex-col bg-white border-b border-gray-200 lg:border-none">
+      <header className="md:fixed md:top-0 md:min-w-full h-46 flex-shrink-0 flex flex-col bg-white border-b border-gray-200 lg:border-none">
         {/* Search bar */}
         <div className="flex-1 px-4 h-24 mt-4 md:mt-4 lg:mt-0 flex justify-center sm:px-6 lg:p-4 w-full lg:max-w-6xl lg:mx-auto">
           <div className="flex justify-center w-full">
@@ -236,18 +236,18 @@ const Buildings = () => {
         </div>
         {/* Page Header */}
         <div className="bg-white shadow">
-          <div className="px-4 sm:px-6 lg:max-w-6xl lg:mx-auto lg:px-8">
-            <div className="py-6 md:flex md:items-center md:justify-between lg:border-t lg:border-gray-200">
-              <div className="flex-1 min-w-0">
+          <div className="sm:px-6 md:px-0 lg:mx-auto">
+            <div className="md:flex md:justify-between">
+              <div className="py-6 lg:max-w-6xl w-fit mx-auto md:flex md:items-center md:justify-center lg:border-t lg:border-gray-200">
                 {/* Profile */}
                 <div className="flex items-center">
-                  <img
-                    className="hidden h-16 w-16 rounded-full sm:block"
-                    src={user.image}
-                    alt="User image"
-                  />
                   <div>
                     <div className="flex items-center">
+                      <img
+                        className="hidden h-16 w-16 rounded-full sm:block"
+                        src={user.image}
+                        alt="User image"
+                      />
                       <img
                         className="h-16 w-16 rounded-full sm:hidden"
                         src={user.image}
@@ -257,7 +257,7 @@ const Buildings = () => {
                         Good morning, {user.name}
                       </h1>
                     </div>
-                    <dl className="mt-6 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
+                    <dl className="mt-6 flex flex-col ml-3 sm:ml-0 sm:mt-1 sm:flex-row sm:flex-wrap">
                       <dt className="sr-only">Company</dt>
                       <dd className="flex items-center text-sm text-gray-500 font-medium capitalize sm:mr-6">
                         <OfficeBuildingIcon
@@ -277,27 +277,27 @@ const Buildings = () => {
                     </dl>
                   </div>
                 </div>
-              </div>
-              <div className="mt-6 flex space-x-3 md:mt-0 md:ml-4">
-                <button
-                  type="button"
-                  className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
-                >
-                  Add money
-                </button>
-                <button
-                  type="button"
-                  className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
-                >
-                  Send money
-                </button>
+                <div className="mt-6 flex space-x-3 ml-3 md:ml-0 md:my-6">
+                  <button
+                    type="button"
+                    className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                  >
+                    Add money
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                  >
+                    Send money
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="flex-1 pb-8 mt-8 sm:mt-20 md:mt-6 lg:mt-12">
+      <main className="flex-1 pb-8 mt-4 sm:mt-4 md:mt-52 lg:mt-56">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-lg leading-6 font-medium text-gray-900">
             Overview
