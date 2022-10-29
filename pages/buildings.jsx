@@ -28,6 +28,8 @@ import {
 } from "@heroicons/react/solid";
 const cards = [
   { name: "Account balance", href: "#", icon: ScaleIcon, amount: "$30,659.45" },
+  { name: "Account balance", href: "#", icon: ScaleIcon, amount: "$30,659.45" },
+  { name: "Account balance", href: "#", icon: ScaleIcon, amount: "$30,659.45" },
   // More items...
 ];
 const transactions = [
@@ -207,7 +209,7 @@ const Buildings = () => {
 
   return (
     <div className="mt-16 md:mt-0 md:ml-28">
-      <header className="md:fixed md:top-0 box-border p-0 h-46 w-full flex-shrink-0 flex flex-col bg-white border-b border-gray-200 lg:border-none">
+      <header className="md:fixed md:top-0 box-border w-full flex-shrink-0 flex flex-col bg-white border-b border-gray-200 lg:border-none">
         {/* Search bar */}
         <div className="hidden md:flex flex-1 px-4 h-24 mt-4 md:mt-4 lg:mt-0 justify-center sm:px-6 lg:p-4 w-full lg:max-w-6xl lg:mx-auto">
           <div className="flex justify-center w-full">
@@ -240,15 +242,15 @@ const Buildings = () => {
               {/* <div className="md:flex md:items-center md:justify-between py-6"> */}
               {/* Profile */}
               <div className="flex items-center">
+                <img
+                  className="object-cover hidden h-16 w-16 rounded-full sm:block"
+                  src={user.image}
+                  alt="User image"
+                />
                 <div>
                   <div className="flex items-center">
                     <img
-                      className="hidden h-16 w-16 rounded-full sm:block"
-                      src={user.image}
-                      alt="User image"
-                    />
-                    <img
-                      className="h-16 w-16 rounded-full sm:hidden"
+                      className="object-cover h-16 w-16 rounded-full sm:hidden"
                       src={user.image}
                       alt="User image"
                     />
@@ -256,7 +258,7 @@ const Buildings = () => {
                       Buildings
                     </h1>
                   </div>
-                  <dl className="mt-6 flex flex-col ml-3 sm:ml-0 sm:mt-1 sm:flex-row sm:flex-wrap">
+                  <dl className="mt-6 sm:w-64 md:w-auto flex flex-col ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
                     <dt className="sr-only">Company</dt>
                     <dd className="flex items-center text-sm text-gray-500 font-medium capitalize sm:mr-6">
                       <OfficeBuildingIcon

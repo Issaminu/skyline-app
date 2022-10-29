@@ -134,7 +134,7 @@ export default function Navbar() {
               >
                 <Image
                   src={user.image}
-                  className="block mx-auto h-10 w-10"
+                  className="object-cover block mx-auto h-10 w-10"
                   alt="User image"
                   style={{ borderRadius: "50%" }}
                   width={50}
@@ -250,7 +250,7 @@ export default function Navbar() {
                     >
                       <Image
                         src={user.image}
-                        className=" h-10 w-10"
+                        className="object-cover h-10 w-10"
                         alt="User image"
                         style={{ borderRadius: "50%" }}
                         width={50}
