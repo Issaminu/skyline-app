@@ -12,7 +12,6 @@ import { userState } from "../../store/atoms";
 import { useRecoilState } from "recoil";
 import useWindowDimensions from "../windowDimensions";
 import LoadingBar from "react-top-loading-bar";
-// import { useLocation } from "react-router-dom";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -68,7 +67,6 @@ export default function Navbar() {
       current: "/invitations" === path,
     },
     // { name: "Documents", href: "#", icon: InboxIcon, current: false },
-    // { name: "Reports", href: "#", icon: ChartBarIcon, current: false },
   ];
   const logout = (e) => {
     e.preventDefault();
@@ -79,6 +77,7 @@ export default function Navbar() {
   return (
     <>
       <nav
+        id="navbar"
         className="h-full top-0 min-h-screen float-left flex fixed"
         style={{ zIndex: 99999 }}
       >
@@ -242,23 +241,23 @@ export default function Navbar() {
                   </div>
                   <div>
                     <a
-                      onClick={() => signOut({ callbackUrl: "/login" })}
+                      onClick={logout}
                       href="#"
                       className={classNames(
                         "text-cyan-100 hover:bg-cyan-800 hover:text-white",
-                        "group w-full p-3 rounded-md flex items-center text-sm font-medium"
+                        "group w-full p-3 rounded-md flex flex-row justify-start text-xs font-medium"
                       )}
                     >
                       <Image
                         src={user.image}
+                        className=" h-10 w-10"
                         alt="User image"
-                        className="block mx-auto h-4 w-4"
                         style={{ borderRadius: "50%" }}
-                        width={35}
-                        height={35}
+                        width={50}
+                        height={50}
                       />
-                      <div>
-                        <span className="ml-4">{user.name}</span>
+                      <div className="flex items-center text-center">
+                        <span className=" ml-2">{user.name}</span>
                       </div>
                     </a>
                   </div>
@@ -271,7 +270,10 @@ export default function Navbar() {
           </Dialog>
         </Transition.Root>
       </nav>
-      <div className="flex-1 flex flex-col md:hidden overflow-hidden">
+      <div
+        id="topbar"
+        className="flex-1 flex flex-col md:hidden overflow-hidden"
+      >
         <header className="fixed w-full">
           <div className="relative z-99999 flex-shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex">
             <button
