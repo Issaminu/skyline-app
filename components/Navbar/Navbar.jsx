@@ -78,7 +78,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div
+      <nav
         className="h-full top-0 min-h-screen float-left flex fixed"
         style={{ zIndex: 9999 }}
       >
@@ -270,7 +270,7 @@ export default function Navbar() {
             </div>
           </Dialog>
         </Transition.Root>
-      </div>
+      </nav>
       <div className="flex-1 flex flex-col md:hidden overflow-hidden">
         <header className="fixed w-full">
           <div className="relative z-999999 flex-shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex">
