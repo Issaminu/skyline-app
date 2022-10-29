@@ -209,7 +209,7 @@ const Buildings = () => {
     <div className="mt-16 md:mt-0 md:ml-28">
       <header className="md:fixed md:top-0 box-border p-0 h-46 w-full flex-shrink-0 flex flex-col bg-white border-b border-gray-200 lg:border-none">
         {/* Search bar */}
-        <div className="flex-1 px-4 h-24 mt-4 md:mt-4 lg:mt-0 flex justify-center sm:px-6 lg:p-4 w-full lg:max-w-6xl lg:mx-auto">
+        <div className="hidden md:flex flex-1 px-4 h-24 mt-4 md:mt-4 lg:mt-0 justify-center sm:px-6 lg:p-4 w-full lg:max-w-6xl lg:mx-auto">
           <div className="flex justify-center w-full">
             <form className="w-full flex md:ml-0" action="#" method="GET">
               <label htmlFor="search-field" className="sr-only">
@@ -225,7 +225,6 @@ const Buildings = () => {
                 <input
                   id="search-field"
                   name="search-field"
-                  style={{ zIndex: 0 }}
                   className="w-full h-full pl-8 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-transparent sm:text-sm"
                   placeholder="Search transactions"
                   type="search"

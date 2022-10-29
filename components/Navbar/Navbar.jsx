@@ -80,7 +80,7 @@ export default function Navbar() {
     <>
       <nav
         className="h-full top-0 min-h-screen float-left flex fixed"
-        style={{ zIndex: 9999 }}
+        style={{ zIndex: 99999 }}
       >
         {/* Narrow sidebar */}
         <div className="hidden w-28 bg-cyan-900 overflow-y-auto md:block">
@@ -153,7 +153,7 @@ export default function Navbar() {
         <Transition.Root show={mobileMenuOpen} as={Fragment}>
           <Dialog
             as="div"
-            className="fixed inset-0 z-999999 flex md:hidden"
+            className="fixed inset-0 z-99999 flex md:hidden"
             onClose={setMobileMenuOpen}
           >
             <Transition.Child
@@ -273,7 +273,7 @@ export default function Navbar() {
       </nav>
       <div className="flex-1 flex flex-col md:hidden overflow-hidden">
         <header className="fixed w-full">
-          <div className="relative z-999999 flex-shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex">
+          <div className="relative z-99999 flex-shrink-0 h-16 bg-white border-b border-gray-200 shadow-sm flex">
             <button
               type="button"
               className="border-r border-gray-200 px-4 text-gray-500 md:hidden"
