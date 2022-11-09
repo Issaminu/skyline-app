@@ -1,7 +1,7 @@
 import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import logo1337 from "../public/1337.jpg";
+import logo from "../public/1337.jpg";
 import Link from "next/link";
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
@@ -10,7 +10,7 @@ import { userState } from "../store/atoms";
 import { useRecoilState } from "recoil";
 import LoadingBar from "react-top-loading-bar";
 
-export default function Signup() {
+export default function Signup(props) {
   const { data: session } = useSession();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -28,6 +28,7 @@ export default function Signup() {
   const [user, setUser] = useRecoilState(userState);
   const router = useRouter();
   const ref = useRef(null);
+  let tempUser;
 
   useEffect(() => {
     setIsNameValid(true);
@@ -35,7 +36,12 @@ export default function Signup() {
     setIsPasswordValid(true);
     setIsPhoneValid(true);
     if (session) {
-      setUser(session.user);
+      tempUser = {
+        ...session.user,
+        accountStatus: "",
+        notificationCount: 0,
+      };
+      setUser(tempUser);
       router.push("/buildings");
     }
   }, [session]);
@@ -60,7 +66,7 @@ export default function Signup() {
             callbackUrl: `${window.location.origin}`,
           });
         }
-        if (!res.ok) {
+        if (!res.data.ok) {
           setIsLoading(false);
           if (
             res.data.errorType == "email_not_valid" ||
@@ -90,7 +96,6 @@ export default function Signup() {
       <div
         className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8"
         style={{
-          layout: "fit",
           background: "url('/login-bg.webp') no-repeat center center fixed",
           backgroundSize: "cover",
           minHeight: "100vh",
@@ -103,9 +108,7 @@ export default function Signup() {
               <div className="flex justify-center">
                 <Image
                   className="mx-auto h-12 w-auto"
-                  src={logo1337}
-                  width="50%"
-                  height="18%"
+                  src={logo}
                   alt="1337 logo"
                 />
               </div>

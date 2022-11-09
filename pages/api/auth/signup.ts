@@ -27,8 +27,8 @@ const signupAPI = async (req, res) => {
         }
         const bcrypt = require("bcrypt");
         const hashedPassword = await bcrypt.hash(password, 10);
-        let currentdate = new Date();
-        currentdate = currentdate.toISOString();
+        let tempDate = new Date();
+        let currentdate = tempDate.toISOString();
         const user = await prisma.users.create({
           data: {
             name: name,

@@ -1,9 +1,12 @@
 import { userState } from "../store/atoms";
 import { useRecoilState } from "recoil";
+import LoadingBar from "react-top-loading-bar";
 import { useEffect, useState, useRef } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
-const Buildings = () => {
+const Cotisations = (props) => {
   const [user, setUser] = useRecoilState(userState);
+  const ref = useRef(null);
   const testFunc = (e) => {
     e.preventDefault();
     ref.current.staticStart();
@@ -11,12 +14,21 @@ const Buildings = () => {
       ref.current.complete();
     }, 1000);
   };
+  const queryClient = useQueryClient();
+  // console.log(user);
+  useEffect(() => {
+    queryClient.removeQueries(["getBuildings"]);
+
+    return () => {
+      // queryClient.removeQueries(["getBuildings"]);
+    };
+  });
   console.log(user);
   return (
     <main className="md:ml-28 min-w-0 flex-1 border-t border-gray-200">
       <div className="py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-2xl font-semibold text-gray-900">Dépenses</h1>
+          <h1 className="text-2xl font-semibold text-gray-900">Cotisations</h1>
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
           <button onClick={testFunc}>Test</button>
@@ -29,5 +41,5 @@ const Buildings = () => {
     </main>
   );
 };
-Buildings.auth = true;
-export default Buildings;
+Cotisations.auth = true;
+export default Cotisations;

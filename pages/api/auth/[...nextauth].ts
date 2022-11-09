@@ -1,44 +1,47 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "../../../components/prisma";
+
 export const authOptions = {
   providers: [
     CredentialsProvider({
-      id: "credentials",
-      name: "email",
+      id: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        email: { label: "Email", type: "string" },
+        password: { label: "Password", type: "string" },
       },
+      // @ts-ignore, this is a bug in Next-Auth types
       async authorize(credentials, req) {
-        const bcrypt = require("bcrypt");
-        const user = await prisma.users.findUnique({
-          where: {
-            email: credentials.email,
-          },
-          select: {
-            id: true,
-            email: true,
-            name: true,
-            password: true,
-            image: true,
-            accountStatus: true,
-            notificationCount: true,
-          },
-        });
-        if (user) {
-          const match = await bcrypt.compare(
-            credentials.password,
-            user.password
-          );
-          if (match) {
-            delete user.password;
-            return user;
-          } else {
-            return null;
+        try {
+          const bcrypt = require("bcrypt");
+          const user = await prisma.users.findUnique({
+            where: {
+              email: credentials.email,
+            },
+            select: {
+              id: true,
+              email: true,
+              name: true,
+              password: true,
+              image: true,
+              accountStatus: true,
+              notificationCount: true,
+            },
+          });
+          if (user) {
+            const match = await bcrypt.compare(
+              credentials.password,
+              user.password
+            );
+            if (match) {
+              delete user.password;
+              return user;
+            }
           }
-        } else {
           return null;
+        } catch (err: any) {
+          console.log(err);
+          throw new Error(err);
         }
       },
     }),

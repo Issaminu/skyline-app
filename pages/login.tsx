@@ -1,16 +1,17 @@
 import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import logo1337 from "../public/1337.jpg";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { ExclamationCircleIcon } from "@heroicons/react/solid";
 import { userState } from "../store/atoms";
 import { useRecoilState } from "recoil";
 import LoadingBar from "react-top-loading-bar";
+import logo from "../public/1337.jpg";
 
 const error = "Wrong email or password";
-export default function Login() {
+
+export default function Login(props) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,12 +21,19 @@ export default function Login() {
   const [user, setUser] = useRecoilState(userState);
   const { data: session } = useSession();
   const ref = useRef(null);
-
+  let tempUser: userState;
+  // let tempUser;
   useEffect(() => {
     setIsEmailValid(true);
     setIsPasswordValid(true);
     if (session) {
-      setUser(session.user);
+      tempUser = {
+        ...session.user,
+        accountStatus: "",
+        notificationCount: 0,
+      };
+      setUser(tempUser);
+      // setUser(session.user);
       router.push("/buildings");
     }
   }, [session]);
@@ -52,7 +60,6 @@ export default function Login() {
       <div
         className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8"
         style={{
-          layout: "fit",
           background: "url('/login-bg.webp') no-repeat center center fixed",
           backgroundSize: "cover",
           minHeight: "100vh",
@@ -65,9 +72,7 @@ export default function Login() {
               <div className="flex justify-center">
                 <Image
                   className="mx-auto h-12 w-auto"
-                  src={logo1337}
-                  width="50%"
-                  height="18%"
+                  src={logo}
                   alt="1337 logo"
                 />
               </div>

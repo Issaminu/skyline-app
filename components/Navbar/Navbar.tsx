@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState, useRef } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import { signOut } from "next-auth/react";
-import logo from "../../public/1337.png";
+import "../../public/1337.png";
 import Image from "next/image";
 import EngineeringRoundedIcon from "@mui/icons-material/EngineeringRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
@@ -14,8 +14,10 @@ import useWindowDimensions from "../windowDimensions";
 import LoadingBar from "react-top-loading-bar";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { useIsFetching } from "@tanstack/react-query";
+import React from "react";
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
@@ -24,22 +26,24 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { height, width } = useWindowDimensions();
   const [path, setPath] = useState("");
+  const isFetching = useIsFetching({ type: "active" });
   const router = useRouter();
   const ref = useRef(null);
+
   useEffect(() => {
     setPath(router.asPath);
-    ref.current.staticStart();
     setMobileMenuOpen(false);
-    const onPageLoad = () => {
-      ref.current.complete();
-    };
-    if (document.readyState === "complete") {
-      onPageLoad();
-    } else {
-      window.addEventListener("load", onPageLoad, false);
-      return () => window.removeEventListener("load", onPageLoad);
-    }
-  }, [router]);
+    ref.current.continuousStart();
+  }, [router.asPath]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      console.log(isFetching);
+      if (isFetching == 0) {
+        ref.current.complete();
+      }
+    }, 300);
+  }, [path, isFetching]);
 
   const navigation = [
     {
@@ -68,7 +72,7 @@ export default function Navbar() {
     },
     // { name: "Documents", href: "#", icon: InboxIcon, current: false },
   ];
-  const logout = (e) => {
+  const logout = (e: MouseEvent) => {
     e.preventDefault();
     localStorage.removeItem("recoil-persist");
     signOut({ callbackUrl: "/login" });
@@ -84,7 +88,7 @@ export default function Navbar() {
         {/* Narrow sidebar */}
         <div className="hidden w-28 bg-cyan-900 overflow-y-auto md:block">
           <div
-            style={{ height: "100%", position: "sticky !important" }}
+            style={{ height: "100%", position: "sticky" }}
             className="flex flex-col justify-between"
           >
             <div className="w-full py-6 flex flex-col items-center">
@@ -125,7 +129,7 @@ export default function Navbar() {
             </div>
             <div className="flex items-center flex-col mt-20 w-full px-2 space-y-1 mb-2">
               <a
-                onClick={logout}
+                onClick={() => logout}
                 href="#"
                 className={classNames(
                   "text-cyan-100 hover:bg-cyan-800 hover:text-white",
@@ -138,6 +142,7 @@ export default function Navbar() {
                   alt="User image"
                   style={{ borderRadius: "50%" }}
                   width={50}
+                  quality={100}
                   height={50}
                 />
                 <div className="flex text-center">
@@ -151,7 +156,6 @@ export default function Navbar() {
         {/* Mobile menu */}
         <Transition.Root show={mobileMenuOpen} as={Fragment}>
           <Dialog
-            as="div"
             className="fixed inset-0 z-99999 flex md:hidden"
             onClose={setMobileMenuOpen}
           >
@@ -241,7 +245,7 @@ export default function Navbar() {
                   </div>
                   <div>
                     <a
-                      onClick={logout}
+                      onClick={() => logout}
                       href="#"
                       className={classNames(
                         "text-cyan-100 hover:bg-cyan-800 hover:text-white",
@@ -289,10 +293,12 @@ export default function Navbar() {
       </div>
       {/* App-wide loading bar */}
       <LoadingBar
+        ref={ref}
         containerStyle={width > 768 ? { left: "7rem", zIndex: 999 } : {}}
         height={4}
+        waitingTime={300}
+        transitionTime={300}
         color="#06b6d4"
-        ref={ref}
       />
     </>
   );

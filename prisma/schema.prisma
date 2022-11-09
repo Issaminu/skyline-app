@@ -1,181 +1,103 @@
-datasource db {
-  provider             = "mysql"
-  url                  = env("DATABASE_URL")
-  shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
-  referentialIntegrity = "prisma"
-}
-
 generator js {
   provider        = "prisma-client-js"
+  output          = "../node_modules/.prisma/client"
   previewFeatures = ["referentialIntegrity"]
 }
 
+datasource db {
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  relationMode      = "prisma"
+}
+
 model users {
-  id                Int       @id @default(autoincrement())
-  name              String    @db.VarChar(255)
-  email             String    @unique @db.VarChar(255)
-  image             String    @db.VarChar(255)
-  phone             String?   @db.VarChar(255)
-  password          String?   @db.VarChar(255)
-  // type           String    @db.VarChar(255)
-  // houseId        String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
-  accountStatus     String    @db.VarChar(255)
-  notificationCount Int       @default(0)
-  email_Verified    Boolean
-  create_time       DateTime? @db.DateTime(0)
-  update_time       DateTime? @db.DateTime(0)
+  id                Int      @id @default(autoincrement())
+  name              String   @db.VarChar(255)
+  email             String   @unique @db.VarChar(255)
+  password          String?  @db.VarChar(255)
+  phone             String?  @db.VarChar(255)
+  image             String   @db.VarChar(255)
+  notificationCount Int      @default(0)
+  accountStatus     String   @db.VarChar(255)
+  email_Verified    Int      @db.TinyInt
+  create_time       DateTime @default(now())
+  update_time       DateTime @default(now())
 }
 
 model buildings {
-  id            Int       @id @default(autoincrement())
-  name          String    @db.VarChar(255)
-  location      String    @db.VarChar(255)
-  city          String    @db.VarChar(255)
-  thumbnail     String    @db.VarChar(255)
-  // images          String?   @db.VarChar(255) //POSSIBLE TO BE MULTIPLE PHOTOS
-  houseQuantity Int
-  treasury      Float     @default(0)
-  // rent          Float
-  // populationTotal Int?
-  houseIDs      String?   @db.VarChar(255)
-  surface       Float
+  id            Int      @id @default(autoincrement())
+  name          String   @db.VarChar(255)
+  city          String   @db.VarChar(255)
+  location      String   @db.VarChar(255)
   creatorId     Int
-  adminIDs      String?   @db.VarChar(255)
-  residentIDs   String?   @db.VarChar(255) //THIS WILL CONTAINS ALL RESIDENTS OF THE BUILDING, INCLUDING THE CREATOR AND ADMINS
-  // notes           String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
-  //teamid        Int
-  create_time   DateTime? @db.DateTime(0)
-  update_time   DateTime? @db.DateTime(0)
+  surface       Float
+  houseQuantity Int
+  treasury      Float    @default(0)
+  houseIDs      String?  @db.VarChar(255)
+  residentIDs   String?  @db.VarChar(255)
+  adminIDs      String?  @db.VarChar(255)
+  thumbnail     String   @db.VarChar(255)
+  create_time   DateTime @default(now())
+  update_time   DateTime @default(now())
 }
 
 model houses {
-  id              Int       @id @default(autoincrement())
-  name            String    @db.VarChar(255)
-  // description     String?   @db.VarChar(1000)
-  buildingId      Int
-  buildingName    String    @db.VarChar(255)
-  buildingSurface Float
-  houseId         String    @unique @db.VarChar(255)
-  // thumbnail             String    @db.VarChar(255)
-  // images                String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
-  // bedrooms              Int?
-  // bathrooms             Int?
-  // saloon                Int?
-  // kitchen               Int?
-  location        String    @db.VarChar(255) //GET THIS FROM BUILDING LOCATION
-  creatorId       Int
-  adminIDs        String?   @db.VarChar(255)
-  residentIDs     String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
+  id              Int      @id @default(autoincrement())
+  name            String   @db.VarChar(255)
   size            Float
-  // floor           Int
-  // houseNumber     Int
-  // percentageOfBuilding Float
-  status          String    @db.VarChar(255)
-  // buyOrRent          String?
-  // priceBuy              Float
-  // pricePerMeter         Float
-  // priceRent       Float?
-  // comment         String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
-  // expenseIDs      String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
-  //teamid          Int
-  create_time     DateTime? @db.DateTime(0)
-  update_time     DateTime? @db.DateTime(0)
-}
-
-model invitations {
-  id                 Int       @id @default(autoincrement())
-  buildingId         Int
-  buildingName       String    @db.VarChar(255)
-  senderId           Int
-  senderName         String    @db.VarChar(255)
-  receiverId         Int
-  receiverName       String    @db.VarChar(255)
-  receiverHouseIDs   String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
-  receiverHouseNames String?   @db.VarChar(255) //POSSIBLE TO BE EMTPY
-  receiverEmail      String    @db.VarChar(255)
-  status             String    @db.VarChar(255)
-  isAdmin            Boolean?
-  senderIsAdmin      Boolean?
-  create_time        DateTime? @db.DateTime(0)
-  update_time        DateTime? @db.DateTime(0)
+  buildingSurface Float
+  location        String   @db.VarChar(255)
+  buildingId      Int
+  buildingName    String   @db.VarChar(255)
+  creatorId       Int
+  houseId         String   @unique @db.VarChar(255)
+  adminIDs        String?  @db.VarChar(255)
+  residentIDs     String?  @db.VarChar(255)
+  status          String   @db.VarChar(255)
+  create_time     DateTime @default(now())
+  update_time     DateTime @default(now())
 }
 
 model payements {
-  id           Int       @id @default(autoincrement())
-  // type        String    @db.VarChar(255)
+  id           Int      @id @default(autoincrement())
   userId       Int
-  userName     String    @db.VarChar(255)
-  // comment     String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
+  userName     String   @db.VarChar(255)
   amount       Float
-  // month       Int
-  // status      String?   @db.VarChar(255) //POSSIBLE TO BE REMOVED
-  // houseId     Int
   buildingId   Int
-  reason       String    @db.VarChar(255)
-  buildingName String    @db.VarChar(255)
-  payementDate DateTime  @db.DateTime(0)
-  //teamid      Int
-  create_time  DateTime? @db.DateTime(0)
-  update_time  DateTime? @db.DateTime(0)
+  buildingName String   @db.VarChar(255)
+  payementDate DateTime @db.DateTime(0)
+  reason       String   @db.VarChar(255)
+  create_time  DateTime @default(now())
+  update_time  DateTime @default(now())
 }
 
 model expenses {
-  id           Int       @id @default(autoincrement())
-  reason       String    @db.VarChar(255)
-  // comment     String?   @db.VarChar(65535) //THE 65535 length is equivalent to the length of the data type "TEXT"
+  id           Int      @id @default(autoincrement())
+  beneficiary  String   @db.VarChar(255)
   amount       Float
+  reason       String   @db.VarChar(255)
   buildingId   Int
-  buildingName String    @db.VarChar(255)
-  beneficiary  String    @db.VarChar(255)
-  expenseDate  DateTime? @db.DateTime(0)
-  //teamid      Int
-  create_time  DateTime? @db.DateTime(0)
-  update_time  DateTime? @db.DateTime(0)
+  buildingName String   @db.VarChar(255)
+  expenseDate  DateTime @default(now())
+  create_time  DateTime @default(now())
+  update_time  DateTime @default(now())
 }
 
-//BELLOW ARE THE MODELS NEEDED BY NextAuth.js
-
-// model Account {
-//   id                String  @id @default(cuid())
-//   userId            String
-//   type              String
-//   provider          String
-//   providerAccountId String
-//   refresh_token     String? @db.Text
-//   access_token      String? @db.Text
-//   expires_at        Int?
-//   token_type        String?
-//   scope             String?
-//   id_token          String? @db.Text
-//   session_state     String?
-
-//   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-//   @@unique([provider, providerAccountId])
-// }
-
-// model Session {
-//   id           String   @id @default(cuid())
-//   sessionToken String   @unique
-//   userId       String
-//   expires      DateTime
-//   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-// }
-
-// model User {
-//   id            String    @id @default(cuid())
-//   name          String?
-//   email         String?   @unique
-//   emailVerified DateTime?
-//   image         String?
-//   accounts      Account[]
-//   sessions      Session[]
-// }
-
-// model VerificationToken {
-//   identifier String
-//   token      String   @unique
-//   expires    DateTime
-
-//   @@unique([identifier, token])
-// }
+model invitations {
+  id                 Int      @id @default(autoincrement())
+  buildingId         Int
+  senderId           Int
+  receiverId         Int
+  senderName         String   @db.VarChar(255)
+  receiverName       String   @db.VarChar(255)
+  receiverEmail      String   @db.VarChar(255)
+  status             String   @db.VarChar(255)
+  isAdmin            Boolean?
+  senderIsAdmin      Boolean?
+  buildingName       String   @db.VarChar(255)
+  receiverHouseIDs   String?  @db.VarChar(255)
+  receiverHouseNames String?  @db.VarChar(255)
+  create_time        DateTime @default(now())
+  update_time        DateTime @default(now())
+}

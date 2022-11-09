@@ -5,6 +5,17 @@
 .overflow-hidden {
     overflow: auto;
 }
+
+html{
+    height: 100%;
+    --tw-bg-opacity: 1;
+    background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+}
+
+body{
+    height: 100%;
+}
+
 @media (max-width: 768px) {
     main{
     margin-top: 4rem;

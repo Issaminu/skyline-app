@@ -88,7 +88,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
+export default function Example(props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (

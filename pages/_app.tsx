@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
           ) : (
             <Component {...pageProps} />
           )}
-          <Analytics />
+          {/* <Analytics /> */}
           <ReactQueryDevtools position="bottom-right" />
         </QueryClientProvider>
       </RecoilRoot>

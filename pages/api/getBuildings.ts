@@ -1,10 +1,14 @@
 import prisma from "../../components/prisma";
-import { getToken } from "next-auth/jwt";
+import { getToken, JWT } from "next-auth/jwt";
+import { userState } from "../../store/atoms";
+
+interface Token extends JWT {
+  user?: userState;
+}
 
 const getBuildings = async (req, res) => {
-  const token = await getToken({ req });
+  const token: Token = await getToken({ req });
   const { method } = req;
-  // console.log(token);
   switch (method) {
     case "GET":
       if (token) {
@@ -18,8 +22,10 @@ const getBuildings = async (req, res) => {
             },
           });
           if (buildings.length) {
+            // setTimeout(() => {
             res.json({ buildings: JSON.stringify(buildings) });
             return res;
+            // }, 3000);
           } else {
             res.status(404).end();
           }
