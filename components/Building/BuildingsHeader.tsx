@@ -47,7 +47,7 @@ const BuildingsHeader: NextPage<Props> = (props) => {
           <div className="py-6 md:mx-0 lg:max-w-6xl sm:flex sm:items-center sm:justify-between md:mr-24 xl:mx-auto lg:border-t lg:border-gray-200">
             {/* <div className="md:flex md:items-center md:justify-between py-6"> */}
             {/* Profile */}
-            <div className="flex items-center">
+            <div className="flex items-center mt-6 md:mt-0">
               <Image
                 className="object-cover hidden h-16 w-16 rounded-full sm:block"
                 height={64}

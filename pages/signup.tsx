@@ -59,7 +59,7 @@ export default function Signup(props) {
       .then(async (res) => {
         ref.current.complete();
         if (res.status === 200 && res.data.status === "success") {
-          await signIn("credentials", {
+          await signIn("Credentials", {
             redirect: false,
             email: email,
             password: password,

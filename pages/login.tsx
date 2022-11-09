@@ -22,7 +22,6 @@ export default function Login(props) {
   const { data: session } = useSession();
   const ref = useRef(null);
   let tempUser: userState;
-  // let tempUser;
   useEffect(() => {
     setIsEmailValid(true);
     setIsPasswordValid(true);
@@ -33,26 +32,26 @@ export default function Login(props) {
         notificationCount: 0,
       };
       setUser(tempUser);
-      // setUser(session.user);
       router.push("/buildings");
     }
   }, [session]);
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     ref.current.staticStart();
-    const res = await signIn("credentials", {
+    const res = await signIn("Credentials", {
       redirect: false,
       email: email,
       password: password,
       callbackUrl: `${window.location.origin}`,
+    }).then(async (res) => {
+      ref.current.complete();
+      if (!res.ok) {
+        setIsEmailValid(false);
+        setIsPasswordValid(false);
+        setIsLoading(false);
+      }
     });
-    ref.current.complete();
-    if (!res.ok) {
-      setIsEmailValid(false);
-      setIsPasswordValid(false);
-      setIsLoading(false);
-    }
   };
 
   return (
@@ -86,7 +85,7 @@ export default function Login(props) {
                 Please sign in to your account
               </p>
             </div>
-            <form className="space-y-4" onSubmit={handleSubmit}>
+            <form className="space-y-4" onSubmit={(e) => handleSubmit(e)}>
               <div>
                 {isEmailValid ? (
                   <div>

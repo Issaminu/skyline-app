@@ -72,7 +72,7 @@ export default function Navbar() {
     },
     // { name: "Documents", href: "#", icon: InboxIcon, current: false },
   ];
-  const logout = (e: MouseEvent) => {
+  const logout = (e: React.MouseEvent<Element, MouseEvent>) => {
     e.preventDefault();
     localStorage.removeItem("recoil-persist");
     signOut({ callbackUrl: "/login" });
@@ -127,9 +127,11 @@ export default function Navbar() {
                 ))}
               </div>
             </div>
-            <div className="flex items-center flex-col mt-20 w-full px-2 space-y-1 mb-2">
+            <div className="flex items-center flex-col mt-20 w-full px-2 space-y-1 mb-2 overflow-x-hidden">
               <a
-                onClick={() => logout}
+                onClick={(e: React.MouseEvent<Element, MouseEvent>) =>
+                  logout(e)
+                }
                 href="#"
                 className={classNames(
                   "text-cyan-100 hover:bg-cyan-800 hover:text-white",
@@ -213,7 +215,7 @@ export default function Navbar() {
 
                 <div
                   style={{ height: "100%" }}
-                  className="flex flex-col justify-between"
+                  className="flex flex-col justify-between overflow-x-hidden"
                 >
                   <div className="flex-1 mt-6 w-full px-2 space-y-1">
                     {navigation.map((item) => (
@@ -245,7 +247,9 @@ export default function Navbar() {
                   </div>
                   <div>
                     <a
-                      onClick={() => logout}
+                      onClick={(e: React.MouseEvent<Element, MouseEvent>) =>
+                        logout(e)
+                      }
                       href="#"
                       className={classNames(
                         "text-cyan-100 hover:bg-cyan-800 hover:text-white",
