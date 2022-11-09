@@ -37,7 +37,7 @@ const signupAPI = async (req, res) => {
             phone: phone,
             image: "/default.jpg",
             accountStatus: "active",
-            email_Verified: false,
+            email_Verified: 0,
             notificationCount: 0,
             create_time: currentdate,
             update_time: currentdate,
