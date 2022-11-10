@@ -144,6 +144,7 @@ export default function Navbar() {
                   alt="User image"
                   style={{ borderRadius: "50%" }}
                   width={50}
+                  loading="eager"
                   quality={100}
                   height={50}
                 />
@@ -262,6 +263,7 @@ export default function Navbar() {
                         alt="User image"
                         style={{ borderRadius: "50%" }}
                         width={50}
+                        loading="eager"
                         height={50}
                       />
                       <div className="flex items-center text-center">

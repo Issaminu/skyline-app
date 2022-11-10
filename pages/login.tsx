@@ -73,6 +73,7 @@ export default function Login(props) {
                   className="mx-auto h-12 w-auto"
                   src={logo}
                   alt="1337 logo"
+                  loading="eager"
                 />
               </div>
               <h2

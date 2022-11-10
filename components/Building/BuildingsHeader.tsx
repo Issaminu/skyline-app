@@ -53,6 +53,7 @@ const BuildingsHeader: NextPage<Props> = (props) => {
                 height={64}
                 width={64}
                 quality={100}
+                loading="eager"
                 src={user.image}
                 alt="User image"
               />
@@ -63,6 +64,7 @@ const BuildingsHeader: NextPage<Props> = (props) => {
                     height={64}
                     width={64}
                     quality={100}
+                    loading="eager"
                     src={user.image}
                     alt="User image"
                   />
