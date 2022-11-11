@@ -1,6 +1,8 @@
+import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../components/prisma";
+const bcrypt = require("bcrypt");
 
-const signupAPI = async (req, res) => {
+const signupAPI = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method } = req;
   switch (method) {
     case "POST":
@@ -25,7 +27,6 @@ const signupAPI = async (req, res) => {
         if (regexPhone.test(phone) == false) {
           throw { meta: { target: "phone_not_valid" } };
         }
-        const bcrypt = require("bcrypt");
         const hashedPassword = await bcrypt.hash(password, 10);
         let tempDate = new Date();
         let currentdate = tempDate.toISOString();
@@ -39,8 +40,6 @@ const signupAPI = async (req, res) => {
             accountStatus: "active",
             email_Verified: 0,
             notificationCount: 0,
-            create_time: currentdate,
-            update_time: currentdate,
           },
         });
         if (!user) {
