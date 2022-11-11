@@ -28,8 +28,6 @@ const signupAPI = async (req: NextApiRequest, res: NextApiResponse) => {
           throw { meta: { target: "phone_not_valid" } };
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        let tempDate = new Date();
-        let currentdate = tempDate.toISOString();
         const user = await prisma.users.create({
           data: {
             name: name,
