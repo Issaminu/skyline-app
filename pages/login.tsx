@@ -39,7 +39,7 @@ export default function Login(props) {
     e.preventDefault();
     setIsLoading(true);
     ref.current.staticStart();
-    const res = await signIn("Credentials", {
+    await signIn("Credentials", {
       redirect: false,
       email: email,
       password: password,
