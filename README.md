@@ -22,7 +22,7 @@ space, such as building improvements, repairs, etc.
 
 To learn more about the application, feel free to check out the application repport: https://bit.ly/3w4BnIq (Note: Currently, it's only available in French).
 
-# About V2
+# About `new-skyline` branch (v2 of the app)
 
 This version will be a complete rewrite of the entire codebase using everything I learned from V1.
 Main changes coming to V2:
