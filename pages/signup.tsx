@@ -28,7 +28,7 @@ export default function Signup(props) {
   const [user, setUser] = useRecoilState(userState);
   const router = useRouter();
   const ref = useRef(null);
-  let tempUser;
+  let tempUser: userState;
 
   useEffect(() => {
     setIsNameValid(true);
