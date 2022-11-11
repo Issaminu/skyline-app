@@ -8,7 +8,7 @@ export const authOptions = {
       id: "Credentials",
       credentials: {
         email: { label: "Email", type: "string" },
-        password: { label: "Password", type: "string" },
+        password: { label: "Password", type: "password" },
       },
       // @ts-ignore, this is a bug in Next-Auth types
       async authorize(credentials, req) {
@@ -51,8 +51,8 @@ export const authOptions = {
     signIn: "/login",
   },
   callbacks: {
-    async jwt({ token, user, account }) {
-      if (account && user) {
+    async jwt({ token, user }) {
+      if (user) {
         return {
           user: user,
           accessToken: token.accessToken,
