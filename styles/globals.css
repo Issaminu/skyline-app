@@ -1,50 +1,28 @@
- /* @tailwind base;
+@tailwind base;
 @tailwind components;
-@tailwind utilities; */
- /* @layer base {
-  *:focus {
-    @apply outline-none;
-    outline: none !important;
-    outline-width: 5 !important;
-  }
+@tailwind utilities;
+
+.overflow-hidden {
+    overflow: auto;
 }
 
-@layer components {
-  *:focus {
-    @apply outline-none;
-    outline: none !important;
-    outline-width: 0 !important;
-  }
+html{
+    height: 100%;
+    --tw-bg-opacity: 1;
+    background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
-@layer utilities {
-  *:focus {
-    @apply outline-none;
-    outline: none !important;
-    outline-width: 0 !important;
-  }
-} */
- html,
- body {
-   padding: 0;
-   margin: 0;
-   margin-top: 2rem;
-   font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
- }
+body{
+    height: 100%;
+}
 
- main {
-   margin-top: 2rem;
-   margin-left: 2rem;
-   margin-right: 2rem;
- }
-
-
- /* a {
-   color: inherit;
-   text-decoration: none;
- } */
-
- /* {
-  box-sizing: border-box;
-} */
+@media (max-width: 768px) {
+    main{
+    margin-top: 4rem;
+    }
+}
+@media (min-width: 768px) {
+    /* main{
+    margin-left: 7rem;
+    } */
+}
