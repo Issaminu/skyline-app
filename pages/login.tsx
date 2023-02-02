@@ -64,7 +64,7 @@ export default function Login(props) {
           minHeight: "100vh",
         }}
       >
-        <div className="mt-8 sm:mx-auto sm:w-96 sm:max-w-md">
+        <div className="sm:mx-auto sm:w-96 sm:max-w-md">
           <div className="bg-white pt-14 pb-6 px-4 shadow sm:rounded-2xl sm:px-12">
             <LoadingBar height={3} color="#06b6d4" ref={ref} />
             <div className="sm:mx-auto mb-10 sm:w-full sm:max-w-md">
