@@ -1,103 +1,99 @@
 generator js {
-  provider        = "prisma-client-js"
-  output          = "../node_modules/.prisma/client"
-  previewFeatures = ["referentialIntegrity"]
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
-  provider          = "mysql"
+  provider          = "postgres"
   url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-  relationMode      = "prisma"
 }
 
-model users {
-  id                Int      @id @default(autoincrement())
-  name              String   @db.VarChar(255)
-  email             String   @unique @db.VarChar(255)
-  password          String?  @db.VarChar(255)
-  phone             String?  @db.VarChar(255)
-  image             String   @db.VarChar(255)
-  notificationCount Int      @default(0)
-  accountStatus     String   @db.VarChar(255)
-  email_Verified    Int      @db.TinyInt
-  create_time       DateTime @default(now())
-  update_time       DateTime @default(now())
+model User {
+  id                  Int            @id @default(autoincrement())
+  name                String
+  email               String         @unique
+  password            String
+  phone               String
+  image               String
+  isEmailVerified     Boolean        @default(false)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  residentOfBuildings Building[]     @relation("Residents")
+  adminOfBuildings    Building[]     @relation("Admins")
+  creatorOfBuildings  Building[]     @relation("Creator")
+  Contributions       Contribution[]
+  Expenses            Expense[]
+  InvitationsSent     Invitation[]   @relation("Sender")
+  InvitationsReceived Invitation[]   @relation("Receiver")
 }
 
-model buildings {
+model Building {
+  id        Int      @id @default(autoincrement())
+  name      String
+  city      String
+  location  String
+  surface   Float
+  thumbnail String
+  houses    House[]
+  residents User[]   @relation("Residents")
+  admins    User[]   @relation("Admins")
+  creator   User     @relation("Creator", fields: [creatorId], references: [id])
+  creatorId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum HouseStatus {
+  AVAILABLE
+  OCCUPIED
+  RESERVED
+}
+
+model House {
+  id            Int            @id @default(autoincrement())
+  name          String
+  size          Float
+  status        HouseStatus
+  Building      Building       @relation(fields: [buildingId], references: [id])
+  buildingId    Int
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  Contributions Contribution[]
+  Invitations   Invitation[]
+}
+
+model Contribution {
   id            Int      @id @default(autoincrement())
-  name          String   @db.VarChar(255)
-  city          String   @db.VarChar(255)
-  location      String   @db.VarChar(255)
-  creatorId     Int
-  surface       Float
-  houseQuantity Int
-  treasury      Float    @default(0)
-  houseIDs      String?  @db.VarChar(255)
-  residentIDs   String?  @db.VarChar(255)
-  adminIDs      String?  @db.VarChar(255)
-  thumbnail     String   @db.VarChar(255)
-  create_time   DateTime @default(now())
-  update_time   DateTime @default(now())
+  amount        Float
+  contributor   User     @relation(fields: [contributorId], references: [id])
+  contributorId Int
+  house         House    @relation(fields: [houseId], references: [id])
+  houseId       Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
-model houses {
-  id              Int      @id @default(autoincrement())
-  name            String   @db.VarChar(255)
-  size            Float
-  buildingSurface Float
-  location        String   @db.VarChar(255)
-  buildingId      Int
-  buildingName    String   @db.VarChar(255)
-  creatorId       Int
-  houseId         String   @unique @db.VarChar(255)
-  adminIDs        String?  @db.VarChar(255)
-  residentIDs     String?  @db.VarChar(255)
-  status          String   @db.VarChar(255)
-  create_time     DateTime @default(now())
-  update_time     DateTime @default(now())
+model Expense {
+  id          Int      @id @default(autoincrement())
+  beneficiary String
+  admin       User     @relation(fields: [adminId], references: [id])
+  adminId     Int
+  amount      Float
+  explanation String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
-model payements {
-  id           Int      @id @default(autoincrement())
-  userId       Int
-  userName     String   @db.VarChar(255)
-  amount       Float
-  buildingId   Int
-  buildingName String   @db.VarChar(255)
-  payementDate DateTime @db.DateTime(0)
-  reason       String   @db.VarChar(255)
-  create_time  DateTime @default(now())
-  update_time  DateTime @default(now())
-}
-
-model expenses {
-  id           Int      @id @default(autoincrement())
-  beneficiary  String   @db.VarChar(255)
-  amount       Float
-  reason       String   @db.VarChar(255)
-  buildingId   Int
-  buildingName String   @db.VarChar(255)
-  expenseDate  DateTime @default(now())
-  create_time  DateTime @default(now())
-  update_time  DateTime @default(now())
-}
-
-model invitations {
-  id                 Int      @id @default(autoincrement())
-  buildingId         Int
-  senderId           Int
-  receiverId         Int
-  senderName         String   @db.VarChar(255)
-  receiverName       String   @db.VarChar(255)
-  receiverEmail      String   @db.VarChar(255)
-  status             String   @db.VarChar(255)
-  isAdmin            Boolean?
-  senderIsAdmin      Boolean?
-  buildingName       String   @db.VarChar(255)
-  receiverHouseIDs   String?  @db.VarChar(255)
-  receiverHouseNames String?  @db.VarChar(255)
-  create_time        DateTime @default(now())
-  update_time        DateTime @default(now())
+model Invitation {
+  id         Int      @id @default(autoincrement())
+  status     String
+  sender     User     @relation("Sender", fields: [senderId], references: [id])
+  senderId   Int
+  receiver   User     @relation("Receiver", fields: [receiverId], references: [id])
+  receiverId Int
+  house      House    @relation(fields: [houseId], references: [id])
+  houseId    Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
