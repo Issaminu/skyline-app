@@ -4,14 +4,23 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { CustomError } from "@/lib/utils";
 import { JWT } from "next-auth/jwt";
-import { User } from "@/lib/zod";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+
+interface Credentials extends Record<"email" | "password", string> {}
+
+export type LoggedInUser = {
+  id: number;
+  email: string;
+  name: string;
+  phone: string;
+  image: string;
+};
 
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  adapter: PrismaAdapter(prisma as any), // Temporary fix for https://github.com/prisma/prisma/issues/16117
+  adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       id: "credentials",
@@ -20,7 +29,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       // @ts-ignore
-      async authorize(credentials, _req) {
+      async authorize(credentials?: Credentials): Promise<LoggedInUser | null> {
         try {
           if (!credentials) return null;
           const user = await prisma.user
@@ -33,7 +42,8 @@ export const authOptions: NextAuthOptions = {
                 email: true,
                 name: true,
                 password: true,
-                role: true,
+                phone: true,
+                image: true,
               },
             })
             .catch((error) => {
@@ -49,9 +59,11 @@ export const authOptions: NextAuthOptions = {
               id: user.id,
               email: user.email,
               name: user.name,
-              role: user.role,
-            }; // this is a temporary fix for an issue with NextAuth: https://github.com/nextauthjs/next-auth/issues/2701
+              phone: user.phone,
+              image: user.image,
+            } as LoggedInUser;
           }
+          return null;
         } catch (error) {
           console.error(error);
           return null;

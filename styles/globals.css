@@ -4,7 +4,8 @@
 
 @layer base {
   :root {
-    --background: 144 8% 87%;
+    --app-background: 144 8% 87%;
+    --background: 0 0% 100%;
     --foreground: 222 18% 11%;
 
     --muted: 210 40% 96.1%;
@@ -87,7 +88,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-appBackground text-foreground;
     font-feature-settings: "rlig" 1 "calt" 1;
   }
 }

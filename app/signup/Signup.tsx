@@ -12,7 +12,8 @@ import GithubIcon from "@/components/icons/github-icon";
 import GoogleIcon from "@/components/icons/google-icon";
 import AlertIcon from "@/components/icons/alert-icon";
 import axios from "axios";
-import { userSchemaCreate } from "@/lib/zod";
+import { UserCreateInputObjectSchema } from "@/prisma/generated/schemas";
+import { z } from "zod";
 
 export default function Singup() {
   const router = useRouter();
@@ -33,11 +34,11 @@ export default function Singup() {
         loadingBarRef.current.continuousStart();
       }
       if (emailRef.current && passwordRef.current && nameRef.current) {
-        const validatedForm = userSchemaCreate.parse({
-          email: emailRef.current.value,
+        const validatedForm = UserCreateInputObjectSchema.parse({
+          emafil: emailRef.current.value,
           name: nameRef.current.value,
           password: passwordRef.current.value,
-        });
+        }) as z.infer<typeof UserCreateInputObjectSchema>;
         const email = validatedForm.email;
         const name = validatedForm.name;
         const password = validatedForm.password;
@@ -56,7 +57,7 @@ export default function Singup() {
               await signIn("credentials", {
                 email: email,
                 password: password,
-                callbackUrl: `${window.location.origin}/home`,
+                callbackUrl: `${window.location.origin}/immeubles`,
               });
             },
             async (error) => {

@@ -3,6 +3,10 @@ generator js {
   output   = "../node_modules/.prisma/client"
 }
 
+generator zod {
+  provider = "prisma-zod-generator"
+}
+
 datasource db {
   provider          = "postgres"
   url               = env("DATABASE_URL")
@@ -32,7 +36,7 @@ model Building {
   id        Int      @id @default(autoincrement())
   name      String
   city      String
-  location  String
+  address   String
   surface   Float
   thumbnail String
   houses    House[]

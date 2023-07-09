@@ -109,7 +109,7 @@ function generateBuildings(count: number) {
     const building = {
       name: faker.company.name(),
       city: faker.location.city(),
-      location: faker.location.streetAddress(),
+      address: faker.location.streetAddress(),
       surface: faker.number.float({ min: 200, max: 10000, precision: 0.01 }),
       thumbnail: `https://source.unsplash.com/featured/?building&id=${i + 1}`,
       creatorId: creatorId,

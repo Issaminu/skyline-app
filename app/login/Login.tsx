@@ -32,9 +32,9 @@ export default function Login() {
       const email = emailRef.current.value;
       const password = passwordRef.current.value;
       const res = await signIn("credentials", {
-        redirect: false,
         email,
         password,
+        callbackUrl: `${window.location.origin}/immeubles`,
       });
       if (res && res.error) {
         console.log(res);
@@ -43,10 +43,6 @@ export default function Login() {
           loadingBarRef.current.complete();
         }
         setIsValid(false);
-      } else {
-        const callbackUrl = searchParams.get("callbackUrl");
-        if (callbackUrl) router.push(callbackUrl);
-        else router.push("/home");
       }
     }
   };
