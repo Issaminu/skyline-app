@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
-    serverActions: true,
+    // serverActions: true,
   },
   images: {
     domains: [
@@ -11,7 +11,17 @@ const nextConfig = {
       "picsum.photos",
       "loremflickr.com",
       "i.pravatar.cc",
+      "images.unsplash.com",
     ],
+  },
+  redirects: async () => {
+    return [
+      {
+        source: "/",
+        destination: "/immeubles",
+        permanent: false,
+      },
+    ];
   },
 };
 
