@@ -20,12 +20,12 @@
     --card-foreground: 222.2 47.4% 11.2%;
 
     --primary: 214 69% 41%;
-    --primary-foreground: 224 100% 77%;
+    --primary-foreground: 224 100% 97%;
 
-    --secondary: 227 30% 25%;
+    --secondary: 227 40% 25%;
     --secondary-foreground: 214 69% 53%;
 
-    --secondary-highlighted: 214 69% 53%;
+    --secondary-highlighted: 232 100% 92%;
     --secondary-highlighted-foreground: 34 77% 96%;
 
     --accent: 243 60% 60%;
@@ -81,7 +81,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background/40 text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }

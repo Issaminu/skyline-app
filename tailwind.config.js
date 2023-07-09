@@ -26,11 +26,9 @@ module.exports = {
         secondary: {
           DEFAULT: "hsl(var(--secondary) / <alpha-value>)",
           foreground: "hsl(var(--secondary-foreground) / <alpha-value>)",
-        },
-        secondaryhighlighted: {
-          DEFAULT: "hsl(var(--secondary-highlighted) / <alpha-value>)",
-          foreground:
-            "hsl(var(--secondary-highlighted-foreground) / <alpha-value>)",
+          highlighted: "hsl(var(--secondary-highlighted) / <alpha-value>)",
+          "highlighted-foreground":
+            "hsl(var(--secondary-foreground) / <alpha-value>)",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive) / <alpha-value>)",

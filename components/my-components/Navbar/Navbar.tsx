@@ -6,6 +6,7 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import MonetizationOnRoundedIcon from "@mui/icons-material/MonetizationOnRounded";
 import EngineeringRoundedIcon from "@mui/icons-material/EngineeringRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
+import { cn } from "@/lib/utils";
 
 const Navbar = () => {
   const path = usePathname();
@@ -37,10 +38,17 @@ const Navbar = () => {
   ];
   return (
     <>
-      <div className="flex flex-col w-32 bg-secondary h-screen fixed items-center py-2 gap-2">
+      <div className="select-none flex flex-col w-32 bg-secondary h-screen fixed items-center py-2 gap-2">
         {navigation.map((item) => (
           <Link href={item.href} key={item.name}>
-            <Button className={`${item.current ? "" : ""} w-28 h-28`}>
+            <Button
+              className={cn(
+                item.current
+                  ? "shadow-none text-primary-foreground bg-secondary brightness-125 rounded-lg hover:bg-secondary"
+                  : "shadow-none text-primary-foreground/40 bg-secondary hover:bg-secondary hover:brightness-110 active:brightness-150 hover:text-primary-foreground/80",
+                "w-28 h-28"
+              )}
+            >
               <div className="flex flex-col justify-center items-center gap-1">
                 <item.icon />
                 <div>{item.name}</div>
