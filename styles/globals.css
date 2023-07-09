@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --background: 262 100% 92%;
-    --foreground: 222.2 47.4% 11.2%;
+    --background: 144 8% 87%;
+    --foreground: 222 18% 11%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
@@ -19,19 +19,25 @@
     --card: 0 0% 100%;
     --card-foreground: 222.2 47.4% 11.2%;
 
-    --primary: 214 69% 41%;
-    --primary-foreground: 224 100% 97%;
+    --primary: 200 44% 39%;
+    --primary-foreground: 200 44% 95%;
 
-    --secondary: 227 40% 25%;
-    --secondary-foreground: 214 69% 53%;
+    --primary-dark: 200 44% 22%;
+    --primary-dark-foreground: 200 44% 95%;
 
-    --secondary-highlighted: 232 100% 92%;
-    --secondary-highlighted-foreground: 34 77% 96%;
+    --secondary: 359 100% 66%;
+    --secondary-foreground: 359 100% 96%;
 
-    --accent: 243 60% 60%;
-    --accent-foreground: 188 90% 98%;
+    --accent: 36 51% 86%;
+    --accent-foreground: 36 51% 26%;
 
-    --destructive: 344 100% 54%;
+    --bittersweet: 359 100% 66%;
+    --rich-black: 222 18% 11%;
+    --cerulean: 200 44% 39%;
+    --platinum: 144 8% 87%;
+    --champagne: 36 51% 86%;
+
+    --destructive: 359 100% 66%;
     --destructive-foreground: 210 40% 98%;
 
     --ring: 215 20.2% 65.1%;
@@ -81,7 +87,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background/40 text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1 "calt" 1;
   }
 }

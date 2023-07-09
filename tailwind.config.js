@@ -22,13 +22,13 @@ module.exports = {
         primary: {
           DEFAULT: "hsl(var(--primary) / <alpha-value>)",
           foreground: "hsl(var(--primary-foreground) / <alpha-value>)",
+          dark: "hsl(var(--primary-dark) / <alpha-value>)",
+          "dark-foreground":
+            "hsl(var(--primary-dark-foreground) / <alpha-value>)",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary) / <alpha-value>)",
           foreground: "hsl(var(--secondary-foreground) / <alpha-value>)",
-          highlighted: "hsl(var(--secondary-highlighted) / <alpha-value>)",
-          "highlighted-foreground":
-            "hsl(var(--secondary-foreground) / <alpha-value>)",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive) / <alpha-value>)",
