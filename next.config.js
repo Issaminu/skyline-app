@@ -12,6 +12,7 @@ const nextConfig = {
       "loremflickr.com",
       "i.pravatar.cc",
       "images.unsplash.com",
+      "randomuser.me",
     ],
   },
   redirects: async () => {

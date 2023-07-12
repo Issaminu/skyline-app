@@ -25,7 +25,7 @@ async function main() {
       email: "test@gmail.com",
       password: await bcrypt.hash("123123123", 10),
       phone: faker.phone.number("+212 ## ## ## ##"),
-      image: `https://randomuser.me/api/portraits/men/23.jpg`,
+      image: `https://randomuser.me/api/portraits/men/86.jpg`,
       isEmailVerified: true,
     };
     await prisma.user.upsert({

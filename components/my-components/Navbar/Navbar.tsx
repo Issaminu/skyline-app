@@ -6,15 +6,22 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import MonetizationOnRoundedIcon from "@mui/icons-material/MonetizationOnRounded";
 import EngineeringRoundedIcon from "@mui/icons-material/EngineeringRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
-import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { cn, routeIsLoginOrSignup } from "@/lib/utils";
+import { useState, Suspense, useEffect } from "react";
 import Image from "next/image";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import { Separator } from "@/components/ui/separator";
+import { useSession } from "next-auth/react";
+import UserButton from "@/components/my-components/Navbar/UserButton";
+import LoadingUserButton from "@/components/my-components/Navbar/LoadingUserButton";
+import lightLogo from "@/public/1337 white.png";
+import darkLogo from "@/public/1337.png";
+import { useTheme } from "next-themes";
 
 const Navbar = () => {
   const path = usePathname();
   const [open, setOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState(lightLogo);
   const navigation = [
     {
       name: "Immeubles",
@@ -41,17 +48,27 @@ const Navbar = () => {
       current: "/invitations" === path,
     },
   ];
+  const { data: session } = useSession();
+  const { theme } = useTheme();
+  useEffect(() => {
+    if (theme === "dark" || theme === "system") {
+      setImageUrl(lightLogo);
+    } else {
+      setImageUrl(darkLogo);
+    }
+  }, [theme]);
+  if (routeIsLoginOrSignup(path)) return null;
   return (
     <div>
       {/* Desktop menu */}
       <div className="hidden sm:block">
-        <div className="select-none flex flex-col w-32 bg-primary-dark h-screen fixed items-center">
+        <div className="select-none flex flex-col w-32 bg-appBackground h-screen fixed items-center border-r border-r-border">
           <Image
-            src="/1337 white.png"
+            src={imageUrl}
             alt="logo"
+            height={60}
             width={60}
-            height={80}
-            className="mt-6 select-none"
+            className="mt-6 mb-6 select-none"
           />
           <div className="h-screen flex flex-col justify-between">
             <div className="py-2 px-2 gap-6">
@@ -61,9 +78,9 @@ const Navbar = () => {
                     type="button"
                     className={cn(
                       item.current
-                        ? "shadow-md text-primary-foreground bg-primary-dark brightness-125 rounded-lg"
-                        : "shadow-none text-primary-foreground/60 bg-primary-dark hover:brightness-110 active:brightness-70 hover:text-primary-foreground/80",
-                      "w-28 mb-2 h-28 hover:bg-primary-dark"
+                        ? "shadow-md brightness-125 bg-primary/20 hover:bg-primary/20 rounded-lg"
+                        : "shadow-none bg-appBackground hover:brightness-110 active:brightness-70 hover:bg-primary/10",
+                      "w-28 mb-2 h-28 transition-none	text-primary hover:text-primary"
                     )}
                   >
                     <div className="flex flex-col justify-center items-center gap-1">
@@ -75,18 +92,11 @@ const Navbar = () => {
               ))}
             </div>
             <div className="py-2 px-2 justify-center items-center">
-              <Button
-                type="button"
-                className="gap-6 w-28 flex flex-col mb-4 py-2 h-28 hover:bg-primary-dark shadow-none text-primary-foreground/60 bg-primary-dark hover:brightness-110 active:brightness-70 hover:text-primary-foreground/80"
-              >
-                <Image
-                  src="/1337 white.png"
-                  alt="logo"
-                  width={90}
-                  height={90}
-                />
-                Issam Boubcher
-              </Button>
+              {session ? (
+                <UserButton session={session} />
+              ) : (
+                <LoadingUserButton />
+              )}
             </div>
           </div>
         </div>

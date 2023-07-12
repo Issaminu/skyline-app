@@ -78,32 +78,12 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     // @ts-ignore
     async jwt({ token, user }: { token: JWT; user: User }) {
-      // const dbUser = await prisma.user.findUnique({
-      //   where: {
-      //     email: token.user.email,
-      //   },
-      //   select: {
-      //     id: true,
-      //     email: true,
-      //     name: true,
-      //     role: true,
-      //   },
-      // });
-      const dbUser = null; //TEMP
-      if (!dbUser) {
-        if (user) {
-          token.user = { ...user };
-        }
-      }
+      token = { ...token, ...user };
       return token;
     },
     async session({ session, token }: { session: Session; token: JWT }) {
-      return {
-        ...session,
-        user: {
-          ...token.user,
-        },
-      };
+      session = { ...session, ...token };
+      return session;
     },
   },
 };
