@@ -1,7 +1,7 @@
 import Signup from "./Signup";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
-export default function SignupPage() {
+export default async function SignupPage() {
   return <Signup />;
 }
