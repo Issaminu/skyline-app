@@ -38,8 +38,8 @@ export default function RootLayout({
         </head>
         <body className={`${inter.className}`}>
           <Providers>
-            {/* <Navbar /> */}
-            {/* <div className={`${routeIsLoginOrSignup(path) ? "" : "sm:ml-36"}`}> */}
+            <Navbar />
+            {/* <div className={`${routeIsLoginOrSignupOrSSOCallback(path) ? "" : "sm:ml-36"}`}> */}
             <div>{children}</div>
             {/* </div> */}
           </Providers>

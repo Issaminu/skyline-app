@@ -4,7 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef } from "react";
 import LoadingBar, { LoadingBarRef } from "react-top-loading-bar";
-import logo from "../../public/1337.png";
+import darkLogo from "../../public/1337.png";
+import lightLogo from "../../public/1337 white.png";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import GithubIcon from "@/components/icons/github-icon";
@@ -13,6 +15,7 @@ import AlertIcon from "@/components/icons/alert-icon";
 import { Card } from "@/components/ui/card";
 import { useSignUp } from "@clerk/nextjs";
 import { OAuthStrategy } from "@clerk/nextjs/dist/types/server/clerkClient";
+import { useTheme } from "next-themes";
 
 export default function Singup() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -26,6 +29,7 @@ export default function Singup() {
   const nameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
+  const { theme } = useTheme();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
@@ -153,13 +157,13 @@ export default function Singup() {
           minHeight: "100vh",
         }}
       >
-        <Card className="mx-auto flex h-screen w-screen min-w-max flex-col justify-center bg-white px-12 shadow md:h-fit md:w-[27rem] md:rounded-2xl md:pt-12">
+        <Card className="mx-auto flex h-screen w-screen min-w-max flex-col justify-center px-12 md:h-fit md:w-[27rem] md:rounded-2xl md:pt-12">
           <LoadingBar height={3} color="#06b6d4" ref={loadingBarRef} />
           <div className="sm:mx-auto sm:w-full sm:max-w-md">
             <div className="flex justify-center">
               <Image
                 className="mx-auto mb-6 h-8 w-auto"
-                src={logo}
+                src={theme === "dark" ? lightLogo : darkLogo}
                 alt="1337 logo"
                 loading="eager"
               />
@@ -167,13 +171,10 @@ export default function Singup() {
             {!pendingVerification && (
               <div className="pb-12">
                 <div className="pb-8">
-                  <h2
-                    className="mt-6 text-center text-3xl font-bold"
-                    style={{ color: "#1e212a" }}
-                  >
+                  <h2 className="mt-6 text-center text-3xl font-bold">
                     Welcome!
                   </h2>
-                  <p className="mt-2 text-center text-sm text-gray-900">
+                  <p className="mt-2 text-center text-sm">
                     Please sign up to continue
                   </p>
                 </div>
@@ -242,7 +243,7 @@ export default function Singup() {
                         disabled={isLoading}
                         className="h-12 w-full rounded-lg"
                       >
-                        <span className="w-full text-lg text-white">
+                        <span className="w-full text-lg  text-white">
                           Continue
                         </span>
                       </Button>
@@ -263,13 +264,11 @@ export default function Singup() {
                         onClick={() => signInWith("oauth_google")}
                         disabled={isLoading}
                         variant="outline"
-                        className="h-12 w-full rounded-lg border-gray-400 bg-white hover:bg-gray-200"
+                        className="h-12 w-full rounded-lg"
                       >
                         <span className="flex w-full items-center justify-evenly">
                           <GoogleIcon />
-                          <span className="h-full text-black">
-                            Continue with Google
-                          </span>
+                          <span className="h-full">Continue with Google</span>
                           <span>{"  "}</span>
                         </span>
                       </Button>
@@ -277,13 +276,11 @@ export default function Singup() {
                         onClick={() => signInWith("oauth_github")}
                         disabled={isLoading}
                         variant="outline"
-                        className="h-12 w-full rounded-lg border-gray-400 bg-white hover:bg-gray-200"
+                        className="h-12 w-full rounded-lg"
                       >
                         <span className="flex w-full items-center justify-evenly">
                           <GithubIcon />
-                          <span className="h-full text-black">
-                            Continue with Github
-                          </span>
+                          <span className="h-full">Continue with Github</span>
                           <span>{"  "}</span>
                         </span>
                       </Button>{" "}

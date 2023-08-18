@@ -174,13 +174,11 @@ export default function Login() {
                 onClick={() => signInWith("oauth_google")}
                 disabled={isLoading}
                 variant="outline"
-                className="h-12 w-full rounded-lg border-gray-400 bg-white hover:bg-gray-200"
+                className="h-12 w-full rounded-lg"
               >
                 <span className="flex w-full items-center justify-evenly">
                   <GoogleIcon />
-                  <span className="h-full text-black">
-                    Continue with Google
-                  </span>
+                  <span className="h-full">Continue with Google</span>
                   <span>{"  "}</span>
                 </span>
               </Button>
@@ -188,13 +186,11 @@ export default function Login() {
                 onClick={() => signInWith("oauth_github")}
                 disabled={isLoading}
                 variant="outline"
-                className="h-12 w-full rounded-lg border-gray-400 bg-white hover:bg-gray-200"
+                className="h-12 w-full rounded-lg"
               >
                 <span className="flex w-full items-center justify-evenly">
                   <GithubIcon />
-                  <span className="h-full text-black">
-                    Continue with Github
-                  </span>
+                  <span className="h-full">Continue with Github</span>
                   <span>{"  "}</span>
                 </span>
               </Button>{" "}
