@@ -10,12 +10,14 @@ import { Button } from "@/components/ui/button";
 import GithubIcon from "@/components/icons/github-icon";
 import GoogleIcon from "@/components/icons/google-icon";
 import AlertIcon from "@/components/icons/alert-icon";
-import { UserCreateInputObjectSchema } from "@/prisma/generated/schemas";
-import { z } from "zod";
-import { userSchemaCreate } from "@/lib/zod";
 import { Card } from "@/components/ui/card";
+import { useSignUp } from "@clerk/nextjs";
+import { OAuthStrategy } from "@clerk/nextjs/dist/types/server/clerkClient";
 
 export default function Singup() {
+  const { isLoaded, signUp, setActive } = useSignUp();
+  const [pendingVerification, setPendingVerification] = useState(false);
+  const [code, setCode] = useState("");
   const router = useRouter();
   const [isValid, setIsValid] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,6 +30,9 @@ export default function Singup() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
+      if (!isLoaded) {
+        return;
+      }
       setIsLoading(true);
       setIsValid(true);
       if (loadingBarRef.current) {
@@ -48,28 +53,25 @@ export default function Singup() {
           image:
             "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg",
         };
-        const validatedForm = userSchemaCreate.parse(userInfo) as z.infer<
-          typeof UserCreateInputObjectSchema
-        >;
 
-        await fetch("/api/signup", {
-          method: "POST",
-          body: JSON.stringify(validatedForm),
-          headers: {
-            "Content-Type": "application/json",
+        await signUp.create({
+          emailAddress: userInfo.email,
+          password: userInfo.password,
+          firstName: userInfo.name.split(" ")[0],
+          lastName: userInfo.name.split(" ")[1],
+          unsafeMetadata: {
+            phone: userInfo.phone,
+            image: userInfo.image,
           },
-        })
-          .then(async (_success) => {
-            router.push("/immeubles");
-          })
-          .catch((error) => {
-            if (loadingBarRef.current) {
-              loadingBarRef.current.complete();
-            }
-            setIsLoading(false);
-            setIsValid(false);
-            console.error(error.response);
-          });
+        });
+
+        await signUp.prepareEmailAddressVerification({
+          strategy: "email_code",
+        });
+
+        setIsValid(true);
+        // change the UI to our pending section.
+        setPendingVerification(true);
       }
       setIsLoading(false);
       setIsValid(true);
@@ -78,7 +80,67 @@ export default function Singup() {
       }
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
+      setIsValid(false);
+      if (loadingBarRef.current) {
+        loadingBarRef.current.complete();
+      }
     }
+  };
+
+  // This verifies the user using email code that is delivered.
+  const onPressVerify = async (e: any) => {
+    e.preventDefault();
+    console.log("hey");
+    if (!isLoaded) {
+      return;
+    }
+    setIsLoading(true);
+    setIsValid(true);
+    try {
+      console.log("hey");
+
+      const completeSignUp = await signUp.attemptEmailAddressVerification({
+        code,
+      });
+
+      if (completeSignUp.status !== "complete") {
+        /*  investigate the response, to see if there was an error
+         or if the user needs to complete more steps.*/
+        setIsLoading(false);
+        setIsValid(false);
+        if (loadingBarRef.current) {
+          loadingBarRef.current.complete();
+        }
+        console.log(JSON.stringify(completeSignUp, null, 2));
+      }
+      if (completeSignUp.status === "complete") {
+        await setActive({ session: completeSignUp.createdSessionId });
+        router.push("/immeubles ");
+      }
+    } catch (err: any) {
+      console.error(JSON.stringify(err, null, 2));
+      setIsLoading(false);
+      setIsValid(false);
+      if (loadingBarRef.current) {
+        loadingBarRef.current.complete();
+      }
+    }
+  };
+
+  const signInWith = (strategy: OAuthStrategy) => {
+    if (!isLoaded) {
+      return;
+    }
+    setIsLoading(true);
+    if (loadingBarRef.current) {
+      loadingBarRef.current.continuousStart();
+    }
+    return signUp.authenticateWithRedirect({
+      strategy,
+      redirectUrl: "/sso-callback",
+      redirectUrlComplete: "/immeubles",
+    });
   };
 
   return (
@@ -91,9 +153,9 @@ export default function Singup() {
           minHeight: "100vh",
         }}
       >
-        <Card className="mx-auto flex h-screen w-screen min-w-max flex-col justify-center bg-white px-12 shadow md:h-fit md:w-[27rem] md:rounded-2xl md:py-12">
+        <Card className="mx-auto flex h-screen w-screen min-w-max flex-col justify-center bg-white px-12 shadow md:h-fit md:w-[27rem] md:rounded-2xl md:pt-12">
           <LoadingBar height={3} color="#06b6d4" ref={loadingBarRef} />
-          <div className="mb-10 sm:mx-auto sm:w-full sm:max-w-md">
+          <div className="sm:mx-auto sm:w-full sm:max-w-md">
             <div className="flex justify-center">
               <Image
                 className="mx-auto mb-6 h-8 w-auto"
@@ -102,136 +164,181 @@ export default function Singup() {
                 loading="eager"
               />
             </div>
-            <h2
-              className="mt-6 text-center text-3xl font-bold"
-              style={{ color: "#1e212a" }}
-            >
-              Welcome!
-            </h2>
-            <p className="mt-2 text-center text-sm text-gray-900">
-              Please sign up to continue
-            </p>
-          </div>
-          <form className="space-y-4" onSubmit={(e) => handleSubmit(e)}>
-            <div>
-              <Input
-                type="text"
-                id="name"
-                placeholder="Full name"
-                ref={nameRef}
-                minLength={8}
-                maxLength={100}
-                required
-              />
-            </div>
-            <div>
-              <Input
-                type="email"
-                id="email"
-                placeholder="Email"
-                ref={emailRef}
-                required
-                className={
-                  isValid
-                    ? "focus:outline-cyan-600"
-                    : "border-2 border-red-600 focus:outline-red-600"
-                }
-              />
-            </div>
-            {!isValid && (
-              <div className="flex items-center">
-                <AlertIcon />
-                <span className="text-sm font-semibold text-red-600">
-                  This email is already in use
-                </span>
+            {!pendingVerification && (
+              <div className="pb-12">
+                <div className="pb-8">
+                  <h2
+                    className="mt-6 text-center text-3xl font-bold"
+                    style={{ color: "#1e212a" }}
+                  >
+                    Welcome!
+                  </h2>
+                  <p className="mt-2 text-center text-sm text-gray-900">
+                    Please sign up to continue
+                  </p>
+                </div>
+                <form className="space-y-4" onSubmit={(e) => handleSubmit(e)}>
+                  <div>
+                    <Input
+                      type="text"
+                      id="name"
+                      placeholder="Full name"
+                      ref={nameRef}
+                      minLength={8}
+                      maxLength={100}
+                      autoFocus
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Input
+                      type="email"
+                      id="email"
+                      placeholder="Email"
+                      ref={emailRef}
+                      required
+                      className={
+                        isValid
+                          ? ""
+                          : "border-2 border-red-600 focus:outline-red-600 focus-visible:ring-1 focus-visible:ring-red-300"
+                      }
+                    />
+                  </div>
+                  {!isValid && (
+                    <div className="flex items-center">
+                      <AlertIcon />
+                      <span className="text-sm font-semibold text-red-600">
+                        This email is already in use
+                      </span>
+                    </div>
+                  )}
+                  <div>
+                    <Input
+                      type="text"
+                      id="phone"
+                      placeholder="Phone number"
+                      ref={phoneRef}
+                      minLength={8}
+                      maxLength={12}
+                      required
+                      className=""
+                    />
+                  </div>
+                  <div>
+                    <Input
+                      type="password"
+                      id="password"
+                      placeholder="Password"
+                      ref={passwordRef}
+                      minLength={8}
+                      maxLength={100}
+                      required
+                    />
+                  </div>
+                  <div className="flex w-full justify-between gap-16">
+                    <div className="flex w-full flex-col gap-3">
+                      <Button
+                        type="submit"
+                        disabled={isLoading}
+                        className="h-12 w-full rounded-lg"
+                      >
+                        <span className="w-full text-lg text-white">
+                          Continue
+                        </span>
+                      </Button>
+                      <div className="mt-3 text-sm">
+                        Already have an account? &nbsp;
+                        <Link href="/login">
+                          <Button variant={"link"} className="pl-0 py-0">
+                            Sign in
+                          </Button>
+                        </Link>
+                      </div>
+                      <div className="flex flex-row items-center justify-between">
+                        <hr className="w-[40%]" />{" "}
+                        <span className="text-sm">OR</span>
+                        <hr className="w-[40%]" />
+                      </div>
+                      <Button
+                        onClick={() => signInWith("oauth_google")}
+                        disabled={isLoading}
+                        variant="outline"
+                        className="h-12 w-full rounded-lg border-gray-400 bg-white hover:bg-gray-200"
+                      >
+                        <span className="flex w-full items-center justify-evenly">
+                          <GoogleIcon />
+                          <span className="h-full text-black">
+                            Continue with Google
+                          </span>
+                          <span>{"  "}</span>
+                        </span>
+                      </Button>
+                      <Button
+                        onClick={() => signInWith("oauth_github")}
+                        disabled={isLoading}
+                        variant="outline"
+                        className="h-12 w-full rounded-lg border-gray-400 bg-white hover:bg-gray-200"
+                      >
+                        <span className="flex w-full items-center justify-evenly">
+                          <GithubIcon />
+                          <span className="h-full text-black">
+                            Continue with Github
+                          </span>
+                          <span>{"  "}</span>
+                        </span>
+                      </Button>{" "}
+                    </div>
+                  </div>
+                </form>
               </div>
             )}
-            <div>
-              <Input
-                type="text"
-                id="phone"
-                placeholder="Phone number"
-                ref={phoneRef}
-                minLength={8}
-                maxLength={12}
-                required
-                className="focus:outline-cyan-600"
-              />
-            </div>
-            <div>
-              <Input
-                type="password"
-                id="password"
-                placeholder="Password"
-                ref={passwordRef}
-                minLength={8}
-                maxLength={100}
-                required
-              />
-            </div>
-            <div className="flex w-full justify-between gap-16">
-              <div className="flex w-full flex-col gap-3">
-                <div className="flex items-center">
-                  <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300"
-                  />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm ">
-                    Remember me
-                  </label>
-                </div>
-                <Button
-                  type="submit"
-                  disabled={isLoading}
-                  className="h-12 w-full rounded-lg"
+          </div>
+
+          {pendingVerification && (
+            <div className="pb-12">
+              <div className="pb-10">
+                <h2
+                  className="mt-6 text-center text-3xl font-bold"
+                  style={{ color: "#1e212a" }}
                 >
-                  <span className="w-full text-lg text-white">Continue</span>
-                </Button>
-                <div className="mt-3 text-sm">
-                  Already have an account? &nbsp;
-                  <Link href="/login">
-                    <Button variant={"link"} className="pl-0 py-0">
-                      Sign in
-                    </Button>
-                  </Link>
-                </div>
-                <div className="flex flex-row items-center justify-between">
-                  <hr className="w-[40%]" /> <span className="text-sm">OR</span>
-                  <hr className="w-[40%]" />
-                </div>
-                <Button
-                  variant="outline"
-                  className="h-12 w-full rounded-lg border-gray-400 bg-white hover:bg-gray-200"
-                  disabled
-                  title="Coming soon"
-                >
-                  <span className="flex w-full items-center justify-evenly">
-                    <GoogleIcon />
-                    <span className="h-full text-black">
-                      Continue with Google
-                    </span>
-                    <span>{"  "}</span>
-                  </span>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-12 w-full rounded-lg border-gray-400 bg-white hover:bg-gray-200"
-                  disabled
-                  title="Coming soon"
-                >
-                  <span className="flex w-full items-center justify-evenly">
-                    <GithubIcon />
-                    <span className="h-full text-black">
-                      Continue with Github
-                    </span>
-                    <span>{"  "}</span>
-                  </span>
-                </Button>
+                  Almost there!
+                </h2>
+                <p className="mt-2 text-center text-sm text-gray-900">
+                  Please enter the verification code sent to your email
+                </p>
               </div>
+              <form>
+                <div className="flex flex-row gap-6">
+                  <div className="flex flex-col gap-4">
+                    <Input
+                      type="text"
+                      id="verificationCode"
+                      required
+                      value={code}
+                      placeholder="Verification code..."
+                      onChange={(e) => setCode(e.target.value)}
+                      className={`${
+                        isValid
+                          ? ""
+                          : "border-2 border-red-600 focus:outline-red-600 focus-visible:ring-1 focus-visible:ring-red-300"
+                      }`}
+                    />
+                    {!isValid && (
+                      <div className="flex items-center">
+                        <AlertIcon />
+                        <span className="text-sm font-semibold text-red-600">
+                          The verification code is incorrect
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <Button disabled={isLoading} onClick={onPressVerify}>
+                    Verify
+                  </Button>
+                </div>
+              </form>
             </div>
-          </form>
+          )}
         </Card>
       </div>
     </>

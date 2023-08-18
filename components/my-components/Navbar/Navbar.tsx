@@ -11,7 +11,6 @@ import { useState, Suspense, useEffect } from "react";
 import Image from "next/image";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import { Separator } from "@/components/ui/separator";
-import { useSession } from "next-auth/react";
 import UserButton from "@/components/my-components/Navbar/UserButton";
 import LoadingUserButton from "@/components/my-components/Navbar/LoadingUserButton";
 import lightLogo from "@/public/1337 white.png";
@@ -48,16 +47,16 @@ const Navbar = () => {
       current: "/invitations" === path,
     },
   ];
-  const { data: session } = useSession();
   const { theme } = useTheme();
   useEffect(() => {
-    if (theme === "dark" || theme === "system") {
+    if (theme === "dark") {
       setImageUrl(lightLogo);
     } else {
       setImageUrl(darkLogo);
     }
   }, [theme]);
   if (routeIsLoginOrSignup(path)) return null;
+  const session = null;
   return (
     <div>
       {/* Desktop menu */}
@@ -92,11 +91,7 @@ const Navbar = () => {
               ))}
             </div>
             <div className="py-2 px-2 justify-center items-center">
-              {session ? (
-                <UserButton session={session} />
-              ) : (
-                <LoadingUserButton />
-              )}
+              {session ? <UserButton /> : <LoadingUserButton />}
             </div>
           </div>
         </div>

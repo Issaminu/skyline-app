@@ -1,7 +1,14 @@
-import Immeubles from "@/app/immeubles/Immeubles";
+import { UserButton, clerkClient, currentUser } from "@clerk/nextjs";
 
-const page = () => {
-  return <Immeubles />;
-};
+export default async function Home() {
+  const user = await currentUser();
+  if (!user) return null;
 
-export default page;
+  console.log(user);
+
+  return (
+    <div>
+      <UserButton afterSignOutUrl="/login" />
+    </div>
+  );
+}

@@ -1,26 +1,22 @@
-import { routeIsLoginOrSignup } from "@/lib/utils";
-import { NextRequestWithAuth, withAuth } from "next-auth/middleware";
-import { NextResponse } from "next/server";
+import { routeIsLoginOrSignupOrSSOCallback } from "@/lib/utils";
+import { NextRequest, NextResponse } from "next/server";
+import { authMiddleware } from "@clerk/nextjs";
+import { redirectToSignIn } from "@clerk/nextjs";
 
-export default withAuth(
-  async function middleware(request: NextRequestWithAuth) {
-    const pathname = request.nextUrl.pathname;
-    const session = request.nextauth.token;
-    if (session && routeIsLoginOrSignup(pathname)) {
-      return NextResponse.redirect(new URL("/immeubles", request.url));
+export default authMiddleware({
+  afterAuth(auth, req, evt) {
+    // handle users who aren't authenticated
+    const pathname = req.nextUrl.pathname;
+    const isRoutePublic = routeIsLoginOrSignupOrSSOCallback(pathname);
+    if (!auth.userId && !isRoutePublic) {
+      return redirectToSignIn({ returnBackUrl: req.url });
+    }
+    if (auth.userId && isRoutePublic) {
+      return NextResponse.redirect(new URL("/immeubles", req.url));
     }
   },
-  {
-    callbacks: {
-      authorized({ req, token }) {
-        if (token) return true;
-        if (routeIsLoginOrSignup(req.nextUrl.pathname)) return true;
-        return false;
-      },
-    },
-  }
-);
+});
 
 export const config = {
-  matcher: "/((?!api|_next/static|_next/image|favicon.ico).*)", // Matches all routes except api routes (Route Handlers), static files, and image files
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };

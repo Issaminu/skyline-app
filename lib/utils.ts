@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { z } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -43,8 +44,12 @@ export function truncateString(str: string, n: number) {
   return str.length > n ? str.slice(0, n - 1) + "&hellip;" : str;
 }
 
-export function routeIsLoginOrSignup(pathname: string) {
-  return pathname.startsWith("/login") || pathname.startsWith("/signup");
+export function routeIsLoginOrSignupOrSSOCallback(pathname: string) {
+  return (
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/signup") ||
+    pathname.startsWith("/sso-callback")
+  );
 }
 
 export function getPrettyDate(date?: Date) {
@@ -101,3 +106,11 @@ export function getOrdinalSuffix(day: number) {
 export const phoneRegex = new RegExp(
   /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
 );
+
+export const handleErrors = (response: Response) => {
+  if (!response.ok) {
+    console.log("ERROR: " + response);
+    throw Error(response.statusText);
+  }
+  return response;
+};

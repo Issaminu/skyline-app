@@ -13,10 +13,12 @@ import AlertIcon from "@/components/icons/alert-icon";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { useTheme } from "next-themes";
-import { handleErrors } from "@/lib/utils";
+import { useSignIn } from "@clerk/nextjs";
+import { OAuthStrategy } from "@clerk/nextjs/dist/types/server/clerkClient";
 
 export default function Login() {
   const router = useRouter();
+  const { isLoaded, signIn, setActive } = useSignIn();
   const [isValid, setIsValid] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const loadingBarRef = useRef<LoadingBarRef>(null);
@@ -26,6 +28,9 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isLoaded) {
+      return;
+    }
     setIsLoading(true);
     setIsValid(true);
     if (loadingBarRef.current) {
@@ -34,29 +39,45 @@ export default function Login() {
     if (emailRef.current && passwordRef.current) {
       const email = emailRef.current.value;
       const password = passwordRef.current.value;
-      await fetch("/api/login", {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => {
-          handleErrors(res);
-        })
-        .then(() => {
-          router.push("/immeubles");
-        })
-        .catch((err) => {
-          setIsLoading(false);
-          if (loadingBarRef.current) {
-            loadingBarRef.current.complete();
-          }
-          setIsValid(false);
-          console.log(err);
+      try {
+        const result = await signIn.create({
+          identifier: email,
+          password,
         });
+
+        if (result.status === "complete") {
+          await setActive({ session: result.createdSessionId });
+          router.push("/immeubles");
+        } else {
+          /*Investigate why the login hasn't completed */
+          console.log("result", result);
+        }
+      } catch (err: any) {
+        setIsLoading(false);
+        setIsValid(false);
+        if (loadingBarRef.current) {
+          loadingBarRef.current.complete();
+        }
+        console.error("error", err.errors[0].longMessage);
+      }
     }
   };
+
+  const signInWith = (strategy: OAuthStrategy) => {
+    if (!isLoaded) {
+      return;
+    }
+    setIsLoading(true);
+    if (loadingBarRef.current) {
+      loadingBarRef.current.continuousStart();
+    }
+    return signIn.authenticateWithRedirect({
+      strategy,
+      redirectUrl: "/sso-callback",
+      redirectUrlComplete: "/immeubles",
+    });
+  };
+
   return (
     <>
       <div
@@ -94,8 +115,8 @@ export default function Login() {
                 autoFocus
                 className={
                   isValid
-                    ? "focus:outline-cyan-600"
-                    : "border-2 border-red-600 focus:outline-red-600"
+                    ? ""
+                    : "border-2 border-red-600 focus:outline-red-600 focus-visible:ring-1 focus-visible:ring-red-300"
                 }
               />
             </div>
@@ -110,8 +131,8 @@ export default function Login() {
                 required
                 className={
                   isValid
-                    ? "focus:outline-cyan-600"
-                    : "border-2 border-red-600 focus:outline-red-600"
+                    ? ""
+                    : "border-2 border-red-600 focus:outline-red-600 focus-visible:ring-1 focus-visible:ring-red-300"
                 }
               />
             </div>
@@ -125,17 +146,6 @@ export default function Login() {
             )}
             <div className="flex w-full justify-between gap-16">
               <div className="flex w-full flex-col gap-3">
-                <div className="flex items-center">
-                  <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300"
-                  />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm ">
-                    Remember me
-                  </label>
-                </div>
                 <Button
                   type="submit"
                   disabled={isLoading}
@@ -143,49 +153,53 @@ export default function Login() {
                 >
                   <span className="w-full text-lg text-white">Continue</span>
                 </Button>
-                <div className="mt-3 text-sm">
-                  Don&apos;t have an account? &nbsp;
-                  <Link href="/signup">
-                    <Button variant={"link"} className="pl-0 py-0">
-                      Sign up
-                    </Button>
-                  </Link>
-                </div>
-                <div className="flex flex-row items-center justify-between">
-                  <hr className="w-[40%]" /> <span className="text-sm">OR</span>
-                  <hr className="w-[40%]" />
-                </div>
-                <Button
-                  variant="outline"
-                  className="cursor-not-allowed h-12 w-full rounded-lg border-gray-400 bg-white hover:bg-gray-200"
-                  disabled
-                  title="Coming soon"
-                >
-                  <span className="flex w-full items-center justify-evenly">
-                    <GoogleIcon />
-                    <span className="h-full text-black">
-                      Continue with Google
-                    </span>
-                    <span>{"  "}</span>
-                  </span>
-                </Button>
-                <Link href="/api/login/github">
-                  <Button
-                    variant="outline"
-                    className="h-12 w-full rounded-lg border-gray-400 bg-white hover:bg-gray-200"
-                  >
-                    <span className="flex w-full items-center justify-evenly">
-                      <GithubIcon />
-                      <span className="h-full text-black">
-                        Continue with Github
-                      </span>
-                      <span>{"  "}</span>
-                    </span>
-                  </Button>
-                </Link>
               </div>
             </div>
           </form>
+          <div className="flex flex-col w-full">
+            <div className="mt-3 text-sm">
+              Don&apos;t have an account? &nbsp;
+              <Link href="/signup">
+                <Button variant={"link"} className="pl-0 py-0">
+                  Sign up
+                </Button>
+              </Link>
+            </div>
+            <div className="flex flex-row items-center justify-between mt-4 mb-4">
+              <hr className="w-[40%]" /> <span className="text-sm">OR</span>
+              <hr className="w-[40%]" />
+            </div>
+            <div className="space-y-4">
+              <Button
+                onClick={() => signInWith("oauth_google")}
+                disabled={isLoading}
+                variant="outline"
+                className="h-12 w-full rounded-lg border-gray-400 bg-white hover:bg-gray-200"
+              >
+                <span className="flex w-full items-center justify-evenly">
+                  <GoogleIcon />
+                  <span className="h-full text-black">
+                    Continue with Google
+                  </span>
+                  <span>{"  "}</span>
+                </span>
+              </Button>
+              <Button
+                onClick={() => signInWith("oauth_github")}
+                disabled={isLoading}
+                variant="outline"
+                className="h-12 w-full rounded-lg border-gray-400 bg-white hover:bg-gray-200"
+              >
+                <span className="flex w-full items-center justify-evenly">
+                  <GithubIcon />
+                  <span className="h-full text-black">
+                    Continue with Github
+                  </span>
+                  <span>{"  "}</span>
+                </span>
+              </Button>{" "}
+            </div>
+          </div>
         </Card>
       </div>
     </>

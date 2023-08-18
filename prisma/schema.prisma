@@ -3,10 +3,6 @@ generator js {
   output   = "../node_modules/.prisma/client"
 }
 
-generator zod {
-  provider = "prisma-zod-generator"
-}
-
 datasource db {
   provider          = "postgres"
   url               = env("DATABASE_URL")
@@ -14,10 +10,9 @@ datasource db {
 }
 
 model User {
-  id                  Int            @id @default(autoincrement())
+  id                  String         @id @unique
   name                String
   email               String         @unique
-  password            String
   phone               String
   image               String
   isEmailVerified     Boolean        @default(false)
@@ -30,6 +25,10 @@ model User {
   Expenses            Expense[]
   InvitationsSent     Invitation[]   @relation("Sender")
   InvitationsReceived Invitation[]   @relation("Receiver")
+  auth_session        Session[]
+  key                 Key[]
+
+  @@index([id, email])
 }
 
 model Building {
@@ -43,7 +42,7 @@ model Building {
   residents User[]   @relation("Residents")
   admins    User[]   @relation("Admins")
   creator   User     @relation("Creator", fields: [creatorId], references: [id])
-  creatorId Int
+  creatorId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -71,7 +70,7 @@ model Contribution {
   id            Int      @id @default(autoincrement())
   amount        Float
   contributor   User     @relation(fields: [contributorId], references: [id])
-  contributorId Int
+  contributorId String
   house         House    @relation(fields: [houseId], references: [id])
   houseId       Int
   createdAt     DateTime @default(now())
@@ -82,7 +81,7 @@ model Expense {
   id          Int      @id @default(autoincrement())
   beneficiary String
   admin       User     @relation(fields: [adminId], references: [id])
-  adminId     Int
+  adminId     String
   amount      Float
   explanation String
   createdAt   DateTime @default(now())
@@ -93,11 +92,30 @@ model Invitation {
   id         Int      @id @default(autoincrement())
   status     String
   sender     User     @relation("Sender", fields: [senderId], references: [id])
-  senderId   Int
+  senderId   String
   receiver   User     @relation("Receiver", fields: [receiverId], references: [id])
-  receiverId Int
+  receiverId String
   house      House    @relation(fields: [houseId], references: [id])
   houseId    Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+}
+
+model Session {
+  id             String @id @unique
+  user_id        String
+  active_expires BigInt
+  idle_expires   BigInt
+  user           User   @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model Key {
+  id              String  @id @unique
+  hashed_password String?
+  user_id         String
+  user            User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
 }

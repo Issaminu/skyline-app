@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Session } from "next-auth";
 import { useEffect, useState } from "react";
 import {
   DropdownMenu,
@@ -21,7 +20,6 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Brightness7RoundedIcon from "@mui/icons-material/Brightness7Rounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
@@ -31,7 +29,7 @@ import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import DesktopWindowsRoundedIcon from "@mui/icons-material/DesktopWindowsRounded";
 
-const UserButton = ({ session }: { session: Session }) => {
+const UserButton = ({ session }: any) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const { theme, setTheme } = useTheme();
@@ -146,7 +144,7 @@ const UserButton = ({ session }: { session: Session }) => {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              signOut({ callbackUrl: `${window.location.origin}/login` });
+              // signOut({ callbackUrl: `${window.location.origin}/login` });
             }}
             className="cursor-pointer"
           >

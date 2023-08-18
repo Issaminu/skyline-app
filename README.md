@@ -29,7 +29,7 @@ Main changes coming to V2:
 
 • **Better stack:**
 The olf version of the app was built using the abysmal Auth0 library, and uses
-the currently-too-young NextUI library for the front-end. For V2, I'm transitioning to the use of NextAuth and TailwindUI.
+the currently-too-young NextUI library for the front-end. For V2, I'm transitioning to the use of Clerk and shadcn/ui.
 
 • **Better security:**
 V2 will have all API calls secured by the use of JWT, which is provides better security than the public APIs that V1 uses, also, inputs will be strictly validated.
