@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import Navbar from "../components/my-components/Navbar/Navbar";
-import { routeIsLoginOrSignup } from "@/lib/utils";
+import { routeIsLoginOrSignupOrSSOCallback } from "@/lib/utils";
 import Providers from "@/app/providers";
 import { headers } from "next/headers";
 import localFont from "next/font/local";
