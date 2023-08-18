@@ -6,7 +6,7 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import MonetizationOnRoundedIcon from "@mui/icons-material/MonetizationOnRounded";
 import EngineeringRoundedIcon from "@mui/icons-material/EngineeringRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
-import { cn, routeIsLoginOrSignup } from "@/lib/utils";
+import { cn, routeIsLoginOrSignupOrSSOCallback } from "@/lib/utils";
 import { useState, Suspense, useEffect } from "react";
 import Image from "next/image";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
@@ -55,7 +55,7 @@ const Navbar = () => {
       setImageUrl(darkLogo);
     }
   }, [theme]);
-  if (routeIsLoginOrSignup(path)) return null;
+  if (routeIsLoginOrSignupOrSSOCallback(path)) return null;
   const session = null;
   return (
     <div>
