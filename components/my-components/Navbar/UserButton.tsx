@@ -18,15 +18,14 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import Brightness7RoundedIcon from "@mui/icons-material/Brightness7Rounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
 import { useTheme } from "next-themes";
 import type { UserResource } from "@clerk/types";
-import { redirectToSignIn, useClerk } from "@clerk/nextjs";
-// import { default , dark as darkProfile } from "@clerk/themes";
+import { useClerk } from "@clerk/nextjs";
+import { dark as darkProfile } from "@clerk/themes";
 
 const UserButton = ({ user }: { user: UserResource }) => {
   const { openUserProfile, signOut } = useClerk();
@@ -74,11 +73,15 @@ const UserButton = ({ user }: { user: UserResource }) => {
               variant={"ghost"}
               className="w-full h-full flex justify-start cursor-pointer"
               onClick={() =>
-                openUserProfile({
-                  appearance: {
-                    // baseTheme: theme === "light" ? lightProfile : darkProfile,
-                  },
-                })
+                openUserProfile(
+                  theme === "dark"
+                    ? {
+                        appearance: {
+                          baseTheme: darkProfile,
+                        },
+                      }
+                    : undefined
+                )
               }
             >
               <AccountCircleRoundedIcon className="h-4 mr-1" />
