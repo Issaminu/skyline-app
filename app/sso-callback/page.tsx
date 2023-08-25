@@ -7,7 +7,9 @@ export const metadata = {
 const SSOCallback = () => {
   return (
     <div className="flex justify-center items-center text-center h-screen w-screen">
-      <p className="font-bold text-2xl text-gray-800">Please wait...</p>
+      <p className="font-bold text-2xl text-gray-800 dark:text-white">
+        Please wait...
+      </p>
       <AuthenticateWithRedirectCallback />
     </div>
   );

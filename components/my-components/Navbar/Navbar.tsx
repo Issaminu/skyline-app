@@ -6,8 +6,8 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import MonetizationOnRoundedIcon from "@mui/icons-material/MonetizationOnRounded";
 import EngineeringRoundedIcon from "@mui/icons-material/EngineeringRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
-import { cn, routeIsLoginOrSignupOrSSOCallback } from "@/lib/utils";
-import { useState, Suspense, useEffect } from "react";
+import { cn, routeIsPublic } from "@/lib/utils";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import { Separator } from "@/components/ui/separator";
@@ -17,14 +17,13 @@ import lightLogo from "@/public/1337 white.png";
 import darkLogo from "@/public/1337.png";
 import { useTheme } from "next-themes";
 import { useUser } from "@clerk/nextjs";
-import { UserProfile } from "@clerk/nextjs";
 
 const Navbar = () => {
   const path = usePathname();
   const [open, setOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState(lightLogo);
-  const { isSignedIn, user, isLoaded } = useUser();
-  const [openProfile, setOpenProfile] = useState(false);
+  const { user } = useUser();
+  const { theme } = useTheme();
 
   const navigation = [
     {
@@ -52,7 +51,7 @@ const Navbar = () => {
       current: "/invitations" === path,
     },
   ];
-  const { theme } = useTheme();
+
   useEffect(() => {
     if (theme === "dark") {
       setImageUrl(lightLogo);
@@ -60,7 +59,7 @@ const Navbar = () => {
       setImageUrl(darkLogo);
     }
   }, [theme]);
-  if (routeIsLoginOrSignupOrSSOCallback(path)) return null;
+  if (routeIsPublic(path)) return null;
 
   return (
     <>
@@ -71,8 +70,9 @@ const Navbar = () => {
             <Image
               src={imageUrl}
               alt="logo"
-              height={60}
               width={60}
+              priority={true}
+              loading="eager"
               className="mt-6 mb-6 select-none"
             />
             <div className="h-screen flex flex-col justify-between">
@@ -81,15 +81,18 @@ const Navbar = () => {
                   <Link href={item.href} key={item.name}>
                     <Button
                       type="button"
+                      variant={"ghost"}
                       className={cn(
                         item.current
-                          ? "shadow-md brightness-125 bg-primary/20 hover:bg-primary/20 rounded-lg"
-                          : "shadow-none bg-appBackground hover:brightness-110 active:brightness-70 hover:bg-primary/10",
-                        "w-28 mb-2 h-28 transition-none	text-primary hover:text-primary"
+                          ? "shadow-sm rounded-lg bg-black/10 hover:bg-dark/20 dark:bg-white/10"
+                          : "shadow-none active:bg-black/20 dark:active:bg-white/20",
+                        "w-28 mb-2 h-28 transition-none"
                       )}
                     >
                       <div className="flex flex-col justify-center items-center gap-1">
-                        <item.icon />
+                        <div>
+                          <item.icon />
+                        </div>
                         <div>{item.name}</div>
                       </div>
                     </Button>
@@ -97,8 +100,8 @@ const Navbar = () => {
                 ))}
               </div>
               <div className="py-2 px-2 justify-center items-center">
-                {user ? (
-                  <UserButton user={user} setOpenProfile={setOpenProfile} />
+                {user != null ? (
+                  <UserButton user={user} />
                 ) : (
                   <LoadingUserButton />
                 )}

@@ -1,6 +1,4 @@
 import "@/styles/globals.css";
-import Navbar from "../components/my-components/Navbar/Navbar";
-import { routeIsLoginOrSignupOrSSOCallback } from "@/lib/utils";
 import Providers from "@/app/providers";
 import { headers } from "next/headers";
 import localFont from "next/font/local";
@@ -30,21 +28,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <head>
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-        </head>
+    <html lang="en" suppressHydrationWarning>
+      {/* suppressHydrationWarning is used to prevent a warning when using next-themes */}
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
+      <ClerkProvider>
         <body className={`${inter.className}`}>
-          <Providers>
-            <Navbar />
-            {/* <div className={`${routeIsLoginOrSignupOrSSOCallback(path) ? "" : "sm:ml-36"}`}> */}
-            <div>{children}</div>
-            {/* </div> */}
-          </Providers>
+          <Providers>{children}</Providers>
         </body>
-      </html>
-    </ClerkProvider>
+      </ClerkProvider>
+    </html>
   );
 }

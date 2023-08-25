@@ -1,16 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -25,28 +23,15 @@ import Brightness7RoundedIcon from "@mui/icons-material/Brightness7Rounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
-import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
-import DesktopWindowsRoundedIcon from "@mui/icons-material/DesktopWindowsRounded";
 import type { UserResource } from "@clerk/types";
-import { useClerk } from "@clerk/nextjs";
+import { redirectToSignIn, useClerk } from "@clerk/nextjs";
+// import { default , dark as darkProfile } from "@clerk/themes";
 
-const UserButton = ({
-  user,
-  setOpenProfile,
-}: {
-  user: UserResource;
-  setOpenProfile: any;
-}) => {
+const UserButton = ({ user }: { user: UserResource }) => {
   const { openUserProfile, signOut } = useClerk();
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const { theme, setTheme } = useTheme();
-
-  const logout = () => {
-    signOut();
-    router.push("/login");
-  };
 
   return (
     <>
@@ -85,56 +70,65 @@ const UserButton = ({
             </div>
           </DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <button
-              onClick={() => openUserProfile()}
-              className="w-full h-full cursor-pointer active:bg-primary/40"
+            <Button
+              variant={"ghost"}
+              className="w-full h-full flex justify-start cursor-pointer"
+              onClick={() =>
+                openUserProfile({
+                  appearance: {
+                    // baseTheme: theme === "light" ? lightProfile : darkProfile,
+                  },
+                })
+              }
             >
               <AccountCircleRoundedIcon className="h-4 mr-1" />
               Profile
-            </button>
+            </Button>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            asChild
-            className="cursor-pointer active:bg-primary/40"
-          >
-            <Link
-              target="_blank"
-              href="https://github.com/Issaminu/skyline-app"
+          <DropdownMenuItem asChild>
+            <Button
+              asChild
+              variant={"ghost"}
+              className="w-full h-full flex justify-start cursor-pointer"
             >
-              <GitHubIcon className="h-4 mr-1" />
-              Repository
-            </Link>
+              <Link
+                target="_blank"
+                href="https://github.com/Issaminu/skyline-app"
+              >
+                <GitHubIcon className="h-4 mr-1" />
+                Repository
+              </Link>
+            </Button>
           </DropdownMenuItem>
-          <DropdownMenuItem
-            asChild
-            className="cursor-pointer active:bg-primary/40"
-          >
-            <Link
-              target="_blank"
-              href="https://github.com/Issaminu/skyline-app/blob/main/Rapport%20de%20Projet%20de%20Stage%201337.pdf"
+          <DropdownMenuItem asChild>
+            <Button
+              asChild
+              variant={"ghost"}
+              className="w-full h-full flex justify-start cursor-pointer"
             >
-              <ArticleRoundedIcon className="h-4 mr-1" />
-              Report
-            </Link>
+              <Link
+                target="_blank"
+                href="https://github.com/Issaminu/skyline-app/blob/main/Rapport%20de%20Projet%20de%20Stage%201337.pdf"
+              >
+                <ArticleRoundedIcon className="h-4 mr-1" />
+                Report
+              </Link>
+            </Button>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuSub>
-            <DropdownMenuSubTrigger className="hover:text-primary">
+            <DropdownMenuSubTrigger>
               <Brightness7RoundedIcon className="h-4 mr-1" />
               Theme
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
-              <DropdownMenuSubContent>
+              <DropdownMenuSubContent className="space-y-1">
                 <DropdownMenuItem
                   onClick={() => {
                     setTheme("light");
                   }}
-                  className={
-                    theme == "light"
-                      ? "bg-primary/70 text-primary-foreground hover:pointer-events-none"
-                      : "mb-1 cursor-pointer active:bg-primary/40"
-                  }
+                  className="bg-primary/80 dark:bg-transparent text-white cursor-pointer"
                 >
                   <LightModeIcon className="h-4 mr-1 hover:pointer-events-none" />
                   Light
@@ -143,13 +137,9 @@ const UserButton = ({
                   onClick={() => {
                     setTheme("dark");
                   }}
-                  className={
-                    theme == "dark"
-                      ? "bg-primary/70 active:bg-primary mt-1 text-primary-foreground hover:pointer-events-none"
-                      : "mt-1 cursor-pointer active:bg-primary/40"
-                  }
+                  className="dark:bg-primary/50 bg-transparent dark:text-white cursor-pointer"
                 >
-                  <DarkModeIcon className="h-4 mr-1" />
+                  <DarkModeIcon className="h-4 mr-1 hover:pointer-events-none" />
                   Dark
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
@@ -157,10 +147,14 @@ const UserButton = ({
           </DropdownMenuSub>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <button onClick={logout} className="w-full h-full cursor-pointer">
+            <Button
+              onClick={() => signOut()}
+              variant={"ghost"}
+              className="w-full h-full flex justify-start cursor-pointer"
+            >
               <LogoutRoundedIcon className="h-4 mr-1" />
               Log Out
-            </button>
+            </Button>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

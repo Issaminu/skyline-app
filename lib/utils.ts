@@ -44,7 +44,7 @@ export function truncateString(str: string, n: number) {
   return str.length > n ? str.slice(0, n - 1) + "&hellip;" : str;
 }
 
-export function routeIsLoginOrSignupOrSSOCallback(pathname: string) {
+export function routeIsPublic(pathname: string) {
   return (
     pathname.startsWith("/login") ||
     pathname.startsWith("/signup") ||

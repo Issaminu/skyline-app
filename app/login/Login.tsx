@@ -1,10 +1,7 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef } from "react";
 import LoadingBar, { LoadingBarRef } from "react-top-loading-bar";
-import darkLogo from "../../public/1337.png";
-import lightLogo from "../../public/1337 white.png";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import GithubIcon from "@/components/icons/github-icon";
@@ -12,9 +9,9 @@ import GoogleIcon from "@/components/icons/google-icon";
 import AlertIcon from "@/components/icons/alert-icon";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
-import { useTheme } from "next-themes";
 import { useSignIn } from "@clerk/nextjs";
 import { OAuthStrategy } from "@clerk/nextjs/dist/types/server/clerkClient";
+import Logo from "@/components/icons/1337-logo";
 
 export default function Login() {
   const router = useRouter();
@@ -24,7 +21,6 @@ export default function Login() {
   const loadingBarRef = useRef<LoadingBarRef>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const { theme } = useTheme();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -83,7 +79,7 @@ export default function Login() {
       <div
         className="flex h-full w-full flex-col justify-center sm:px-6 lg:px-8"
         style={{
-          background: "url('/login-bg.webp') no-repeat center center fixed",
+          background: "url('/login-bg.webp') no-repeat center center",
           backgroundSize: "cover",
           minHeight: "100vh",
         }}
@@ -92,12 +88,7 @@ export default function Login() {
           <LoadingBar height={3} color="#06b6d4" ref={loadingBarRef} />
           <div className="mb-10 sm:mx-auto sm:w-full sm:max-w-md">
             <div className="flex justify-center">
-              <Image
-                className="mx-auto mb-6 h-8 w-auto"
-                src={theme === "dark" ? lightLogo : darkLogo}
-                alt="1337 logo"
-                loading="eager"
-              />
+              <Logo />
             </div>
             <h2 className="mt-6 text-center text-3xl font-bold">Welcome!</h2>
             <p className="mt-2 text-center text-sm">
@@ -193,7 +184,7 @@ export default function Login() {
                   <span className="h-full">Continue with Github</span>
                   <span>{"  "}</span>
                 </span>
-              </Button>{" "}
+              </Button>
             </div>
           </div>
         </Card>
