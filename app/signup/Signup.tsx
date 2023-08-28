@@ -90,15 +90,12 @@ export default function Singup() {
   // This verifies the user using email code that is delivered.
   const onPressVerify = async (e: any) => {
     e.preventDefault();
-    console.log("hey");
     if (!isLoaded) {
       return;
     }
     setIsLoading(true);
     setIsValid(true);
     try {
-      console.log("hey");
-
       const completeSignUp = await signUp.attemptEmailAddressVerification({
         code,
       });

@@ -17,7 +17,7 @@ model User {
   image               String
   isEmailVerified     Boolean        @default(false)
   createdAt           DateTime       @default(now())
-  updatedAt           DateTime       @updatedAt
+  updatedAt           DateTime       @default(now()) @updatedAt
   residentOfBuildings Building[]     @relation("Residents")
   adminOfBuildings    Building[]     @relation("Admins")
   creatorOfBuildings  Building[]     @relation("Creator")
@@ -25,8 +25,6 @@ model User {
   Expenses            Expense[]
   InvitationsSent     Invitation[]   @relation("Sender")
   InvitationsReceived Invitation[]   @relation("Receiver")
-  auth_session        Session[]
-  key                 Key[]
 
   @@index([id, email])
 }
@@ -44,7 +42,7 @@ model Building {
   creator   User     @relation("Creator", fields: [creatorId], references: [id])
   creatorId String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 enum HouseStatus {
@@ -61,7 +59,7 @@ model House {
   Building      Building       @relation(fields: [buildingId], references: [id])
   buildingId    Int
   createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  updatedAt     DateTime       @default(now()) @updatedAt
   Contributions Contribution[]
   Invitations   Invitation[]
 }
@@ -85,7 +83,7 @@ model Expense {
   amount      Float
   explanation String
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime @default(now()) @updatedAt
 }
 
 model Invitation {
@@ -98,24 +96,5 @@ model Invitation {
   house      House    @relation(fields: [houseId], references: [id])
   houseId    Int
   createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-}
-
-model Session {
-  id             String @id @unique
-  user_id        String
-  active_expires BigInt
-  idle_expires   BigInt
-  user           User   @relation(references: [id], fields: [user_id], onDelete: Cascade)
-
-  @@index([user_id])
-}
-
-model Key {
-  id              String  @id @unique
-  hashed_password String?
-  user_id         String
-  user            User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
-
-  @@index([user_id])
+  updatedAt  DateTime @default(now()) @updatedAt
 }

@@ -1,9 +1,74 @@
 {
-  "id": "00000000-0000-0000-0000-000000000000",
-  "prevId": "",
   "version": "5",
   "dialect": "pg",
+  "id": "c2717f0c-f744-4d44-9ca3-8eaa673fa9ad",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "_Admins": {
+      "name": "_Admins",
+      "schema": "",
+      "columns": {
+        "A": {
+          "name": "A",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "B": {
+          "name": "B",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "_Admins_AB_unique": {
+          "name": "_Admins_AB_unique",
+          "columns": [
+            "A",
+            "B"
+          ],
+          "isUnique": true
+        },
+        "_Admins_B_index": {
+          "name": "_Admins_B_index",
+          "columns": [
+            "B"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "_Admins_A_Building_id_fk": {
+          "name": "_Admins_A_Building_id_fk",
+          "tableFrom": "_Admins",
+          "tableTo": "Building",
+          "columnsFrom": [
+            "A"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "_Admins_B_User_id_fk": {
+          "name": "_Admins_B_User_id_fk",
+          "tableFrom": "_Admins",
+          "tableTo": "User",
+          "columnsFrom": [
+            "B"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "Building": {
       "name": "Building",
       "schema": "",
@@ -26,6 +91,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "address": {
+          "name": "address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "surface": {
           "name": "surface",
           "type": "double precision",
@@ -38,36 +109,31 @@
           "primaryKey": false,
           "notNull": true
         },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp(3)",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "CURRENT_TIMESTAMP"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp(3)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "address": {
-          "name": "address",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
         "creatorId": {
           "name": "creatorId",
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp(3)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp(3)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "Building_creatorId_fkey": {
-          "name": "Building_creatorId_fkey",
+        "Building_creatorId_User_id_fk": {
+          "name": "Building_creatorId_User_id_fk",
           "tableFrom": "Building",
           "tableTo": "User",
           "columnsFrom": [
@@ -83,92 +149,145 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "User": {
-      "name": "User",
+    "Contribution": {
+      "name": "Contribution",
       "schema": "",
       "columns": {
-        "name": {
-          "name": "name",
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "amount": {
+          "name": "amount",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "contributorId": {
+          "name": "contributorId",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "email": {
-          "name": "email",
-          "type": "text",
+        "houseId": {
+          "name": "houseId",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
-        },
-        "password": {
-          "name": "password",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "phone": {
-          "name": "phone",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "image": {
-          "name": "image",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "isEmailVerified": {
-          "name": "isEmailVerified",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
         },
         "createdAt": {
           "name": "createdAt",
           "type": "timestamp(3)",
           "primaryKey": false,
           "notNull": true,
-          "default": "CURRENT_TIMESTAMP"
+          "default": "now()"
         },
         "updatedAt": {
           "name": "updatedAt",
           "type": "timestamp(3)",
           "primaryKey": false,
           "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Contribution_contributorId_User_id_fk": {
+          "name": "Contribution_contributorId_User_id_fk",
+          "tableFrom": "Contribution",
+          "tableTo": "User",
+          "columnsFrom": [
+            "contributorId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
         },
+        "Contribution_houseId_House_id_fk": {
+          "name": "Contribution_houseId_House_id_fk",
+          "tableFrom": "Contribution",
+          "tableTo": "House",
+          "columnsFrom": [
+            "houseId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "Expense": {
+      "name": "Expense",
+      "schema": "",
+      "columns": {
         "id": {
           "name": "id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
+        },
+        "beneficiary": {
+          "name": "beneficiary",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "adminId": {
+          "name": "adminId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "amount": {
+          "name": "amount",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "explanation": {
+          "name": "explanation",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp(3)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp(3)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
-      "indexes": {
-        "User_email_key": {
-          "name": "User_email_key",
-          "columns": [
-            "email"
+      "indexes": {},
+      "foreignKeys": {
+        "Expense_adminId_User_id_fk": {
+          "name": "Expense_adminId_User_id_fk",
+          "tableFrom": "Expense",
+          "tableTo": "User",
+          "columnsFrom": [
+            "adminId"
           ],
-          "isUnique": true
-        },
-        "User_id_key": {
-          "name": "User_id_key",
-          "columns": [
+          "columnsTo": [
             "id"
           ],
-          "isUnique": true
-        },
-        "User_id_email_idx": {
-          "name": "User_id_email_idx",
-          "columns": [
-            "email",
-            "id"
-          ],
-          "isUnique": false
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
         }
       },
-      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -211,164 +330,24 @@
           "type": "timestamp(3)",
           "primaryKey": false,
           "notNull": true,
-          "default": "CURRENT_TIMESTAMP"
+          "default": "now()"
         },
         "updatedAt": {
           "name": "updatedAt",
           "type": "timestamp(3)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "House_buildingId_fkey": {
-          "name": "House_buildingId_fkey",
+        "House_buildingId_Building_id_fk": {
+          "name": "House_buildingId_Building_id_fk",
           "tableFrom": "House",
           "tableTo": "Building",
           "columnsFrom": [
             "buildingId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "Contribution": {
-      "name": "Contribution",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "amount": {
-          "name": "amount",
-          "type": "double precision",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "houseId": {
-          "name": "houseId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp(3)",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "CURRENT_TIMESTAMP"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp(3)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "contributorId": {
-          "name": "contributorId",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "Contribution_houseId_fkey": {
-          "name": "Contribution_houseId_fkey",
-          "tableFrom": "Contribution",
-          "tableTo": "House",
-          "columnsFrom": [
-            "houseId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
-        },
-        "Contribution_contributorId_fkey": {
-          "name": "Contribution_contributorId_fkey",
-          "tableFrom": "Contribution",
-          "tableTo": "User",
-          "columnsFrom": [
-            "contributorId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "Expense": {
-      "name": "Expense",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "beneficiary": {
-          "name": "beneficiary",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "amount": {
-          "name": "amount",
-          "type": "double precision",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "explanation": {
-          "name": "explanation",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp(3)",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "CURRENT_TIMESTAMP"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp(3)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "adminId": {
-          "name": "adminId",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "Expense_adminId_fkey": {
-          "name": "Expense_adminId_fkey",
-          "tableFrom": "Expense",
-          "tableTo": "User",
-          "columnsFrom": [
-            "adminId"
           ],
           "columnsTo": [
             "id"
@@ -396,25 +375,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "houseId": {
-          "name": "houseId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp(3)",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "CURRENT_TIMESTAMP"
-        },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp(3)",
-          "primaryKey": false,
-          "notNull": true
-        },
         "senderId": {
           "name": "senderId",
           "type": "text",
@@ -426,25 +386,32 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "houseId": {
+          "name": "houseId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp(3)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp(3)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "Invitation_houseId_fkey": {
-          "name": "Invitation_houseId_fkey",
-          "tableFrom": "Invitation",
-          "tableTo": "House",
-          "columnsFrom": [
-            "houseId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
-        },
-        "Invitation_senderId_fkey": {
-          "name": "Invitation_senderId_fkey",
+        "Invitation_senderId_User_id_fk": {
+          "name": "Invitation_senderId_User_id_fk",
           "tableFrom": "Invitation",
           "tableTo": "User",
           "columnsFrom": [
@@ -456,8 +423,8 @@
           "onDelete": "restrict",
           "onUpdate": "cascade"
         },
-        "Invitation_receiverId_fkey": {
-          "name": "Invitation_receiverId_fkey",
+        "Invitation_receiverId_User_id_fk": {
+          "name": "Invitation_receiverId_User_id_fk",
           "tableFrom": "Invitation",
           "tableTo": "User",
           "columnsFrom": [
@@ -468,70 +435,18 @@
           ],
           "onDelete": "restrict",
           "onUpdate": "cascade"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "_Admins": {
-      "name": "_Admins",
-      "schema": "",
-      "columns": {
-        "A": {
-          "name": "A",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
         },
-        "B": {
-          "name": "B",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {
-        "_Admins_AB_unique": {
-          "name": "_Admins_AB_unique",
-          "columns": [
-            "A",
-            "B"
-          ],
-          "isUnique": true
-        },
-        "_Admins_B_index": {
-          "name": "_Admins_B_index",
-          "columns": [
-            "B"
-          ],
-          "isUnique": false
-        }
-      },
-      "foreignKeys": {
-        "_Admins_A_fkey": {
-          "name": "_Admins_A_fkey",
-          "tableFrom": "_Admins",
-          "tableTo": "Building",
+        "Invitation_houseId_House_id_fk": {
+          "name": "Invitation_houseId_House_id_fk",
+          "tableFrom": "Invitation",
+          "tableTo": "House",
           "columnsFrom": [
-            "A"
+            "houseId"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
-        },
-        "_Admins_B_fkey": {
-          "name": "_Admins_B_fkey",
-          "tableFrom": "_Admins",
-          "tableTo": "User",
-          "columnsFrom": [
-            "B"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
+          "onDelete": "restrict",
           "onUpdate": "cascade"
         }
       },
@@ -573,8 +488,8 @@
         }
       },
       "foreignKeys": {
-        "_Residents_A_fkey": {
-          "name": "_Residents_A_fkey",
+        "_Residents_A_Building_id_fk": {
+          "name": "_Residents_A_Building_id_fk",
           "tableFrom": "_Residents",
           "tableTo": "Building",
           "columnsFrom": [
@@ -586,8 +501,8 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "_Residents_B_fkey": {
-          "name": "_Residents_B_fkey",
+        "_Residents_B_User_id_fk": {
+          "name": "_Residents_B_User_id_fk",
           "tableFrom": "_Residents",
           "tableTo": "User",
           "columnsFrom": [
@@ -603,8 +518,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "Session": {
-      "name": "Session",
+    "User": {
+      "name": "User",
       "schema": "",
       "columns": {
         "id": {
@@ -613,113 +528,77 @@
           "primaryKey": true,
           "notNull": true
         },
-        "user_id": {
-          "name": "user_id",
+        "name": {
+          "name": "name",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "active_expires": {
-          "name": "active_expires",
-          "type": "bigint",
+        "email": {
+          "name": "email",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "idle_expires": {
-          "name": "idle_expires",
-          "type": "bigint",
+        "phone": {
+          "name": "phone",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "isEmailVerified": {
+          "name": "isEmailVerified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp(3)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp(3)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {
-        "Session_id_key": {
-          "name": "Session_id_key",
+        "User_email_key": {
+          "name": "User_email_key",
+          "columns": [
+            "email"
+          ],
+          "isUnique": true
+        },
+        "User_id_email_idx": {
+          "name": "User_id_email_idx",
+          "columns": [
+            "id",
+            "email"
+          ],
+          "isUnique": false
+        },
+        "User_id_key": {
+          "name": "User_id_key",
           "columns": [
             "id"
           ],
           "isUnique": true
-        },
-        "Session_user_id_idx": {
-          "name": "Session_user_id_idx",
-          "columns": [
-            "user_id"
-          ],
-          "isUnique": false
         }
       },
-      "foreignKeys": {
-        "Session_user_id_fkey": {
-          "name": "Session_user_id_fkey",
-          "tableFrom": "Session",
-          "tableTo": "User",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "Key": {
-      "name": "Key",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "hashed_password": {
-          "name": "hashed_password",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {
-        "Key_id_key": {
-          "name": "Key_id_key",
-          "columns": [
-            "id"
-          ],
-          "isUnique": true
-        },
-        "Key_user_id_idx": {
-          "name": "Key_user_id_idx",
-          "columns": [
-            "user_id"
-          ],
-          "isUnique": false
-        }
-      },
-      "foreignKeys": {
-        "Key_user_id_fkey": {
-          "name": "Key_user_id_fkey",
-          "tableFrom": "Key",
-          "tableTo": "User",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     }
@@ -728,9 +607,9 @@
     "HouseStatus": {
       "name": "HouseStatus",
       "values": {
-        "AVAILABLE": "AVAILABLE",
+        "RESERVED": "RESERVED",
         "OCCUPIED": "OCCUPIED",
-        "RESERVED": "RESERVED"
+        "AVAILABLE": "AVAILABLE"
       }
     }
   },

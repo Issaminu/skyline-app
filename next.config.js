@@ -3,7 +3,6 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
-    // serverComponentsExternalPackages: ["pg", "pg-native"],
     // serverActions: true,
   },
   images: {

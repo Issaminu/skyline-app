@@ -11,7 +11,7 @@
     "generatedb": "drizzle-kit generate:pg"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.23.2",
+    "@clerk/nextjs": "^4.23.3",
     "@clerk/themes": "^1.7.5",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -50,14 +50,16 @@
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
-    "axios": "^1.4.0",
+    "axios": "^1.5.0",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
+    "dotenv": "^16.3.1",
     "drizzle-orm": "^0.28.5",
-    "eslint": "8.47.0",
+    "encoding": "^0.1.13",
+    "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "next": "^13.4.19",
     "next-themes": "^0.2.1",
@@ -70,6 +72,7 @@
     "react-hook-form": "^7.45.4",
     "react-hot-toast": "^2.4.1",
     "react-top-loading-bar": "^2.3.1",
+    "svix": "^1.8.1",
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.6",
@@ -80,7 +83,7 @@
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
     "@types/bcryptjs": "^2.4.2",
-    "@types/node": "^20.5.6",
+    "@types/node": "^20.5.7",
     "drizzle-kit": "^0.19.13",
     "prisma": "^5.2.0"
   }
