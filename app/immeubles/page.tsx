@@ -3,24 +3,24 @@ import { db } from "@/drizzle";
 import { building } from "@/drizzle/schema";
 import { UserButton, currentUser } from "@clerk/nextjs";
 
-const getBuildings = async (id: number) => {
-  const eeey = await db
-    .select({
-      id: building.id,
-      name: building.name,
-      address: building.address,
-      city: building.city,
-      surface: building.surface,
-      thumbnail: building.thumbnail,
-    })
-    .from(building);
-};
+// const getBuildings = async (id: number) => {
+//   const eeey = await db
+//     .select({
+//       id: building.id,
+//       name: building.name,
+//       address: building.address,
+//       city: building.city,
+//       surface: building.surface,
+//       thumbnail: building.thumbnail,
+//     })
+//     .from(building);
+// };
 
 export default async function Home() {
-  const user = await currentUser();
-  console.log(user);
+  // const user = await currentUser();
+  // console.log(user);
 
-  if (!user) return null;
+  // if (!user) return null;
   // const buildings = await getBuildings(user.id);
 
   return <Immeubles />;
