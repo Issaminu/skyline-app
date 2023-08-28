@@ -8,7 +8,7 @@ import { Webhook, WebhookRequiredHeaders } from "svix";
 
 const webhookSecret = process.env.WEBHOOK_SECRET || "";
 
-export async function handler(request: Request) {
+async function handler(request: Request) {
   const payload = await request.json();
   const headersList = headers();
 
@@ -54,10 +54,10 @@ export async function handler(request: Request) {
       .onConflictDoUpdate({
         target: user.id,
         set: {
-          name: attributes.firstName + " " + attributes.lastName,
+          name: attributes.first_name + " " + attributes.last_name,
           email,
           image: attributes.profile_image_url as string,
-          phone: "TEST2",
+          phone: "TEST",
           isEmailVerified,
         },
       });
