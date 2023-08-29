@@ -45,11 +45,8 @@ export function truncateString(str: string, n: number) {
 }
 
 export function routeIsPublic(pathname: string) {
-  return (
-    pathname.startsWith("/login") ||
-    pathname.startsWith("/signup") ||
-    pathname.startsWith("/sso-callback")
-  );
+  const publicRoutes = ["/login", "/signup", "/sso-callback", "/api/webhooks"];
+  return publicRoutes.some((publicRoute) => pathname.startsWith(publicRoute));
 }
 
 export function getPrettyDate(date?: Date) {
