@@ -9,4 +9,3 @@ export const db = drizzle(sql);
 const asyncMigrate = async () => {
   await migrate(db, { migrationsFolder: "drizzle/output" });
 };
-asyncMigrate();
