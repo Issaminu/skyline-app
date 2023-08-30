@@ -11,7 +11,7 @@ export default authMiddleware({
     if (!auth.userId && !isRoutePublic) {
       return NextResponse.redirect(
         `${new URL("/login", req.url)}?redirect_url=${encodeURIComponent(
-          req.url
+          req.nextUrl.toString()
         )}`,
         {
           headers: requestHeaders,

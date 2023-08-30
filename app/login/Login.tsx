@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import GithubIcon from "@/components/icons/github-icon";
 import GoogleIcon from "@/components/icons/google-icon";
 import AlertIcon from "@/components/icons/alert-icon";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { useSignIn } from "@clerk/nextjs";
 import { OAuthStrategy } from "@clerk/nextjs/dist/types/server/clerkClient";
@@ -21,6 +21,7 @@ export default function Login() {
   const loadingBarRef = useRef<LoadingBarRef>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const searchParams = useSearchParams();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,7 +44,11 @@ export default function Login() {
 
         if (result.status === "complete") {
           await setActive({ session: result.createdSessionId });
-          router.push("/buildings");
+          const redirectUrl = searchParams.get("redirect_url");
+          const redirectPathname = redirectUrl
+            ? new URL(redirectUrl).pathname
+            : "/buildings";
+          router.push(redirectPathname);
         } else {
           /*Investigate why the login hasn't completed */
           console.log("result", result);
@@ -67,10 +72,14 @@ export default function Login() {
     if (loadingBarRef.current) {
       loadingBarRef.current.continuousStart();
     }
+    const redirectUrl = searchParams.get("redirect_url");
+    const redirectPathname = redirectUrl
+      ? new URL(redirectUrl).pathname
+      : "/buildings";
     return signIn.authenticateWithRedirect({
       strategy,
       redirectUrl: "/sso-callback",
-      redirectUrlComplete: "/buildings",
+      redirectUrlComplete: redirectPathname,
     });
   };
 
