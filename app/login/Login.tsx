@@ -43,7 +43,7 @@ export default function Login() {
 
         if (result.status === "complete") {
           await setActive({ session: result.createdSessionId });
-          router.push("/immeubles");
+          router.push("/buildings");
         } else {
           /*Investigate why the login hasn't completed */
           console.log("result", result);
@@ -70,7 +70,7 @@ export default function Login() {
     return signIn.authenticateWithRedirect({
       strategy,
       redirectUrl: "/sso-callback",
-      redirectUrlComplete: "/immeubles",
+      redirectUrlComplete: "/buildings",
     });
   };
 

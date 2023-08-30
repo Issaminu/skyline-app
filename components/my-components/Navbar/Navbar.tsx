@@ -27,10 +27,10 @@ const Navbar = () => {
 
   const navigation = [
     {
-      name: "Immeubles",
-      href: "/immeubles",
+      name: "Buildings",
+      href: "/buildings",
       icon: HomeRoundedIcon,
-      current: "/immeubles" === path,
+      current: "/buildings" === path,
     },
     {
       name: "Dues",
@@ -113,7 +113,7 @@ const Navbar = () => {
         <div className="sm:hidden">
           <div className="bg-primary-dark h-16 flex items-center justify-between px-4">
             <div className="flex justify-between items-center">
-              <Link href="/immeubles">
+              <Link href="/buildings">
                 <Image
                   src="/1337 white.png"
                   alt="logo"

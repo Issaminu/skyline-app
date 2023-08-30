@@ -112,7 +112,7 @@ export default function Singup() {
       }
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
-        router.push("/immeubles ");
+        router.push("/buildings ");
       }
     } catch (err: any) {
       console.error(JSON.stringify(err, null, 2));
@@ -135,7 +135,7 @@ export default function Singup() {
     return signUp.authenticateWithRedirect({
       strategy,
       redirectUrl: "/sso-callback",
-      redirectUrlComplete: "/immeubles",
+      redirectUrlComplete: "/buildings",
     });
   };
 
