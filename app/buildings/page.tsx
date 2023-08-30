@@ -1,4 +1,4 @@
-import Immeubles from "@/app/immeubles/Immeubles";
+import Buildings from "@/app/buildings/Buildings";
 import { db } from "@/drizzle";
 import { building } from "@/drizzle/schema";
 import { UserButton, currentUser } from "@clerk/nextjs";
@@ -23,5 +23,5 @@ export default async function Home() {
   // if (!user) return null;
   // const buildings = await getBuildings(user.id);
 
-  return <Immeubles />;
+  return <Buildings />;
 }

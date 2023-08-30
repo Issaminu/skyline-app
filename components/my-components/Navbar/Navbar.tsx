@@ -33,16 +33,16 @@ const Navbar = () => {
       current: "/immeubles" === path,
     },
     {
-      name: "Cotisations",
-      href: "/cotisations",
+      name: "Dues",
+      href: "/dues",
       icon: MonetizationOnRoundedIcon,
-      current: "/cotisations" === path,
+      current: "/dues" === path,
     },
     {
-      name: "Dépenses",
-      href: "/depenses",
+      name: "Expenses",
+      href: "/expenses",
       icon: EngineeringRoundedIcon,
-      current: "/depenses" === path,
+      current: "/expenses" === path,
     },
     {
       name: "Invitations",

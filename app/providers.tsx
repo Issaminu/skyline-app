@@ -10,7 +10,7 @@ function Providers({ children }: { children: React.ReactNode }) {
     <>
       <ThemeProvider enableSystem={false} attribute="class">
         <Navbar />
-        <div className={`${routeIsPublic(pathname) ? "" : "sm:ml-36"}`}>
+        <div className={`${routeIsPublic(pathname) ? "" : "sm:ml-32"}`}>
           {children}
         </div>
       </ThemeProvider>

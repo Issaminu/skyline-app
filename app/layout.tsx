@@ -12,7 +12,7 @@ const inter = localFont({
 });
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const headersList = headers();
-  const pathname = headersList.get("x-invoke-path") || "DefaultTitle";
+  const pathname = headersList.get("x-url") || "DefaultTitle";
   const pathSegments = pathname.split("/").filter((segment) => segment !== ""); // Split pathname into segments and remove empty segments
   const titleSegments = pathSegments.map(
     (segment) => segment.charAt(0).toUpperCase() + segment.slice(1) // Capitalize the first letter of each segment
