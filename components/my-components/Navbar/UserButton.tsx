@@ -160,7 +160,7 @@ const UserButton = ({ user }: { user: UserResource }) => {
               className="w-full h-full flex justify-start cursor-pointer"
             >
               <LogoutRoundedIcon className="h-4 mr-1" />
-              Log Out
+              Sign out
             </Button>
           </DropdownMenuItem>
         </DropdownMenuContent>
