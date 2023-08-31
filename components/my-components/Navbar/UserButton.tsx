@@ -26,12 +26,16 @@ import { useTheme } from "next-themes";
 import type { UserResource } from "@clerk/types";
 import { useClerk } from "@clerk/nextjs";
 import { dark as darkProfile } from "@clerk/themes";
+import { useRouter } from "next/navigation";
 
 const UserButton = ({ user }: { user: UserResource }) => {
   const { openUserProfile, signOut } = useClerk();
   const [open, setOpen] = useState(false);
   const { theme, setTheme } = useTheme();
-
+  const router = useRouter();
+  const logOut = async () => {
+    await signOut(() => router.push("/login"));
+  };
   return (
     <>
       <DropdownMenu>
@@ -151,7 +155,7 @@ const UserButton = ({ user }: { user: UserResource }) => {
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
             <Button
-              onClick={() => signOut()}
+              onClick={logOut}
               variant={"ghost"}
               className="w-full h-full flex justify-start cursor-pointer"
             >
