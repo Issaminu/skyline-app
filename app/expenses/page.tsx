@@ -1,5 +1,56 @@
 const page = () => {
-  return <div>depenses</div>;
+  return (
+    <div className="">
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+      <p>Expenses</p>
+    </div>
+  );
 };
 
 export default page;
