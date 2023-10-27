@@ -98,8 +98,8 @@ const Navbar = () => {
                       variant={"ghost"}
                       className={cn(
                         item.current
-                          ? "shadow-sm rounded-lg bg-black/10 hover:bg-dark/20 dark:bg-white/10"
-                          : "shadow-none active:bg-black/20 dark:active:bg-white/20",
+                          ? "shadow-sm rounded-lg bg-black/10 hover:bg-black/10 dark:bg-white/10"
+                          : "shadow-none ",
                         "w-28 mb-2 h-28 transition-none"
                       )}
                     >

@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import localFont from "next/font/local";
 import { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
+import { prettifyPathname } from "@/lib/utils";
 
 const inter = localFont({
   src: "../public/fonts/Inter.ttf",
@@ -13,12 +14,7 @@ const inter = localFont({
 export async function generateMetadata({ params }: any): Promise<Metadata> {
   const headersList = headers();
   const pathname = headersList.get("x-url") || "DefaultTitle";
-  const pathSegments = pathname.split("/").filter((segment) => segment !== ""); // Split pathname into segments and remove empty segments
-  const titleSegments = pathSegments.map(
-    (segment) => segment.charAt(0).toUpperCase() + segment.slice(1) // Capitalize the first letter of each segment
-  );
-  const title = titleSegments.join(" › "); // Join segments with a separator
-
+  const title = prettifyPathname(pathname);
   return { title: title };
 }
 

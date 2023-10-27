@@ -1,27 +1,26 @@
-import Buildings from "@/app/buildings/Buildings";
+import BuildingsList from "@/components/my-components/Building/BuildingsList";
 import { db } from "@/drizzle";
-import { building } from "@/drizzle/schema";
-import { UserButton, currentUser } from "@clerk/nextjs";
+import { building, residents } from "@/drizzle/schema";
+import { eq, inArray } from "drizzle-orm";
 
-// const getBuildings = async (id: number) => {
-//   const eeey = await db
-//     .select({
-//       id: building.id,
-//       name: building.name,
-//       address: building.address,
-//       city: building.city,
-//       surface: building.surface,
-//       thumbnail: building.thumbnail,
-//     })
-//     .from(building);
-// };
+const getBuildings = async (userId: string) => {
+  const userArray = await db
+    .select({ a: residents.a })
+    .from(residents)
+    .where(eq(residents.b, userId));
+  const userBuildings = userArray.map((item) => item.a);
+  const buildings = await db
+    .select()
+    .from(building)
+    .where(inArray(building.id, userBuildings));
+  return buildings;
+};
 
 export default async function Home() {
-  // const user = await currentUser();
-  // console.log(user);
-
-  // if (!user) return null;
-  // const buildings = await getBuildings(user.id);
-
-  return <Buildings />;
+  const buildings = await getBuildings("user_2VDFoVtmHGVrqViXWV8QALiw12M");
+  return (
+    <div className="">
+      <BuildingsList />
+    </div>
+  );
 }

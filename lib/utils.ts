@@ -111,3 +111,12 @@ export const handleErrors = (response: Response) => {
   }
   return response;
 };
+
+export const prettifyPathname = (pathname: string) => {
+  const pathSegments = pathname.split("/").filter((segment) => segment !== ""); // Split pathname into segments and remove empty segments
+  const titleSegments = pathSegments.map(
+    (segment) => segment.charAt(0).toUpperCase() + segment.slice(1) // Capitalize the first letter of each segment
+  );
+  const title = titleSegments.join(" › "); // Join segments with a separator
+  return title;
+};
