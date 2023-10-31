@@ -1,23 +1,26 @@
 import BuildingsList from "@/components/my-components/Building/BuildingsList";
-import { db } from "@/drizzle";
-import { building, residents } from "@/drizzle/schema";
-import { eq, inArray } from "drizzle-orm";
+import prisma from "@/prisma/prisma";
+import { currentUser } from "@clerk/nextjs";
 
 const getBuildings = async (userId: string) => {
-  const userArray = await db
-    .select({ a: residents.a })
-    .from(residents)
-    .where(eq(residents.b, userId));
-  const userBuildings = userArray.map((item) => item.a);
-  const buildings = await db
-    .select()
-    .from(building)
-    .where(inArray(building.id, userBuildings));
-  return buildings;
+  return await prisma.building.findMany({
+    where: {
+      residents: {
+        some: {
+          id: userId,
+        },
+      },
+    },
+  });
 };
 
 export default async function Home() {
-  const buildings = await getBuildings("user_2VDFoVtmHGVrqViXWV8QALiw12M");
+  const user = await currentUser();
+  if (!user) return;
+  // console.log(user);
+  const buildings = await getBuildings(user.id);
+  console.log(buildings);
+
   return (
     <div className="">
       <BuildingsList />

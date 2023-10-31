@@ -17,6 +17,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
   const title = prettifyPathname(pathname);
   return { title: title };
 }
+console.log(inter);
 
 export default function RootLayout({
   children,

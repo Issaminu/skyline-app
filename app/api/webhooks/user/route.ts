@@ -1,6 +1,4 @@
-import { db } from "@/drizzle";
-import { user } from "@/drizzle/schema";
-
+import prisma from "@/prisma/prisma";
 import { IncomingHttpHeaders } from "http";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -41,26 +39,26 @@ async function handler(request: Request) {
     }>;
     const email = emails[0].email_address;
     const isEmailVerified = emails[0].verification.status === "verified";
-    const dbuser = await db
-      .insert(user)
-      .values({
+    await prisma.user.upsert({
+      where: {
+        id: attributes.id as string,
+      },
+      create: {
         id: attributes.id as string,
         name: attributes.first_name + " " + attributes.last_name,
         email,
         image: attributes.profile_image_url as string,
         phone: "TEST",
         isEmailVerified,
-      })
-      .onConflictDoUpdate({
-        target: user.id,
-        set: {
-          name: attributes.first_name + " " + attributes.last_name,
-          email,
-          image: attributes.profile_image_url as string,
-          phone: "TEST",
-          isEmailVerified,
-        },
-      });
+      },
+      update: {
+        name: attributes.first_name + " " + attributes.last_name,
+        email,
+        image: attributes.profile_image_url as string,
+        phone: "TEST",
+        isEmailVerified,
+      },
+    });
   }
   return NextResponse.json({}, { status: 200 });
 }
